@@ -1,10 +1,10 @@
-'use client'
+"use client";
 
-import {useQuery} from '@rocicorp/zero/react'
-import {useState} from 'react'
-import {toast} from 'sonner'
+import { useQuery } from "@rocicorp/zero/react";
+import { useState } from "react";
+import { toast } from "sonner";
 
-import {Button} from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -12,15 +12,17 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import {Input} from '@/components/ui/input'
-import {useZero} from '@/hooks/use-zero'
-import {WorkspaceRow} from '@/schema'
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { useZero } from "@/hooks/use-zero";
+import { mutators } from "@/lib/zero/mutators";
+import { queries } from "@/lib/zero/queries";
+import type { WorkspaceRow } from "@/schema";
 
 type Compound = typeof View & {
-  useBlock: typeof useBlock
-  Block: typeof Block
-}
+  useBlock: typeof useBlock;
+  Block: typeof Block;
+};
 
 export const View = ({
   workspace,
@@ -28,29 +30,29 @@ export const View = ({
   onClose,
   onDelete,
 }: {
-  workspace?: WorkspaceRow
-  isOpen: boolean
-  onClose: () => void
-  onDelete: () => Promise<void>
+  workspace?: WorkspaceRow;
+  isOpen: boolean;
+  onClose: () => void;
+  onDelete: () => Promise<void>;
 }) => {
-  const [confirmName, setConfirmName] = useState('')
+  const [confirmName, setConfirmName] = useState("");
 
   const handleDelete = async () => {
-    if (!workspace) return
+    if (!workspace) return;
 
     if (confirmName !== workspace.name) {
-      toast.error('Workspace name does not match')
-      return
+      toast.error("Workspace name does not match");
+      return;
     }
 
     try {
-      await onDelete()
-      onClose()
-      toast.success('Workspace deleted successfully')
+      await onDelete();
+      onClose();
+      toast.success("Workspace deleted successfully");
     } catch {
-      toast.error('Failed to delete workspace')
+      toast.error("Failed to delete workspace");
     }
-  }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -65,10 +67,10 @@ export const View = ({
 
         <div className="space-y-4 py-4">
           <p className="text-sm text-muted-foreground">
-            Please type{' '}
+            Please type{" "}
             <span className="font-medium text-foreground">
               {workspace?.name}
-            </span>{' '}
+            </span>{" "}
             to confirm.
           </p>
           <Input
@@ -92,27 +94,20 @@ export const View = ({
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
 const useBlock = (workspaceId?: string) => {
-  const zero = useZero()
+  const zero = useZero();
 
-  let query = zero.query.workspace.one()
-  if (workspaceId) {
-    query = query.where('id', '=', workspaceId).one()
-  }
+  const [workspace] = useQuery(queries.workspaces.byId({ id: workspaceId }));
 
-  const [workspace] = useQuery(query)
-
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
   const onDelete = async () => {
-    if (!workspaceId) return
+    if (!workspaceId) return;
 
-    await zero.mutate.workspace.delete({
-      id: workspaceId,
-    })
-  }
+    await zero.mutate(mutators.workspace.delete({ id: workspaceId }));
+  };
 
   return {
     workspace,
@@ -120,15 +115,15 @@ const useBlock = (workspaceId?: string) => {
     onOpen: () => setIsOpen(true),
     onClose: () => setIsOpen(false),
     onDelete,
-  }
-}
+  };
+};
 
-const Block = ({workspaceId}: {workspaceId: string}) => {
-  const fromWorkspaceDelete = WorkspaceDeleteModal.useBlock(workspaceId)
-  return <WorkspaceDeleteModal {...fromWorkspaceDelete} />
-}
+const Block = ({ workspaceId }: { workspaceId: string }) => {
+  const fromWorkspaceDelete = WorkspaceDeleteModal.useBlock(workspaceId);
+  return <WorkspaceDeleteModal {...fromWorkspaceDelete} />;
+};
 
 // @ts-expect-error compound
-export const WorkspaceDeleteModal: Compound = View
-WorkspaceDeleteModal.useBlock = useBlock
-WorkspaceDeleteModal.Block = Block
+export const WorkspaceDeleteModal: Compound = View;
+WorkspaceDeleteModal.useBlock = useBlock;
+WorkspaceDeleteModal.Block = Block;

@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
-import {useQuery} from '@rocicorp/zero/react'
-import {observer} from 'mobx-react-lite'
-import {useContext, useEffect} from 'react'
+import { useQuery } from "@rocicorp/zero/react";
+import { observer } from "mobx-react-lite";
+import { useContext, useEffect } from "react";
 
 import {
   Select,
@@ -10,17 +10,17 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import {useZero} from '@/hooks/use-zero'
-import {RootStoreContext} from '@/lib/stores/root-store'
-import {WorkspaceRow} from '@/schema'
+} from "@/components/ui/select";
+import { RootStoreContext } from "@/lib/stores/root-store";
+import { queries } from "@/lib/zero/queries";
+import type { WorkspaceRow } from "@/schema";
 
-type ExtendedWorkspaceRow = WorkspaceRow
+type ExtendedWorkspaceRow = WorkspaceRow;
 
 type Compound = typeof View & {
-  useBlock: typeof useBlock
-  Block: typeof Block
-}
+  useBlock: typeof useBlock;
+  Block: typeof Block;
+};
 
 export const View = observer(
   ({
@@ -29,10 +29,10 @@ export const View = observer(
     selectedWorkspaceId,
     changeWorkspace,
   }: {
-    workspaces: readonly ExtendedWorkspaceRow[]
-    selectedWorkspace?: ExtendedWorkspaceRow
-    selectedWorkspaceId?: string
-    changeWorkspace: (workspaceId: string) => void
+    workspaces: readonly ExtendedWorkspaceRow[];
+    selectedWorkspace?: ExtendedWorkspaceRow;
+    selectedWorkspaceId?: string;
+    changeWorkspace: (workspaceId: string) => void;
   }) => (
     <Select value={selectedWorkspaceId} onValueChange={changeWorkspace}>
       <SelectTrigger className="h-8 w-full text-sm">
@@ -58,17 +58,17 @@ export const View = observer(
         ))}
       </SelectContent>
     </Select>
-  ),
-)
+  )
+);
 
 const WorkspaceItem = ({
   name,
   slug,
   showSlug,
 }: {
-  name: string
-  slug: string
-  showSlug: boolean
+  name: string;
+  slug: string;
+  showSlug: boolean;
 }) => (
   <div className="flex items-center gap-2">
     <span className="max-w-[160px] truncate text-sm">{name}</span>
@@ -78,45 +78,44 @@ const WorkspaceItem = ({
       </span>
     )}
   </div>
-)
+);
 
 const useBlock = () => {
-  const zero = useZero()
   const {
-    localStore: {selectedWorkspaceId, changeWorkspace},
-  } = useContext(RootStoreContext)
+    localStore: { selectedWorkspaceId, changeWorkspace },
+  } = useContext(RootStoreContext);
 
-  const [workspaces] = useQuery(zero.query.workspace)
+  const [workspaces] = useQuery(queries.workspaces.all());
 
   const selectedWorkspace = workspaces?.find(
-    (workspace) => workspace.id === selectedWorkspaceId,
-  )
+    (workspace) => workspace.id === selectedWorkspaceId
+  );
 
   useEffect(() => {
     if (!selectedWorkspace && workspaces?.[0]?.id) {
       changeWorkspace({
         workspaceId: workspaces[0].id,
         userId: undefined,
-      })
+      });
     }
-  }, [workspaces, selectedWorkspace, changeWorkspace])
+  }, [workspaces, selectedWorkspace, changeWorkspace]);
 
   return {
     workspaces: workspaces || [],
     selectedWorkspace,
     selectedWorkspaceId,
     changeWorkspace: (workspaceId: string) => {
-      changeWorkspace({workspaceId, userId: undefined})
+      changeWorkspace({ workspaceId, userId: undefined });
     },
-  }
-}
+  };
+};
 
 const Block = observer(() => {
-  const fromWorkspaceSelect = useBlock()
-  return <WorkspaceSelect {...fromWorkspaceSelect} />
-})
+  const fromWorkspaceSelect = useBlock();
+  return <WorkspaceSelect {...fromWorkspaceSelect} />;
+});
 
 // @ts-expect-error compound
-export const WorkspaceSelect: Compound = View
-WorkspaceSelect.useBlock = useBlock
-WorkspaceSelect.Block = Block
+export const WorkspaceSelect: Compound = View;
+WorkspaceSelect.useBlock = useBlock;
+WorkspaceSelect.Block = Block;

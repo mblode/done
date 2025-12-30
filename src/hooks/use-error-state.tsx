@@ -1,4 +1,4 @@
-import {ControllerFieldState, useFormState} from 'react-hook-form'
+import { type ControllerFieldState, useFormState } from "react-hook-form";
 
 /*
     setError doesn't "touch" fields. So when we set errors manually after form submission
@@ -6,9 +6,9 @@ import {ControllerFieldState, useFormState} from 'react-hook-form'
 */
 export const useErrorState = (
   fieldState: ControllerFieldState,
-  control: any,
+  control: any
 ) => {
-  const {submitCount} = useFormState({control})
-  const isTouchedOrSubmitted = fieldState.isTouched || submitCount > 0
-  return !!(isTouchedOrSubmitted && fieldState.error)
-}
+  const { submitCount } = useFormState({ control });
+  const isTouchedOrSubmitted = fieldState.isTouched || submitCount > 0;
+  return !!(isTouchedOrSubmitted && fieldState.error);
+};

@@ -1,19 +1,19 @@
-import {addDays, format, startOfDay} from 'date-fns'
-import {MoonIcon, StarIcon} from 'lucide-react'
+import { addDays, format, startOfDay } from "date-fns";
+import { MoonIcon, StarIcon } from "lucide-react";
 
-import {Checkbox} from '@/components/ui/checkbox'
-import {cn} from '@/lib/utils'
+import { Checkbox } from "@/components/ui/checkbox";
+import { cn } from "@/lib/utils";
 
-import {TaskMetadata} from './task-metadata'
-import {Task} from './types'
+import { TaskMetadata } from "./task-metadata";
+import type { Task } from "./types";
 
 type Props = {
-  task: Task
-  checked: boolean
-  onComplete?: (checked: boolean) => void
-  showWhenIcon?: boolean
-  showDashedCheckbox?: boolean
-}
+  task: Task;
+  checked: boolean;
+  onComplete?: (checked: boolean) => void;
+  showWhenIcon?: boolean;
+  showDashedCheckbox?: boolean;
+};
 
 export const TaskItemContent = ({
   task,
@@ -22,12 +22,12 @@ export const TaskItemContent = ({
   showWhenIcon,
   showDashedCheckbox,
 }: Props) => {
-  const tomorrow = addDays(startOfDay(new Date()), 1).getTime()
+  const tomorrow = addDays(startOfDay(new Date()), 1).getTime();
 
   const formatCompletedDate = (timestamp: number) => {
-    const date = new Date(timestamp * 1000) // Convert seconds to milliseconds
-    return format(date, 'd MMM') // Format as "4 Jan"
-  }
+    const date = new Date(timestamp * 1000); // Convert seconds to milliseconds
+    return format(date, "d MMM"); // Format as "4 Jan"
+  };
 
   return (
     <>
@@ -35,7 +35,9 @@ export const TaskItemContent = ({
         <Checkbox
           checked={checked}
           onCheckedChange={(checked) => onComplete?.(checked as boolean)}
-          className={cn('shrink-0', {'ft-checkbox-dashed': showDashedCheckbox})}
+          className={cn("shrink-0", {
+            "ft-checkbox-dashed": showDashedCheckbox,
+          })}
         />
       </div>
 
@@ -48,28 +50,28 @@ export const TaskItemContent = ({
           )}
 
           {showWhenIcon &&
-            task.start === 'started' &&
-            task.start_bucket === 'today' &&
+            task.start === "started" &&
+            task.start_bucket === "today" &&
             !!task.start_date &&
             task.start_date < tomorrow && <StarIcon className="size-4" />}
 
           {showWhenIcon &&
-            task.start === 'started' &&
-            task.start_bucket === 'evening' &&
+            task.start === "started" &&
+            task.start_bucket === "evening" &&
             !!task.start_date &&
             task.start_date < tomorrow && <MoonIcon className="size-4" />}
 
           <span
-            className={cn('truncate text-sm', {
-              'text-muted-foreground': !task?.title,
+            className={cn("truncate text-sm", {
+              "text-muted-foreground": !task?.title,
             })}
           >
-            {task?.title || 'New To-Do'}
+            {task?.title || "New To-Do"}
           </span>
         </div>
 
         <TaskMetadata task={task} />
       </div>
     </>
-  )
-}
+  );
+};

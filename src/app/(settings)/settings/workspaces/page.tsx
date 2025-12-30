@@ -1,43 +1,45 @@
-'use client'
+"use client";
 
-import {useQuery} from '@rocicorp/zero/react'
-import {LogOut, MoreVertical, Plus, Settings2} from 'lucide-react'
-import {useRouter} from 'next/navigation'
-import {toast} from 'sonner'
+import { useQuery } from "@rocicorp/zero/react";
+import { LogOut, MoreVertical, Plus, Settings2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
-import {Button} from '@/components/ui/button'
-import {Card, CardContent} from '@/components/ui/card'
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import {useZero} from '@/hooks/use-zero'
+} from "@/components/ui/dropdown-menu";
+import { useZero } from "@/hooks/use-zero";
+import { mutators } from "@/lib/zero/mutators";
+import { queries } from "@/lib/zero/queries";
 
 export default function Page() {
-  const zero = useZero()
-  const router = useRouter()
+  const zero = useZero();
+  const router = useRouter();
   // const [isLoading, setIsLoading] = useState(true);
 
-  const [workspaces] = useQuery(zero.query.workspace)
+  const [workspaces] = useQuery(queries.workspaces.all());
 
   const handleLeave = async (workspaceId: string) => {
     try {
-      await zero.mutate.workspace.delete({id: workspaceId})
-      toast.success('Left workspace successfully')
+      await zero.mutate(mutators.workspace.delete({ id: workspaceId }));
+      toast.success("Left workspace successfully");
     } catch (_error) {
-      toast.error('Failed to leave workspace')
+      toast.error("Failed to leave workspace");
     }
-  }
+  };
 
   const handleSettings = (workspaceSlug: string) => {
-    router.push(`/${workspaceSlug}/settings/general`)
-  }
+    router.push(`/${workspaceSlug}/settings/general`);
+  };
 
   const handleNewWorkspace = () => {
-    router.push('/workspaces/new')
-  }
+    router.push("/workspaces/new");
+  };
 
   return (
     <div className="container mx-auto py-6">
@@ -131,5 +133,5 @@ export default function Page() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,29 +1,22 @@
-'use client'
+"use client";
 
-import {SortableContext, verticalListSortingStrategy} from '@dnd-kit/sortable'
-import {useQuery} from '@rocicorp/zero/react'
-import {InboxIcon} from 'lucide-react'
-import {observer} from 'mobx-react-lite'
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { useQuery } from "@rocicorp/zero/react";
+import { InboxIcon } from "lucide-react";
+import { observer } from "mobx-react-lite";
 
-import {PageContainer} from '@/components/shared/page-container'
-import {TaskList} from '@/components/task/task-list'
-import {useTaskSelection} from '@/hooks/use-task-selection'
-import {useZero} from '@/hooks/use-zero'
+import { PageContainer } from "@/components/shared/page-container";
+import { TaskList } from "@/components/task/task-list";
+import { useTaskSelection } from "@/hooks/use-task-selection";
+import { queries } from "@/lib/zero/queries";
 
 const Page = observer(() => {
-  const zero = useZero()
+  const [tasks] = useQuery(queries.tasks.inbox());
 
-  const [tasks] = useQuery(
-    zero.query.task
-      .where('start', '=', 'not_started')
-      .where('archived_at', 'IS', null)
-      .where('completed_at', 'IS', null)
-      .orderBy('sort_order', 'asc')
-      .related('tags', (q) => q.orderBy('updated_at', 'desc'))
-      .related('checklistItems', (q) => q.orderBy('sort_order', 'asc')),
-  )
-
-  const {handleClick} = useTaskSelection(tasks.map((task) => task.id))
+  const { handleClick } = useTaskSelection(tasks.map((task) => task.id));
 
   return (
     <PageContainer>
@@ -39,17 +32,17 @@ const Page = observer(() => {
       )}
 
       <SortableContext
-        items={[{id: 'inbox'}]}
+        items={[{ id: "inbox" }]}
         strategy={verticalListSortingStrategy}
       >
         <TaskList
           tasks={tasks}
-          listData={{id: 'inbox'}}
+          listData={{ id: "inbox" }}
           onTaskClick={handleClick}
         />
       </SortableContext>
     </PageContainer>
-  )
-})
+  );
+});
 
-export default Page
+export default Page;

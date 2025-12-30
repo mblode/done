@@ -1,30 +1,22 @@
-'use client'
+"use client";
 
-import {SortableContext, verticalListSortingStrategy} from '@dnd-kit/sortable'
-import {useQuery} from '@rocicorp/zero/react'
-import {ArchiveIcon} from 'lucide-react'
-import {observer} from 'mobx-react-lite'
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { useQuery } from "@rocicorp/zero/react";
+import { ArchiveIcon } from "lucide-react";
+import { observer } from "mobx-react-lite";
 
-import {PageContainer} from '@/components/shared/page-container'
-import {TaskList} from '@/components/task/task-list'
-import {useTaskSelection} from '@/hooks/use-task-selection'
-import {useZero} from '@/hooks/use-zero'
+import { PageContainer } from "@/components/shared/page-container";
+import { TaskList } from "@/components/task/task-list";
+import { useTaskSelection } from "@/hooks/use-task-selection";
+import { queries } from "@/lib/zero/queries";
 
 const Page = observer(() => {
-  const zero = useZero()
+  const [tasks] = useQuery(queries.tasks.someday());
 
-  const [tasks] = useQuery(
-    zero.query.task
-      .where('start', '=', 'someday')
-      .where('start_date', 'IS', null)
-      .where('archived_at', 'IS', null)
-      .where('completed_at', 'IS', null)
-      .orderBy('sort_order', 'asc')
-      .related('tags', (q) => q.orderBy('updated_at', 'desc'))
-      .related('checklistItems', (q) => q.orderBy('sort_order', 'asc')),
-  )
-
-  const {handleClick} = useTaskSelection(tasks.map((task) => task.id))
+  const { handleClick } = useTaskSelection(tasks.map((task) => task.id));
 
   return (
     <PageContainer>
@@ -40,18 +32,18 @@ const Page = observer(() => {
       )}
 
       <SortableContext
-        items={[{id: 'someday'}]}
+        items={[{ id: "someday" }]}
         strategy={verticalListSortingStrategy}
       >
         <TaskList
           tasks={tasks}
           showDashedCheckbox
-          listData={{id: 'someday'}}
+          listData={{ id: "someday" }}
           onTaskClick={handleClick}
         />
       </SortableContext>
     </PageContainer>
-  )
-})
+  );
+});
 
-export default Page
+export default Page;

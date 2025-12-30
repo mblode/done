@@ -1,23 +1,23 @@
-import {useMemo} from 'react'
-import {FieldErrors} from 'react-hook-form'
+import { useMemo } from "react";
+import type { FieldError, FieldErrors } from "react-hook-form";
 
-import {Alert, AlertDescription, AlertTitle} from '../ui/alert'
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 
 type Props = {
-  className?: string
-  errors: FieldErrors<any>
-}
+  className?: string;
+  errors: FieldErrors<Record<string, unknown>>;
+};
 
-const renderError = (key: string, error: any, prefix = '') => {
+const renderError = (key: string, error: FieldError | unknown, prefix = "") => {
   // Handle nested array of errors
   if (Array.isArray(error)) {
     return error.map((e, index) => (
-      <div key={`${prefix}${key}-${index}`}>
+      <div key={`${prefix}${key}-error-${index}`}>
         {Object.entries(e).map(([nestedKey, nestedError]) =>
-          renderError(nestedKey, nestedError, `${prefix}${key}[${index}].`),
+          renderError(nestedKey, nestedError, `${prefix}${key}[${index}].`)
         )}
       </div>
-    ))
+    ));
   }
 
   // Handle single error
@@ -26,14 +26,14 @@ const renderError = (key: string, error: any, prefix = '') => {
       {prefix}
       {key}: {String(error?.message)}
     </li>
-  )
-}
+  );
+};
 
-export const FormErrors = ({className, errors}: Props) => {
-  const errorEntries = useMemo(() => Object.entries(errors), [errors])
+export const FormErrors = ({ className, errors }: Props) => {
+  const errorEntries = useMemo(() => Object.entries(errors), [errors]);
 
   if (errorEntries.length === 0) {
-    return null
+    return null;
   }
 
   return (
@@ -49,5 +49,5 @@ export const FormErrors = ({className, errors}: Props) => {
         </Alert>
       )}
     </div>
-  )
-}
+  );
+};

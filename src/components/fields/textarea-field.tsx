@@ -1,20 +1,20 @@
-import React, {ReactNode} from 'react'
-import {useController} from 'react-hook-form'
+import type { ReactNode } from "react";
+import { type Control, useController } from "react-hook-form";
 
-import {FormControl} from '@/components/ui/form-control'
-import {Textarea, TextareaProps} from '@/components/ui/textarea'
-import {useErrorState} from '@/hooks/use-error-state'
+import { FormControl } from "@/components/ui/form-control";
+import { Textarea, type TextareaProps } from "@/components/ui/textarea";
+import { useErrorState } from "@/hooks/use-error-state";
 
 interface Props extends TextareaProps {
-  name: string
-  label?: ReactNode
-  caption?: ReactNode
-  control: any
-  minRows?: number
-  className?: string
-  captionClassName?: string
-  inputClassName?: string
-  labelClassName?: string
+  name: string;
+  label?: ReactNode;
+  caption?: ReactNode;
+  control: Control<Record<string, unknown>>;
+  minRows?: number;
+  className?: string;
+  captionClassName?: string;
+  inputClassName?: string;
+  labelClassName?: string;
 }
 
 export const TextareaField = ({
@@ -29,8 +29,8 @@ export const TextareaField = ({
   captionClassName,
   ...rest
 }: Props) => {
-  const {field, fieldState} = useController({name, control})
-  const hasError = useErrorState(fieldState, control)
+  const { field, fieldState } = useController({ name, control });
+  const hasError = useErrorState(fieldState, control);
 
   return (
     <FormControl
@@ -51,5 +51,5 @@ export const TextareaField = ({
         className={inputClassName}
       />
     </FormControl>
-  )
-}
+  );
+};

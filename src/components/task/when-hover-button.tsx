@@ -1,29 +1,29 @@
-import {CalendarIcon} from 'lucide-react'
-import {observer} from 'mobx-react-lite'
-import {useCallback, useContext} from 'react'
+import { CalendarIcon } from "lucide-react";
+import { observer } from "mobx-react-lite";
+import { useCallback, useContext } from "react";
 
-import {Button} from '@/components/ui/button'
-import {RootStoreContext} from '@/lib/stores/root-store'
-import {TaskRow} from '@/schema'
+import { Button } from "@/components/ui/button";
+import { RootStoreContext } from "@/lib/stores/root-store";
+import type { TaskRow } from "@/schema";
 
 type Props = {
-  task: TaskRow
-}
+  task: TaskRow;
+};
 
-export const WhenHoverButton = observer(({task}: Props) => {
+export const WhenHoverButton = observer(({ task }: Props) => {
   const {
-    localStore: {setWhenOpen, setWhenState, selectedTaskIds},
-  } = useContext(RootStoreContext)
+    localStore: { setWhenOpen, setWhenState, selectedTaskIds },
+  } = useContext(RootStoreContext);
 
   const handleClick = useCallback(() => {
     if (!selectedTaskIds.has(task.id)) {
-      setWhenState({type: 'single', task, immediate: true})
+      setWhenState({ type: "single", task, immediate: true });
     } else {
-      setWhenState({type: 'multiple'})
+      setWhenState({ type: "multiple" });
     }
 
-    setWhenOpen(true)
-  }, [selectedTaskIds, setWhenOpen, setWhenState, task])
+    setWhenOpen(true);
+  }, [selectedTaskIds, setWhenOpen, setWhenState, task]);
 
   return (
     <Button
@@ -34,5 +34,5 @@ export const WhenHoverButton = observer(({task}: Props) => {
     >
       <CalendarIcon className="size-4" />
     </Button>
-  )
-})
+  );
+});

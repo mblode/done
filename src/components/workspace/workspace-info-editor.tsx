@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import {useQuery} from '@rocicorp/zero/react'
-import {observer} from 'mobx-react-lite'
+import { useQuery } from "@rocicorp/zero/react";
+import { observer } from "mobx-react-lite";
 
 import {
   Card,
@@ -9,16 +9,18 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import {Input} from '@/components/ui/input'
-import {Label} from '@/components/ui/label'
-import {useZero} from '@/hooks/use-zero'
-import {WorkspaceRow} from '@/schema'
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useZero } from "@/hooks/use-zero";
+import { mutators } from "@/lib/zero/mutators";
+import { queries } from "@/lib/zero/queries";
+import type { WorkspaceRow } from "@/schema";
 
 type Compound = typeof View & {
-  Block: typeof Block
-  useWorkspaceSettings: typeof useBlock
-}
+  Block: typeof Block;
+  useWorkspaceSettings: typeof useBlock;
+};
 
 // TODO: NextJS borken compound components https://github.com/vercel/next.js/issues/74585
 const View = observer(
@@ -26,8 +28,8 @@ const View = observer(
     workspace,
     onNameChange,
   }: {
-    workspace?: WorkspaceRow
-    onNameChange: (name: string) => void
+    workspace?: WorkspaceRow;
+    onNameChange: (name: string) => void;
   }) => {
     return (
       <div className="container mx-auto max-w-3xl space-y-8 py-6">
@@ -51,35 +53,30 @@ const View = observer(
           </CardContent>
         </Card>
       </div>
-    )
-  },
-)
+    );
+  }
+);
 
 const useBlock = (workspaceId: string) => {
-  const zero = useZero()
-  const [workspace] = useQuery(
-    zero.query.workspace.where('id', '=', workspaceId).one(),
-  )
+  const zero = useZero();
+  const [workspace] = useQuery(queries.workspaces.byId({ id: workspaceId }));
 
   const onNameChange = async (name: string) => {
-    await zero.mutate.workspace.update({
-      id: workspaceId,
-      name,
-    })
-  }
+    await zero.mutate(mutators.workspace.update({ id: workspaceId, name }));
+  };
 
   return {
     workspace,
     onNameChange,
-  }
-}
+  };
+};
 
-const Block = ({workspaceId}: {workspaceId: string}) => {
-  const fromWorkspaceInfo = useBlock(workspaceId)
-  return <WorkspaceInfoEditor {...fromWorkspaceInfo} />
-}
+const Block = ({ workspaceId }: { workspaceId: string }) => {
+  const fromWorkspaceInfo = useBlock(workspaceId);
+  return <WorkspaceInfoEditor {...fromWorkspaceInfo} />;
+};
 
 // @ts-expect-error compound
-export const WorkspaceInfoEditor: Compound = View
-WorkspaceInfoEditor.useWorkspaceSettings = useBlock
-WorkspaceInfoEditor.Block = Block
+export const WorkspaceInfoEditor: Compound = View;
+WorkspaceInfoEditor.useWorkspaceSettings = useBlock;
+WorkspaceInfoEditor.Block = Block;

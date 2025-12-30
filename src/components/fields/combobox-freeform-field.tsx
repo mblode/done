@@ -1,37 +1,37 @@
-import {UseComboboxStateChange} from 'downshift'
-import React, {ReactNode, useCallback, useState} from 'react'
-import {useController} from 'react-hook-form'
+import type { UseComboboxStateChange } from "downshift";
+import { type ReactNode, useCallback, useState } from "react";
+import { type Control, useController } from "react-hook-form";
 
-import {OnChangeParams} from '@/components/ui/combobox'
-import {FormControl} from '@/components/ui/form-control'
-import {useErrorState} from '@/hooks/use-error-state'
+import type { OnChangeParams } from "@/components/ui/combobox";
+import { FormControl } from "@/components/ui/form-control";
+import { useErrorState } from "@/hooks/use-error-state";
 
-import {Combobox, ComboboxOption} from '../ui/combobox'
+import { Combobox, type ComboboxOption } from "../ui/combobox";
 
 type Props = {
-  name: string
-  label?: ReactNode
-  caption?: ReactNode
-  control: any
-  ariaLabel?: string
-  className?: string
-  placeholder?: string
-  options: ComboboxOption[]
-  isLoading?: boolean
-  value?: ComboboxOption | undefined
-  onChange?: OnChangeParams
-  onInputChange?: OnChangeParams
-  clearable?: boolean
-  searchable?: boolean
-  disabled?: boolean
-  error?: boolean
-  positive?: boolean
-  startOpen?: boolean
-  autoFocus?: boolean
-  maxDropdownHeight?: number
-  labelClassName?: string
-  setValue?: any
-}
+  name: string;
+  label?: ReactNode;
+  caption?: ReactNode;
+  control: Control<Record<string, unknown>>;
+  ariaLabel?: string;
+  className?: string;
+  placeholder?: string;
+  options: ComboboxOption[];
+  isLoading?: boolean;
+  value?: ComboboxOption | undefined;
+  onChange?: OnChangeParams;
+  onInputChange?: OnChangeParams;
+  clearable?: boolean;
+  searchable?: boolean;
+  disabled?: boolean;
+  error?: boolean;
+  positive?: boolean;
+  startOpen?: boolean;
+  autoFocus?: boolean;
+  maxDropdownHeight?: number;
+  labelClassName?: string;
+  setValue?: (value: string) => void;
+};
 
 export const ComboboxFreeformField = ({
   name,
@@ -43,91 +43,91 @@ export const ComboboxFreeformField = ({
   setValue,
   ...props
 }: Props) => {
-  const [items, setItems] = useState<ComboboxOption[]>(options)
-  const {field, fieldState} = useController({name, control})
-  const hasError = useErrorState(fieldState, control)
+  const [items, setItems] = useState<ComboboxOption[]>(options);
+  const { field, fieldState } = useController({ name, control });
+  const hasError = useErrorState(fieldState, control);
 
   const handleInputChange = useCallback(
     (input: UseComboboxStateChange<ComboboxOption>) => {
-      const value = input?.inputValue || ''
-      const lowerCasedInputValue = value.toLowerCase()
+      const value = input?.inputValue || "";
+      const lowerCasedInputValue = value.toLowerCase();
 
       const lowerCasedSelectedValue = String(
-        input.selectedItem?.id,
-      ).toLowerCase()
+        input.selectedItem?.id
+      ).toLowerCase();
 
-      const hasSelected = lowerCasedSelectedValue === lowerCasedInputValue
+      const hasSelected = lowerCasedSelectedValue === lowerCasedInputValue;
 
       const newOptions = (options || []).filter((option) => {
         if (
-          !(option.label || '').toLowerCase().includes(lowerCasedInputValue)
+          !(option.label || "").toLowerCase().includes(lowerCasedInputValue)
         ) {
-          return hasSelected
+          return hasSelected;
         }
 
-        if ((option.label || '').toLowerCase() === value.toLowerCase()) {
-          return false
+        if ((option.label || "").toLowerCase() === value.toLowerCase()) {
+          return false;
         }
 
-        return true
-      })
+        return true;
+      });
 
-      if (!!value) {
+      if (value) {
         newOptions.unshift({
           id: value,
           label: value,
-        })
+        });
       }
 
-      setItems(newOptions)
+      setItems(newOptions);
 
-      setValue(value)
+      setValue(value);
     },
-    [options, setValue],
-  )
+    [options, setValue]
+  );
 
   const handleClear = useCallback(() => {
-    setItems(options)
-  }, [options])
+    setItems(options);
+  }, [options]);
 
   const handleChange = useCallback(
     (input: UseComboboxStateChange<ComboboxOption>) => {
-      field.onBlur()
-      field.onChange(input?.selectedItem ? input.selectedItem.id : null)
-      onChange?.(input)
+      field.onBlur();
+      field.onChange(input?.selectedItem ? input.selectedItem.id : null);
+      onChange?.(input);
 
-      const value = String(input?.selectedItem?.id || '')
+      const value = String(input?.selectedItem?.id || "");
 
-      setValue(value)
+      setValue(value);
     },
-    [field, onChange, setValue],
-  )
+    [field, onChange, setValue]
+  );
 
   const getSelectValue = useCallback(
     (
       fieldValue: string | number,
-      options: ComboboxOption[],
+      options: ComboboxOption[]
     ): ComboboxOption | undefined => {
-      if (!fieldValue) return undefined
+      if (!fieldValue) return undefined;
 
       // value exists in options, render the option itself
       const existingOption = options.find(
-        (option) => option && option.id === fieldValue,
-      )
+        (option) => option && option.id === fieldValue
+      );
 
       if (existingOption) {
-        return existingOption
+        return existingOption;
       }
 
       return {
         id: fieldValue,
         label: String(fieldValue),
-      }
+      };
     },
-    [],
-  )
+    []
+  );
 
-  const value = getSelectValue(field.value, options)
+  const value = getSelectValue(field.value, options);
 
   return (
     <FormControl
@@ -147,5 +147,5 @@ export const ComboboxFreeformField = ({
         onChange={handleChange}
       />
     </FormControl>
-  )
-}
+  );
+};

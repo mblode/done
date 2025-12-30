@@ -1,46 +1,46 @@
-import {useDroppable} from '@dnd-kit/core'
-import {LucideProps} from 'lucide-react'
-import {observer} from 'mobx-react-lite'
-import Link from 'next/link'
-import {ForwardRefExoticComponent, RefAttributes} from 'react'
+import { useDroppable } from "@dnd-kit/core";
+import type { LucideProps } from "lucide-react";
+import { observer } from "mobx-react-lite";
+import Link from "next/link";
+import type { ForwardRefExoticComponent, RefAttributes } from "react";
 
-import {cn} from '@/lib/utils'
+import { cn } from "@/lib/utils";
 
-import {useDndContext} from '../dnd/dnd-context'
-import {SidebarMenuButton, SidebarMenuItem} from '../ui/sidebar'
+import { useDndContext } from "../dnd/dnd-context";
+import { SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
 
 export type AppSidebarItemType = {
-  id: string
-  title: string
-  url: string
+  id: string;
+  title: string;
+  url: string;
   icon: ForwardRefExoticComponent<
-    Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
-  >
-}
+    Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
+  >;
+};
 
 type Props = {
-  item: AppSidebarItemType
-  count: number | undefined
-  isActive?: boolean
-}
+  item: AppSidebarItemType;
+  count: number | undefined;
+  isActive?: boolean;
+};
 
-export const AppSidebarItem = observer(({item, count, isActive}: Props) => {
-  const {isDragging} = useDndContext()
-  const {setNodeRef, isOver} = useDroppable({
+export const AppSidebarItem = observer(({ item, count, isActive }: Props) => {
+  const { isDragging } = useDndContext();
+  const { setNodeRef, isOver } = useDroppable({
     disabled: isActive,
     id: item.id,
     data: {
-      type: 'bucket',
-      listData: {id: item.id},
+      type: "bucket",
+      listData: { id: item.id },
     },
-  })
+  });
 
   return (
     <SidebarMenuItem
       ref={setNodeRef}
-      className={cn('w-full rounded-[8px]', {
-        'ring-2 ring-blue-200': isOver && isDragging,
-        'hover:bg-muted': !isOver,
+      className={cn("w-full rounded-[8px]", {
+        "ring-2 ring-blue-200": isOver && isDragging,
+        "hover:bg-muted": !isOver,
       })}
     >
       <SidebarMenuButton asChild isActive={isActive}>
@@ -59,5 +59,5 @@ export const AppSidebarItem = observer(({item, count, isActive}: Props) => {
         </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
-  )
-})
+  );
+});

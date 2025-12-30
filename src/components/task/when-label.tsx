@@ -1,24 +1,24 @@
-import {useCallback, useContext} from 'react'
+import { useCallback, useContext } from "react";
 
-import {RootStoreContext} from '@/lib/stores/root-store'
-import {TaskRow} from '@/schema'
+import { RootStoreContext } from "@/lib/stores/root-store";
+import type { TaskRow } from "@/schema";
 
-import {Button} from '../ui/button'
-import {getButtonIcon, getButtonText} from './when-dialog'
+import { Button } from "../ui/button";
+import { getButtonIcon, getButtonText } from "./when-dialog";
 
 type Props = {
-  task: TaskRow
-}
+  task: TaskRow;
+};
 
-export const WhenLabel = ({task}: Props) => {
+export const WhenLabel = ({ task }: Props) => {
   const {
-    localStore: {setWhenOpen, setWhenState},
-  } = useContext(RootStoreContext)
+    localStore: { setWhenOpen, setWhenState },
+  } = useContext(RootStoreContext);
 
   const handleClick = useCallback(() => {
-    setWhenState({type: 'single', task})
-    setWhenOpen(true)
-  }, [setWhenOpen, setWhenState, task])
+    setWhenState({ type: "single", task });
+    setWhenOpen(true);
+  }, [setWhenOpen, setWhenState, task]);
 
   return (
     <Button
@@ -29,5 +29,5 @@ export const WhenLabel = ({task}: Props) => {
     >
       {getButtonIcon(task)} {getButtonText(task)}
     </Button>
-  )
-}
+  );
+};

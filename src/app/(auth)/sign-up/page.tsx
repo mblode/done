@@ -1,13 +1,13 @@
-import {Metadata} from 'next'
+import type { Metadata } from "next";
 
-import {AuthNavbar} from '@/components/auth/auth-navbar'
-import {SignUpPage} from '@/components/auth/sign-up-page'
+import { AuthNavbar } from "@/components/auth/auth-navbar";
+import { SignUpPage } from "@/components/auth/sign-up-page";
 
 export const metadata: Metadata = {
-  title: 'Sign Up',
+  title: "Sign Up",
   description:
-    'Join Done to create custom forms, collect responses, and analyze feedback. Start building better connections with your audience today.',
-}
+    "Join Done to create custom forms, collect responses, and analyze feedback. Start building better connections with your audience today.",
+};
 
 export default async function Page() {
   return (
@@ -20,5 +20,5 @@ export default async function Page() {
         <SignUpPage />
       </div>
     </>
-  )
+  );
 }

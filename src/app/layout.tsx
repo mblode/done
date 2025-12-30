@@ -1,26 +1,26 @@
-'use client'
-import './globals.css'
+"use client";
+import "./globals.css";
 
-import {ZeroProvider} from '@rocicorp/zero/react'
-import {Inter} from 'next/font/google'
-import {ReactNode} from 'react'
+import { ZeroProvider } from "@rocicorp/zero/react";
+import { Inter } from "next/font/google";
+import type { ReactNode } from "react";
 
-import {Toaster} from '@/components/ui/sonner'
-import {RootStoreProvider} from '@/lib/stores/root-store-provider'
-import {createZero} from '@/lib/zero-setup'
+import { Toaster } from "@/components/ui/sonner";
+import { RootStoreProvider } from "@/lib/stores/root-store-provider";
+import { createZero } from "@/lib/zero-setup";
 
 const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-})
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
-const zero = createZero()
+const zero = createZero();
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: ReactNode
+  children: ReactNode;
 }>) {
   return (
     <html
@@ -37,5 +37,5 @@ export default function RootLayout({
         <Toaster position="bottom-right" duration={2000} closeButton />
       </body>
     </html>
-  )
+  );
 }

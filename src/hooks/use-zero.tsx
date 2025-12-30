@@ -1,4 +1,5 @@
-import {createUseZero} from '@rocicorp/zero/react'
+import { useZero as useZeroBase } from "@rocicorp/zero/react";
 
-import {Schema} from '@/schema'
-export const useZero = createUseZero<Schema>()
+import type { Schema, ZeroContext } from "@/schema";
+
+export const useZero = () => useZeroBase<Schema, undefined, ZeroContext>();

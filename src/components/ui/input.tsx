@@ -1,18 +1,18 @@
-import {CircleXIcon} from 'lucide-react'
-import * as React from 'react'
+import { CircleXIcon } from "lucide-react";
+import * as React from "react";
 
-import {cn} from '@/lib/utils'
+import { cn } from "@/lib/utils";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
-  hasError?: boolean
-  clearable?: boolean
-  onClear?: () => void
-  clearClassName?: string
-  leftAddon?: React.ReactNode | null
-  rightAddon?: React.ReactNode | null
-  leftControl?: React.ReactNode | null
-  rightControl?: React.ReactNode | null
+  hasError?: boolean;
+  clearable?: boolean;
+  onClear?: () => void;
+  clearClassName?: string;
+  leftAddon?: React.ReactNode | null;
+  rightAddon?: React.ReactNode | null;
+  leftControl?: React.ReactNode | null;
+  rightControl?: React.ReactNode | null;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -29,12 +29,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       rightControl,
       ...props
     },
-    ref,
+    ref
   ) => {
     return (
       <label
-        className={cn('relative w-full', {
-          'input-group': !!leftAddon || !!rightAddon,
+        className={cn("relative w-full", {
+          "input-group": !!leftAddon || !!rightAddon,
         })}
       >
         {leftAddon && (
@@ -50,13 +50,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <div className="w-full">
           <input
             className={cn(
-              'input hover:border-input-hover placeholder:text-placeholder-foreground flex h-[52px] w-full rounded-2xl border-[1.5px] border-input bg-card px-4 py-[14px] font-sans text-base font-normal leading-snug text-foreground ring-offset-background transition-colors focus:border-ring focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+              "input hover:border-input-hover placeholder:text-placeholder-foreground flex h-[52px] w-full rounded-2xl border-[1.5px] border-input bg-card px-4 py-[14px] font-sans text-base font-normal leading-snug text-foreground ring-offset-background transition-colors focus:border-ring focus:outline-none disabled:cursor-not-allowed disabled:opacity-50",
               {
-                'border-destructive-foreground': hasError,
-                'pr-9': clearable && !!props.value,
-                'hover:!border-input focus:!border-input': props.readOnly,
+                "border-destructive-foreground": hasError,
+                "pr-9": clearable && !!props.value,
+                "hover:!border-input focus:!border-input": props.readOnly,
               },
-              className,
+              className
             )}
             ref={ref}
             {...props}
@@ -67,8 +67,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               <button
                 tabIndex={-1}
                 className={cn(
-                  'flex h-[52px] items-center justify-center !p-0 text-muted-foreground',
-                  clearClassName,
+                  "flex h-[52px] items-center justify-center !p-0 text-muted-foreground",
+                  clearClassName
                 )}
                 type="button"
                 onClick={() => onClear?.()}
@@ -92,9 +92,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
         {rightAddon && <span className="cursor-pointer">{rightAddon}</span>}
       </label>
-    )
-  },
-)
-Input.displayName = 'Input'
+    );
+  }
+);
+Input.displayName = "Input";
 
-export {Input}
+export { Input };

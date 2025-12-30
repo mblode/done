@@ -1,33 +1,33 @@
-'use client'
+"use client";
 // import { AppleIcon, FacebookIcon, GoogleIcon } from "lucide-react";
-import Link from 'next/link'
-import {useSearchParams} from 'next/navigation'
-import queryString from 'query-string'
-import {useState} from 'react'
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import queryString from "query-string";
+import { useState } from "react";
 
-import {AuthNavbar} from '@/components/auth/auth-navbar'
-import {SignInForm} from '@/components/auth/sign-in-form'
-import {ButtonDiv} from '@/components/ui/button'
+import { AuthNavbar } from "@/components/auth/auth-navbar";
+import { SignInForm } from "@/components/auth/sign-in-form";
+import { ButtonDiv } from "@/components/ui/button";
 
-type Provider = 'google' | 'apple' | 'facebook'
+type Provider = "google" | "apple" | "facebook";
 
 const getReturnTo = (returnTo?: string | null): string => {
   if (!returnTo) {
-    return `/sites`
+    return `/sites`;
   }
 
-  return returnTo
-}
+  return returnTo;
+};
 
 export const SignInPage = () => {
-  const [_loading, _setLoading] = useState<Provider | undefined>()
-  const searchParams = useSearchParams()
+  const [_loading, _setLoading] = useState<Provider | undefined>();
+  const searchParams = useSearchParams();
 
-  const returnTo = searchParams?.get('returnTo')
+  const returnTo = searchParams?.get("returnTo");
 
   const queryParams = queryString.stringify({
     returnTo: getReturnTo(returnTo),
-  })
+  });
 
   // const handleOAuthSignIn = useCallback(
   //   async (provider: Provider) => {
@@ -133,5 +133,5 @@ export const SignInPage = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};

@@ -1,20 +1,20 @@
 import {
-  ColumnDef,
-  ColumnFiltersState,
+  type ColumnDef,
+  type ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  SortingState,
+  type SortingState,
   useReactTable,
-  VisibilityState,
-} from '@tanstack/react-table'
-import {ArrowDownIcon, ArrowUpIcon} from 'lucide-react'
-import {useRouter} from 'next/navigation'
-import * as React from 'react'
+  type VisibilityState,
+} from "@tanstack/react-table";
+import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import * as React from "react";
 
-import {Button} from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -22,17 +22,17 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import {cn} from '@/lib/utils'
+} from "@/components/ui/table";
+import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-  defaultColumnVisibility?: VisibilityState
-  children?: React.ReactNode
-  baseUrl?: string
-  hideFooter?: boolean
-  onClick?: (item: any) => void
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  defaultColumnVisibility?: VisibilityState;
+  children?: React.ReactNode;
+  baseUrl?: string;
+  hideFooter?: boolean;
+  onClick?: (item: any) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -44,14 +44,14 @@ export function DataTable<TData, TValue>({
   defaultColumnVisibility,
   onClick,
 }: DataTableProps<TData, TValue>) {
-  const router = useRouter()
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const router = useRouter();
+  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
-  )
+    []
+  );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>(defaultColumnVisibility || {})
-  const [rowSelection, setRowSelection] = React.useState({})
+    React.useState<VisibilityState>(defaultColumnVisibility || {});
+  const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
     data,
@@ -71,7 +71,7 @@ export function DataTable<TData, TValue>({
       rowSelection,
     },
     manualPagination: hideFooter,
-  })
+  });
 
   return (
     <div>
@@ -89,16 +89,16 @@ export function DataTable<TData, TValue>({
                         {header.isPlaceholder ? null : (
                           <div
                             className={cn(
-                              'flex items-center space-x-2',
+                              "flex items-center space-x-2",
                               header.column.getCanSort()
-                                ? 'cursor-pointer select-none'
-                                : '',
+                                ? "cursor-pointer select-none"
+                                : ""
                             )}
                             onClick={header.column.getToggleSortingHandler()}
                           >
                             {flexRender(
                               header.column.columnDef.header,
-                              header.getContext(),
+                              header.getContext()
                             )}
                             {{
                               asc: <ArrowUpIcon className="size-4" />,
@@ -107,7 +107,7 @@ export function DataTable<TData, TValue>({
                           </div>
                         )}
                       </TableHead>
-                    )
+                    );
                   })}
                 </TableRow>
               ))}
@@ -117,22 +117,22 @@ export function DataTable<TData, TValue>({
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow
-                    data-state={row.getIsSelected() && 'selected'}
+                    data-state={row.getIsSelected() && "selected"}
                     onClick={() => {
                       if (onClick) {
-                        onClick?.(row.original as any)
+                        onClick?.(row.original as any);
                       } else if (baseUrl) {
-                        router.push(`${baseUrl}/${(row.original as any).id}`)
+                        router.push(`${baseUrl}/${(row.original as any).id}`);
                       }
                     }}
                     key={row.id}
-                    className={cn({'cursor-pointer': !!baseUrl || !!onClick})}
+                    className={cn({ "cursor-pointer": !!baseUrl || !!onClick })}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,
-                          cell.getContext(),
+                          cell.getContext()
                         )}
                       </TableCell>
                     ))}
@@ -181,5 +181,5 @@ export function DataTable<TData, TValue>({
         </div>
       )}
     </div>
-  )
+  );
 }

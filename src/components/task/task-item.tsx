@@ -1,38 +1,38 @@
-import {useSortable} from '@dnd-kit/sortable'
-import {CSS} from '@dnd-kit/utilities'
-import {observer} from 'mobx-react-lite'
-import {MouseEvent, useContext} from 'react'
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { observer } from "mobx-react-lite";
+import { type MouseEvent, useContext } from "react";
 
-import {RootStoreContext} from '@/lib/stores/root-store'
-import {cn} from '@/lib/utils'
+import { RootStoreContext } from "@/lib/stores/root-store";
+import { cn } from "@/lib/utils";
 
-import {DndListData, useDndContext} from '../dnd/dnd-context'
+import { type DndListData, useDndContext } from "../dnd/dnd-context";
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuTrigger,
-} from '../ui/context-menu'
-import {TaskItemContent} from './task-item-content'
-import {Task} from './types'
-import {WhenHoverButton} from './when-hover-button'
+} from "../ui/context-menu";
+import { TaskItemContent } from "./task-item-content";
+import type { Task } from "./types";
+import { WhenHoverButton } from "./when-hover-button";
 
 type Props = {
-  task: Task
-  isDragging?: boolean
-  isSelected?: boolean
-  showWhenIcon?: boolean
-  showDashedCheckbox?: boolean
-  onComplete?: (checked: boolean) => void
-  onArchive?: (archived: boolean) => void
-  checked: boolean
-  className?: string
-  noRadiusTop?: boolean
-  noRadiusBottom?: boolean
-  listData: DndListData
-  isOverlay?: boolean
-  onClick: (e: MouseEvent<HTMLDivElement>) => void
-}
+  task: Task;
+  isDragging?: boolean;
+  isSelected?: boolean;
+  showWhenIcon?: boolean;
+  showDashedCheckbox?: boolean;
+  onComplete?: (checked: boolean) => void;
+  onArchive?: (archived: boolean) => void;
+  checked: boolean;
+  className?: string;
+  noRadiusTop?: boolean;
+  noRadiusBottom?: boolean;
+  listData: DndListData;
+  isOverlay?: boolean;
+  onClick: (e: MouseEvent<HTMLDivElement>) => void;
+};
 
 export const TaskItem = observer(
   ({
@@ -52,10 +52,10 @@ export const TaskItem = observer(
     onClick,
   }: Props) => {
     const {
-      localStore: {setSelectedTaskIds, setOpenTaskId},
-    } = useContext(RootStoreContext)
+      localStore: { setSelectedTaskIds, setOpenTaskId },
+    } = useContext(RootStoreContext);
 
-    const {isDragging: isContextDragging} = useDndContext()
+    const { isDragging: isContextDragging } = useDndContext();
 
     const {
       attributes,
@@ -67,26 +67,26 @@ export const TaskItem = observer(
     } = useSortable({
       id: task.id,
       data: {
-        type: 'task',
+        type: "task",
         task,
         listData,
       },
-    })
+    });
 
-    const isDragging = isOverlayDragging || isSortableDragging
+    const isDragging = isOverlayDragging || isSortableDragging;
 
-    const isDraggingMultiple = isContextDragging && isSelected && !isDragging
+    const isDraggingMultiple = isContextDragging && isSelected && !isDragging;
 
     const style = {
       transform: CSS.Transform.toString(transform),
       transition,
-    }
+    };
 
     const handleDoubleClick = (e: MouseEvent<HTMLDivElement>) => {
-      e.stopPropagation()
-      setSelectedTaskIds([])
-      setOpenTaskId(task.id)
-    }
+      e.stopPropagation();
+      setSelectedTaskIds([]);
+      setOpenTaskId(task.id);
+    };
 
     return (
       <ContextMenu>
@@ -102,21 +102,21 @@ export const TaskItem = observer(
               {...attributes}
               {...listeners}
               className={cn(
-                'group relative flex items-center gap-2 rounded-lg px-2 py-1 outline-0 transition-all duration-200 ease-in-out',
+                "group relative flex items-center gap-2 rounded-lg px-2 py-1 outline-0 transition-all duration-200 ease-in-out",
                 {
-                  'bg-[#CBE2FF] dark:bg-[#244174]':
+                  "bg-[#CBE2FF] dark:bg-[#244174]":
                     !isDragging &&
                     !isDraggingMultiple &&
                     (isSelected || isOverlay),
-                  'shadow-lg': isOverlay,
-                  '!rounded-t-none':
+                  "shadow-lg": isOverlay,
+                  "!rounded-t-none":
                     noRadiusTop && !isDragging && !isDraggingMultiple,
-                  '!rounded-b-none':
+                  "!rounded-b-none":
                     noRadiusBottom && !isDragging && !isDraggingMultiple,
-                  'overflow-hidden': isDragging || isDraggingMultiple,
-                  'opacity-50': isDraggingMultiple,
+                  "overflow-hidden": isDragging || isDraggingMultiple,
+                  "opacity-50": isDraggingMultiple,
                 },
-                className,
+                className
               )}
               onClick={onClick}
               onDoubleClick={handleDoubleClick}
@@ -142,14 +142,14 @@ export const TaskItem = observer(
 
         <ContextMenuContent>
           <ContextMenuItem onClick={() => onComplete?.(!checked)}>
-            {checked ? 'Mark as incomplete' : 'Mark as complete'}
+            {checked ? "Mark as incomplete" : "Mark as complete"}
           </ContextMenuItem>
 
           <ContextMenuItem onClick={() => onArchive?.(!task?.archived_at)}>
-            {task?.archived_at ? 'Put back' : 'Delete To-Do'}
+            {task?.archived_at ? "Put back" : "Delete To-Do"}
           </ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>
-    )
-  },
-)
+    );
+  }
+);

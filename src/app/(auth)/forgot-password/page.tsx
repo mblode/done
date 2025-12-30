@@ -1,15 +1,15 @@
-import {ArrowRightIcon} from 'lucide-react'
-import {Metadata} from 'next'
-import Link from 'next/link'
+import { ArrowRightIcon } from "lucide-react";
+import type { Metadata } from "next";
+import Link from "next/link";
 
-import {AuthNavbar} from '@/components/auth/auth-navbar'
-import {ForgotPasswordForm} from '@/components/auth/forgot-password-form'
+import { AuthNavbar } from "@/components/auth/auth-navbar";
+import { ForgotPasswordForm } from "@/components/auth/forgot-password-form";
 
 export const metadata: Metadata = {
-  title: 'Forgot Password',
+  title: "Forgot Password",
   description:
-    'Recover access to your Done account. Follow our secure password reset process to regain access to your forms and responses.',
-}
+    "Recover access to your Done account. Follow our secure password reset process to regain access to your forms and responses.",
+};
 
 export default async function Page() {
   return (
@@ -22,7 +22,7 @@ export default async function Page() {
         <ForgotPasswordForm />
 
         <p className="mb-4 mt-6 flex flex-wrap items-center justify-center text-center text-sm">
-          Already have an account?{' '}
+          Already have an account?{" "}
           <Link
             href="/sign-in"
             className="group flex items-center font-medium text-primary"
@@ -37,5 +37,5 @@ export default async function Page() {
         </p>
       </div>
     </>
-  )
+  );
 }

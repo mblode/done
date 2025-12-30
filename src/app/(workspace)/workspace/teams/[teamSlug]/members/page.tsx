@@ -1,27 +1,27 @@
-'use client'
+"use client";
 
-import {useQuery} from '@rocicorp/zero/react'
-import {ChevronLeft, MoreHorizontal, Plus, Search} from 'lucide-react'
-import Link from 'next/link'
-import {useMemo, useState} from 'react'
-import {toast} from 'sonner'
+import { useQuery } from "@rocicorp/zero/react";
+import { ChevronLeft, MoreHorizontal, Plus, Search } from "lucide-react";
+import Link from "next/link";
+import { useMemo, useState } from "react";
+import { toast } from "sonner";
 
-import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar'
-import {Button} from '@/components/ui/button'
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import {Input} from '@/components/ui/input'
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -29,41 +29,48 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import {useZero} from '@/hooks/use-zero'
+} from "@/components/ui/table";
+import { useZero } from "@/hooks/use-zero";
+import { mutators } from "@/lib/zero/mutators";
+import { queries } from "@/lib/zero/queries";
 
 type Props = {
-  params: {workspaceSlug: string; teamSlug: string}
-}
+  params: { workspaceSlug: string; teamSlug: string };
+};
 
-export default function Page({params: {}}: Props) {
-  const zero = useZero()
+export default function Page({ params: { teamSlug } }: Props) {
+  const zero = useZero();
+  const [team] = useQuery(queries.teams.bySlug({ slug: teamSlug }));
   const [members] = useQuery(
-    zero.query.team_member.related('user', (q) => q.one()),
-  )
-  const [search, setSearch] = useState('')
-  const [filter, setFilter] = useState('All')
+    queries.teamMembers.withUser({ teamId: team?.id })
+  );
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState<"All" | "Admin" | "Member">("All");
 
   const filteredMembers = useMemo(() => {
-    return members.filter(
-      (member) =>
-        (member?.user?.name || '')
-          .toLowerCase()
-          .includes(search.toLowerCase()) ||
-        (member?.user?.email || '')
-          .toLowerCase()
-          .includes(search.toLowerCase()),
-    )
-  }, [members, search])
+    const normalizedSearch = search.trim().toLowerCase();
+    return members.filter((member) => {
+      const name =
+        member.user?.profile?.name || member.user?.username || "Unknown";
+      const email = member.user?.email || "";
+      const matchesSearch =
+        name.toLowerCase().includes(normalizedSearch) ||
+        email.toLowerCase().includes(normalizedSearch);
+      const matchesRole =
+        filter === "All" || member.role.toLowerCase() === filter.toLowerCase();
+
+      return matchesSearch && matchesRole;
+    });
+  }, [members, search, filter]);
 
   const handleLeave = async (memberId: string) => {
     try {
-      await zero.mutate.team_member.delete({id: memberId})
-      toast.success('Member removed successfully')
+      await zero.mutate(mutators.team_member.delete({ id: memberId }));
+      toast.success("Member removed successfully");
     } catch (_error) {
-      toast.error('Failed to remove member')
+      toast.error("Failed to remove member");
     }
-  }
+  };
 
   return (
     <div className="container mx-auto space-y-6 py-6">
@@ -94,7 +101,10 @@ export default function Page({params: {}}: Props) {
               className="pl-9"
             />
           </div>
-          <Select value={filter} onValueChange={setFilter}>
+          <Select
+            value={filter}
+            onValueChange={(value) => setFilter(value as typeof filter)}
+          >
             <SelectTrigger className="w-32">
               <SelectValue>{filter}</SelectValue>
             </SelectTrigger>
@@ -123,52 +133,60 @@ export default function Page({params: {}}: Props) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {filteredMembers.map((member) => (
-            <TableRow key={member.id}>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <Avatar>
-                    <AvatarImage src={member.avatar} />
-                    <AvatarFallback>
-                      {member.name
-                        .split(' ')
-                        .map((n) => n[0])
-                        .join('')}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <div className="font-medium">{member.name}</div>
-                    <div className="text-sm text-muted-foreground">
-                      {member.username}
+          {filteredMembers.map((member) => {
+            const displayName =
+              member.user?.profile?.name || member.user?.username || "Unknown";
+            const initials = displayName
+              .trim()
+              .split(" ")
+              .filter(Boolean)
+              .map((word) => word[0]?.toUpperCase() ?? "")
+              .join("");
+
+            return (
+              <TableRow key={member.id}>
+                <TableCell>
+                  <div className="flex items-center gap-3">
+                    <Avatar>
+                      <AvatarImage
+                        src={member.user?.profile?.avatar ?? undefined}
+                      />
+                      <AvatarFallback>{initials || "?"}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <div className="font-medium">{displayName}</div>
+                      <div className="text-sm text-muted-foreground">
+                        {member.user?.username || ""}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </TableCell>
-              <TableCell className="text-muted-foreground">
-                {member.user.email}
-              </TableCell>
-              <TableCell>{member.role}</TableCell>
-              <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm">
-                      <MoreHorizontal className="size-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem
-                      onClick={() => handleLeave(member.id)}
-                      className="text-red-600"
-                    >
-                      Leave team...
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
-            </TableRow>
-          ))}
+                </TableCell>
+                <TableCell className="text-muted-foreground">
+                  {member.user?.email || ""}
+                </TableCell>
+                <TableCell>{member.role}</TableCell>
+                <TableCell>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="sm">
+                        <MoreHorizontal className="size-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem
+                        onClick={() => handleLeave(member.id)}
+                        className="text-red-600"
+                      >
+                        Leave team...
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }

@@ -1,20 +1,20 @@
-'use client'
+"use client";
 
-import * as React from 'react'
+import * as React from "react";
 
-import {Input} from './input'
-import {Label} from './label'
-import {Prompt} from './prompt'
+import { Input } from "./input";
+import { Label } from "./label";
+import { Prompt } from "./prompt";
 
 export interface RenderPromptProps {
-  open: boolean
-  title: string
-  description: string
-  verificationText?: string
-  cancelText?: string
-  confirmText?: string
-  onConfirm: () => void
-  onCancel: () => void
+  open: boolean;
+  title: string;
+  description: string;
+  verificationText?: string;
+  cancelText?: string;
+  confirmText?: string;
+  onConfirm: () => void;
+  onCancel: () => void;
 }
 
 export const RenderPrompt = ({
@@ -37,11 +37,11 @@ export const RenderPrompt = ({
   /**
    * The label for the Cancel button.
    */
-  cancelText = 'Cancel',
+  cancelText = "Cancel",
   /**
    * Label for the Confirm button.
    */
-  confirmText = 'Confirm',
+  confirmText = "Confirm",
   /**
    * @ignore
    */
@@ -51,45 +51,45 @@ export const RenderPrompt = ({
    */
   onCancel,
 }: RenderPromptProps) => {
-  const [userInput, setUserInput] = React.useState('')
+  const [userInput, setUserInput] = React.useState("");
 
   const handleUserInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUserInput(event.target.value)
-  }
+    setUserInput(event.target.value);
+  };
 
   const validInput = React.useMemo(() => {
     if (!verificationText) {
-      return true
+      return true;
     }
 
-    return userInput === verificationText
-  }, [userInput, verificationText])
+    return userInput === verificationText;
+  }, [userInput, verificationText]);
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+    event.preventDefault();
 
     if (!verificationText) {
-      return
+      return;
     }
 
     if (validInput) {
-      onConfirm()
+      onConfirm();
     }
-  }
+  };
 
   React.useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && open) {
-        onCancel()
+      if (event.key === "Escape" && open) {
+        onCancel();
       }
-    }
+    };
 
-    document.addEventListener('keydown', handleEscape)
+    document.addEventListener("keydown", handleEscape);
 
     return () => {
-      document.removeEventListener('keydown', handleEscape)
-    }
-  }, [onCancel, open])
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [onCancel, open]);
 
   return (
     <Prompt open={open}>
@@ -103,7 +103,7 @@ export const RenderPrompt = ({
           {verificationText && (
             <div className="mb-4 mt-6 flex flex-col gap-y-4">
               <Label htmlFor="verificationText">
-                Please type{' '}
+                Please type{" "}
                 <span className="font-bold">{verificationText}</span> to
                 confirm.
               </Label>
@@ -122,7 +122,7 @@ export const RenderPrompt = ({
             <Prompt.Cancel onClick={onCancel}>{cancelText}</Prompt.Cancel>
             <Prompt.Action
               disabled={!validInput}
-              type={verificationText ? 'submit' : 'button'}
+              type={verificationText ? "submit" : "button"}
               onClick={verificationText ? undefined : onConfirm}
             >
               {confirmText}
@@ -131,6 +131,6 @@ export const RenderPrompt = ({
         </form>
       </Prompt.Content>
     </Prompt>
-  )
-}
-RenderPrompt.displayName = 'RenderPrompt'
+  );
+};
+RenderPrompt.displayName = "RenderPrompt";

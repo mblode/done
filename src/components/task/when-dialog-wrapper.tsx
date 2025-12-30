@@ -1,23 +1,35 @@
-import {observer} from 'mobx-react-lite'
-import {useContext} from 'react'
+import { observer } from "mobx-react-lite";
+import { useContext } from "react";
 
-import {RootStoreContext} from '@/lib/stores/root-store'
+import { RootStoreContext } from "@/lib/stores/root-store";
 
-import {WhenDialog} from './when-dialog'
+import { WhenDialog } from "./when-dialog";
 
 export const WhenDialogWrapper = observer(() => {
   const {
-    localStore: {selectedTaskIds, whenOpen, setWhenOpen, whenState},
-  } = useContext(RootStoreContext)
+    localStore: { selectedTaskIds, whenOpen, setWhenOpen, whenState },
+  } = useContext(RootStoreContext);
+
+  if (whenState.type === "single") {
+    if (!whenState.task) return null;
+
+    return (
+      <WhenDialog
+        type="single"
+        task={whenState.task}
+        immediate={whenState.immediate}
+        open={whenOpen}
+        setOpen={setWhenOpen}
+      />
+    );
+  }
 
   return (
     <WhenDialog
-      type={whenState.type as any}
-      taskIds={whenState.type === 'multiple' ? selectedTaskIds : []}
-      task={whenState.task}
-      immediate={whenState.immediate}
+      type="multiple"
+      taskIds={Array.from(selectedTaskIds)}
       open={whenOpen}
       setOpen={setWhenOpen}
     />
-  )
-})
+  );
+});

@@ -10,33 +10,20 @@
               "related": {
                 "system": "permissions",
                 "correlation": {
-                  "parentField": [
-                    "id"
-                  ],
-                  "childField": [
-                    "workspace_id"
-                  ]
+                  "parentField": ["id"],
+                  "childField": ["workspace_id"]
                 },
                 "subquery": {
                   "table": "workspace_member",
                   "alias": "zsubq_sessionMembers",
-                  "orderBy": [
-                    [
-                      "id",
-                      "asc"
-                    ]
-                  ],
+                  "orderBy": [["id", "asc"]],
                   "where": {
                     "type": "correlatedSubquery",
                     "related": {
                       "system": "permissions",
                       "correlation": {
-                        "parentField": [
-                          "user_id"
-                        ],
-                        "childField": [
-                          "user_id"
-                        ]
+                        "parentField": ["user_id"],
+                        "childField": ["user_id"]
                       },
                       "subquery": {
                         "table": "session",
@@ -54,16 +41,7 @@
                           },
                           "op": "="
                         },
-                        "orderBy": [
-                          [
-                            "id",
-                            "asc"
-                          ],
-                          [
-                            "user_id",
-                            "asc"
-                          ]
-                        ]
+                        "orderBy": [["id", "asc"], ["user_id", "asc"]]
                       }
                     },
                     "op": "EXISTS"
@@ -101,33 +79,20 @@
                 "related": {
                   "system": "permissions",
                   "correlation": {
-                    "parentField": [
-                      "id"
-                    ],
-                    "childField": [
-                      "workspace_id"
-                    ]
+                    "parentField": ["id"],
+                    "childField": ["workspace_id"]
                   },
                   "subquery": {
                     "table": "workspace_member",
                     "alias": "zsubq_sessionMembers",
-                    "orderBy": [
-                      [
-                        "id",
-                        "asc"
-                      ]
-                    ],
+                    "orderBy": [["id", "asc"]],
                     "where": {
                       "type": "correlatedSubquery",
                       "related": {
                         "system": "permissions",
                         "correlation": {
-                          "parentField": [
-                            "user_id"
-                          ],
-                          "childField": [
-                            "user_id"
-                          ]
+                          "parentField": ["user_id"],
+                          "childField": ["user_id"]
                         },
                         "subquery": {
                           "table": "session",
@@ -145,16 +110,7 @@
                             },
                             "op": "="
                           },
-                          "orderBy": [
-                            [
-                              "id",
-                              "asc"
-                            ],
-                            [
-                              "user_id",
-                              "asc"
-                            ]
-                          ]
+                          "orderBy": [["id", "asc"], ["user_id", "asc"]]
                         }
                       },
                       "op": "EXISTS"
@@ -173,33 +129,20 @@
                 "related": {
                   "system": "permissions",
                   "correlation": {
-                    "parentField": [
-                      "id"
-                    ],
-                    "childField": [
-                      "workspace_id"
-                    ]
+                    "parentField": ["id"],
+                    "childField": ["workspace_id"]
                   },
                   "subquery": {
                     "table": "workspace_member",
                     "alias": "zsubq_sessionMembers",
-                    "orderBy": [
-                      [
-                        "id",
-                        "asc"
-                      ]
-                    ],
+                    "orderBy": [["id", "asc"]],
                     "where": {
                       "type": "correlatedSubquery",
                       "related": {
                         "system": "permissions",
                         "correlation": {
-                          "parentField": [
-                            "user_id"
-                          ],
-                          "childField": [
-                            "user_id"
-                          ]
+                          "parentField": ["user_id"],
+                          "childField": ["user_id"]
                         },
                         "subquery": {
                           "table": "session",
@@ -217,16 +160,7 @@
                             },
                             "op": "="
                           },
-                          "orderBy": [
-                            [
-                              "id",
-                              "asc"
-                            ],
-                            [
-                              "user_id",
-                              "asc"
-                            ]
-                          ]
+                          "orderBy": [["id", "asc"], ["user_id", "asc"]]
                         }
                       },
                       "op": "EXISTS"
@@ -246,33 +180,20 @@
               "related": {
                 "system": "permissions",
                 "correlation": {
-                  "parentField": [
-                    "id"
-                  ],
-                  "childField": [
-                    "workspace_id"
-                  ]
+                  "parentField": ["id"],
+                  "childField": ["workspace_id"]
                 },
                 "subquery": {
                   "table": "workspace_member",
                   "alias": "zsubq_sessionMembers",
-                  "orderBy": [
-                    [
-                      "id",
-                      "asc"
-                    ]
-                  ],
+                  "orderBy": [["id", "asc"]],
                   "where": {
                     "type": "correlatedSubquery",
                     "related": {
                       "system": "permissions",
                       "correlation": {
-                        "parentField": [
-                          "user_id"
-                        ],
-                        "childField": [
-                          "user_id"
-                        ]
+                        "parentField": ["user_id"],
+                        "childField": ["user_id"]
                       },
                       "subquery": {
                         "table": "session",
@@ -290,16 +211,7 @@
                           },
                           "op": "="
                         },
-                        "orderBy": [
-                          [
-                            "id",
-                            "asc"
-                          ],
-                          [
-                            "user_id",
-                            "asc"
-                          ]
-                        ]
+                        "orderBy": [["id", "asc"], ["user_id", "asc"]]
                       }
                     },
                     "op": "EXISTS"
@@ -338,12 +250,8 @@
                   "related": {
                     "system": "permissions",
                     "correlation": {
-                      "parentField": [
-                        "id"
-                      ],
-                      "childField": [
-                        "user_id"
-                      ]
+                      "parentField": ["id"],
+                      "childField": ["user_id"]
                     },
                     "subquery": {
                       "table": "session",
@@ -361,16 +269,7 @@
                         },
                         "op": "="
                       },
-                      "orderBy": [
-                        [
-                          "id",
-                          "asc"
-                        ],
-                        [
-                          "user_id",
-                          "asc"
-                        ]
-                      ]
+                      "orderBy": [["id", "asc"], ["user_id", "asc"]]
                     }
                   },
                   "op": "EXISTS"
@@ -408,12 +307,8 @@
                   "related": {
                     "system": "permissions",
                     "correlation": {
-                      "parentField": [
-                        "user_id"
-                      ],
-                      "childField": [
-                        "user_id"
-                      ]
+                      "parentField": ["user_id"],
+                      "childField": ["user_id"]
                     },
                     "subquery": {
                       "table": "session",
@@ -431,16 +326,7 @@
                         },
                         "op": "="
                       },
-                      "orderBy": [
-                        [
-                          "id",
-                          "asc"
-                        ],
-                        [
-                          "user_id",
-                          "asc"
-                        ]
-                      ]
+                      "orderBy": [["id", "asc"], ["user_id", "asc"]]
                     }
                   },
                   "op": "EXISTS"
@@ -475,12 +361,8 @@
                     "related": {
                       "system": "permissions",
                       "correlation": {
-                        "parentField": [
-                          "user_id"
-                        ],
-                        "childField": [
-                          "user_id"
-                        ]
+                        "parentField": ["user_id"],
+                        "childField": ["user_id"]
                       },
                       "subquery": {
                         "table": "session",
@@ -498,16 +380,7 @@
                           },
                           "op": "="
                         },
-                        "orderBy": [
-                          [
-                            "id",
-                            "asc"
-                          ],
-                          [
-                            "user_id",
-                            "asc"
-                          ]
-                        ]
+                        "orderBy": [["id", "asc"], ["user_id", "asc"]]
                       }
                     },
                     "op": "EXISTS"
@@ -540,12 +413,8 @@
                     "related": {
                       "system": "permissions",
                       "correlation": {
-                        "parentField": [
-                          "user_id"
-                        ],
-                        "childField": [
-                          "user_id"
-                        ]
+                        "parentField": ["user_id"],
+                        "childField": ["user_id"]
                       },
                       "subquery": {
                         "table": "session",
@@ -563,16 +432,7 @@
                           },
                           "op": "="
                         },
-                        "orderBy": [
-                          [
-                            "id",
-                            "asc"
-                          ],
-                          [
-                            "user_id",
-                            "asc"
-                          ]
-                        ]
+                        "orderBy": [["id", "asc"], ["user_id", "asc"]]
                       }
                     },
                     "op": "EXISTS"
@@ -718,9 +578,7 @@
     "tables": {
       "checklist_item": {
         "tableName": "checklist_item",
-        "primaryKey": [
-          "id"
-        ],
+        "primaryKey": ["id"],
         "columns": {
           "completed_at": {
             "type": "number",
@@ -753,21 +611,15 @@
         },
         "relationships": {
           "task": {
-            "sourceField": [
-              "task_id"
-            ],
-            "destField": [
-              "id"
-            ],
+            "sourceField": ["task_id"],
+            "destField": ["id"],
             "destSchema": "task"
           }
         }
       },
       "emoji": {
         "tableName": "emoji",
-        "primaryKey": [
-          "id"
-        ],
+        "primaryKey": ["id"],
         "columns": {
           "annotation": {
             "type": "string",
@@ -800,39 +652,25 @@
         },
         "relationships": {
           "creator": {
-            "sourceField": [
-              "creator_id"
-            ],
-            "destField": [
-              "id"
-            ],
+            "sourceField": ["creator_id"],
+            "destField": ["id"],
             "destSchema": "user"
           },
           "task": {
-            "sourceField": [
-              "subject_id"
-            ],
-            "destField": [
-              "id"
-            ],
+            "sourceField": ["subject_id"],
+            "destField": ["id"],
             "destSchema": "task"
           },
           "task_comment": {
-            "sourceField": [
-              "subject_id"
-            ],
-            "destField": [
-              "id"
-            ],
+            "sourceField": ["subject_id"],
+            "destField": ["id"],
             "destSchema": "task_comment"
           }
         }
       },
       "enterprise": {
         "tableName": "enterprise",
-        "primaryKey": [
-          "id"
-        ],
+        "primaryKey": ["id"],
         "columns": {
           "created_at": {
             "type": "number",
@@ -859,9 +697,7 @@
       },
       "profile": {
         "tableName": "profile",
-        "primaryKey": [
-          "id"
-        ],
+        "primaryKey": ["id"],
         "columns": {
           "avatar": {
             "type": "string",
@@ -890,21 +726,15 @@
         },
         "relationships": {
           "session": {
-            "sourceField": [
-              "user_id"
-            ],
-            "destField": [
-              "user_id"
-            ],
+            "sourceField": ["user_id"],
+            "destField": ["user_id"],
             "destSchema": "session"
           }
         }
       },
       "project": {
         "tableName": "project",
-        "primaryKey": [
-          "id"
-        ],
+        "primaryKey": ["id"],
         "columns": {
           "created_at": {
             "type": "number",
@@ -945,31 +775,20 @@
         },
         "relationships": {
           "team": {
-            "sourceField": [
-              "team_id"
-            ],
-            "destField": [
-              "id"
-            ],
+            "sourceField": ["team_id"],
+            "destField": ["id"],
             "destSchema": "team"
           },
           "workspace": {
-            "sourceField": [
-              "workspace_id"
-            ],
-            "destField": [
-              "id"
-            ],
+            "sourceField": ["workspace_id"],
+            "destField": ["id"],
             "destSchema": "workspace"
           }
         }
       },
       "session": {
         "tableName": "session",
-        "primaryKey": [
-          "id",
-          "user_id"
-        ],
+        "primaryKey": ["id", "user_id"],
         "columns": {
           "created_at": {
             "type": "number",
@@ -990,21 +809,15 @@
         },
         "relationships": {
           "user": {
-            "sourceField": [
-              "user_id"
-            ],
-            "destField": [
-              "id"
-            ],
+            "sourceField": ["user_id"],
+            "destField": ["id"],
             "destSchema": "user"
           }
         }
       },
       "tag": {
         "tableName": "tag",
-        "primaryKey": [
-          "id"
-        ],
+        "primaryKey": ["id"],
         "columns": {
           "created_at": {
             "type": "number",
@@ -1031,9 +844,7 @@
       },
       "task": {
         "tableName": "task",
-        "primaryKey": [
-          "id"
-        ],
+        "primaryKey": ["id"],
         "columns": {
           "archived_at": {
             "type": "number",
@@ -1126,122 +937,72 @@
         },
         "relationships": {
           "assignee": {
-            "sourceField": [
-              "assignee_id"
-            ],
-            "destField": [
-              "id"
-            ],
+            "sourceField": ["assignee_id"],
+            "destField": ["id"],
             "destSchema": "user"
           },
           "checklistItems": {
-            "sourceField": [
-              "id"
-            ],
-            "destField": [
-              "task_id"
-            ],
+            "sourceField": ["id"],
+            "destField": ["task_id"],
             "destSchema": "checklist_item"
           },
           "comments": {
-            "sourceField": [
-              "id"
-            ],
-            "destField": [
-              "task_id"
-            ],
+            "sourceField": ["id"],
+            "destField": ["task_id"],
             "destSchema": "task_comment"
           },
           "creator": {
-            "sourceField": [
-              "creator_id"
-            ],
-            "destField": [
-              "id"
-            ],
+            "sourceField": ["creator_id"],
+            "destField": ["id"],
             "destSchema": "user"
           },
           "emoji": {
-            "sourceField": [
-              "id"
-            ],
-            "destField": [
-              "subject_id"
-            ],
+            "sourceField": ["id"],
+            "destField": ["subject_id"],
             "destSchema": "emoji"
           },
           "project": {
-            "sourceField": [
-              "project_id"
-            ],
-            "destField": [
-              "id"
-            ],
+            "sourceField": ["project_id"],
+            "destField": ["id"],
             "destSchema": "project"
           },
           "session": {
-            "sourceField": [
-              "creator_id"
-            ],
-            "destField": [
-              "user_id"
-            ],
+            "sourceField": ["creator_id"],
+            "destField": ["user_id"],
             "destSchema": "session"
           },
           "tags": [
             {
-              "sourceField": [
-                "id"
-              ],
-              "destField": [
-                "task_id"
-              ],
+              "sourceField": ["id"],
+              "destField": ["task_id"],
               "destSchema": "task_tag"
             },
             {
-              "sourceField": [
-                "tag_id"
-              ],
-              "destField": [
-                "id"
-              ],
+              "sourceField": ["tag_id"],
+              "destField": ["id"],
               "destSchema": "tag"
             }
           ],
           "team": {
-            "sourceField": [
-              "team_id"
-            ],
-            "destField": [
-              "id"
-            ],
+            "sourceField": ["team_id"],
+            "destField": ["id"],
             "destSchema": "team"
           },
           "view_state": {
-            "sourceField": [
-              "id"
-            ],
-            "destField": [
-              "task_id"
-            ],
+            "sourceField": ["id"],
+            "destField": ["task_id"],
             "destSchema": "view_state"
           },
           "workspace": {
-            "sourceField": [
-              "workspace_id"
-            ],
-            "destField": [
-              "id"
-            ],
+            "sourceField": ["workspace_id"],
+            "destField": ["id"],
             "destSchema": "workspace"
           }
         }
       },
       "task_comment": {
         "tableName": "task_comment",
-        "primaryKey": [
-          "id"
-        ],
+        "primaryKey": ["id"],
         "columns": {
           "body": {
             "type": "string",
@@ -1266,40 +1027,25 @@
         },
         "relationships": {
           "creator": {
-            "sourceField": [
-              "creator_id"
-            ],
-            "destField": [
-              "id"
-            ],
+            "sourceField": ["creator_id"],
+            "destField": ["id"],
             "destSchema": "user"
           },
           "emoji": {
-            "sourceField": [
-              "id"
-            ],
-            "destField": [
-              "subject_id"
-            ],
+            "sourceField": ["id"],
+            "destField": ["subject_id"],
             "destSchema": "emoji"
           },
           "task": {
-            "sourceField": [
-              "task_id"
-            ],
-            "destField": [
-              "id"
-            ],
+            "sourceField": ["task_id"],
+            "destField": ["id"],
             "destSchema": "task"
           }
         }
       },
       "task_tag": {
         "tableName": "task_tag",
-        "primaryKey": [
-          "tag_id",
-          "task_id"
-        ],
+        "primaryKey": ["tag_id", "task_id"],
         "columns": {
           "created_at": {
             "type": "number",
@@ -1316,21 +1062,15 @@
         },
         "relationships": {
           "task": {
-            "sourceField": [
-              "task_id"
-            ],
-            "destField": [
-              "id"
-            ],
+            "sourceField": ["task_id"],
+            "destField": ["id"],
             "destSchema": "task"
           }
         }
       },
       "team": {
         "tableName": "team",
-        "primaryKey": [
-          "id"
-        ],
+        "primaryKey": ["id"],
         "columns": {
           "created_at": {
             "type": "number",
@@ -1359,21 +1099,15 @@
         },
         "relationships": {
           "workspace": {
-            "sourceField": [
-              "workspace_id"
-            ],
-            "destField": [
-              "id"
-            ],
+            "sourceField": ["workspace_id"],
+            "destField": ["id"],
             "destSchema": "workspace"
           }
         }
       },
       "team_member": {
         "tableName": "team_member",
-        "primaryKey": [
-          "id"
-        ],
+        "primaryKey": ["id"],
         "columns": {
           "created_at": {
             "type": "number",
@@ -1402,30 +1136,20 @@
         },
         "relationships": {
           "team": {
-            "sourceField": [
-              "team_id"
-            ],
-            "destField": [
-              "id"
-            ],
+            "sourceField": ["team_id"],
+            "destField": ["id"],
             "destSchema": "team"
           },
           "user": {
-            "sourceField": [
-              "user_id"
-            ],
-            "destField": [
-              "id"
-            ],
+            "sourceField": ["user_id"],
+            "destField": ["id"],
             "destSchema": "user"
           }
         }
       },
       "user": {
         "tableName": "user",
-        "primaryKey": [
-          "id"
-        ],
+        "primaryKey": ["id"],
         "columns": {
           "created_at": {
             "type": "number",
@@ -1458,49 +1182,29 @@
         },
         "relationships": {
           "profile": {
-            "sourceField": [
-              "id"
-            ],
-            "destField": [
-              "user_id"
-            ],
+            "sourceField": ["id"],
+            "destField": ["user_id"],
             "destSchema": "profile"
           },
           "session": {
-            "sourceField": [
-              "id"
-            ],
-            "destField": [
-              "user_id"
-            ],
+            "sourceField": ["id"],
+            "destField": ["user_id"],
             "destSchema": "session"
           },
           "workspaceMembers": {
-            "sourceField": [
-              "id"
-            ],
-            "destField": [
-              "user_id"
-            ],
+            "sourceField": ["id"],
+            "destField": ["user_id"],
             "destSchema": "workspace_member"
           },
           "workspaces": [
             {
-              "sourceField": [
-                "id"
-              ],
-              "destField": [
-                "user_id"
-              ],
+              "sourceField": ["id"],
+              "destField": ["user_id"],
               "destSchema": "workspace_member"
             },
             {
-              "sourceField": [
-                "workspace_id"
-              ],
-              "destField": [
-                "id"
-              ],
+              "sourceField": ["workspace_id"],
+              "destField": ["id"],
               "destSchema": "workspace"
             }
           ]
@@ -1508,9 +1212,7 @@
       },
       "view_state": {
         "tableName": "view_state",
-        "primaryKey": [
-          "id"
-        ],
+        "primaryKey": ["id"],
         "columns": {
           "id": {
             "type": "string",
@@ -1533,9 +1235,7 @@
       },
       "workspace": {
         "tableName": "workspace",
-        "primaryKey": [
-          "id"
-        ],
+        "primaryKey": ["id"],
         "columns": {
           "created_at": {
             "type": "number",
@@ -1561,21 +1261,13 @@
         "relationships": {
           "sessionMembers": [
             {
-              "sourceField": [
-                "id"
-              ],
-              "destField": [
-                "workspace_id"
-              ],
+              "sourceField": ["id"],
+              "destField": ["workspace_id"],
               "destSchema": "workspace_member"
             },
             {
-              "sourceField": [
-                "user_id"
-              ],
-              "destField": [
-                "user_id"
-              ],
+              "sourceField": ["user_id"],
+              "destField": ["user_id"],
               "destSchema": "session"
             }
           ]
@@ -1583,9 +1275,7 @@
       },
       "workspace_member": {
         "tableName": "workspace_member",
-        "primaryKey": [
-          "id"
-        ],
+        "primaryKey": ["id"],
         "columns": {
           "created_at": {
             "type": "number",
@@ -1614,30 +1304,18 @@
         },
         "relationships": {
           "session": {
-            "sourceField": [
-              "user_id"
-            ],
-            "destField": [
-              "user_id"
-            ],
+            "sourceField": ["user_id"],
+            "destField": ["user_id"],
             "destSchema": "session"
           },
           "user": {
-            "sourceField": [
-              "user_id"
-            ],
-            "destField": [
-              "id"
-            ],
+            "sourceField": ["user_id"],
+            "destField": ["id"],
             "destSchema": "user"
           },
           "workspace": {
-            "sourceField": [
-              "workspace_id"
-            ],
-            "destField": [
-              "id"
-            ],
+            "sourceField": ["workspace_id"],
+            "destField": ["id"],
             "destSchema": "workspace"
           }
         }

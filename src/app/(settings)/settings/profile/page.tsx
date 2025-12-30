@@ -1,51 +1,54 @@
-'use client'
+"use client";
 
-import {Lock, Mail, Shield} from 'lucide-react'
-import {ChangeEvent, useState} from 'react'
-import {toast} from 'sonner'
+import { Lock, Mail, Shield } from "lucide-react";
+import { type ChangeEvent, useState } from "react";
+import { toast } from "sonner";
 
-import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar'
-import {Button} from '@/components/ui/button'
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import {Input} from '@/components/ui/input'
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip'
-import {UserSelect} from '@/components/user/user-select'
-import {useZero} from '@/hooks/use-zero'
+} from "@/components/ui/tooltip";
+import { UserSelect } from "@/components/user/user-select";
+import { useZero } from "@/hooks/use-zero";
+import { mutators } from "@/lib/zero/mutators";
 
 export default function Page() {
-  const zero = useZero()
-  const fromProfileSwitch = UserSelect.useBlock()
-  const {selectedUser} = fromProfileSwitch
+  const zero = useZero();
+  const fromProfileSwitch = UserSelect.useBlock();
+  const { selectedUser } = fromProfileSwitch;
 
-  const [isUploading, setIsUploading] = useState(false)
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleNameChange = async (e: ChangeEvent<HTMLInputElement>) => {
     try {
       if (selectedUser?.profile?.id) {
-        await zero.mutate.profile.update({
-          id: selectedUser?.profile?.id,
-          name: e.target.value,
-        })
+        await zero.mutate(
+          mutators.profile.update({
+            id: selectedUser?.profile?.id,
+            name: e.target.value,
+          })
+        );
       }
     } catch (_error) {
-      toast.error('Failed to update name')
+      toast.error("Failed to update name");
     }
-  }
+  };
 
   const handleAvatarUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files?.[0]) return
-    setIsUploading(true)
+    if (!e.target.files?.[0]) return;
+    setIsUploading(true);
 
     try {
       // const file = e.target.files[0]
@@ -54,36 +57,36 @@ export default function Page() {
       //   id: user?.id,
       //   avatar: 'uploaded-url',
       // })
-      toast.success('Profile picture updated successfully')
+      toast.success("Profile picture updated successfully");
     } catch (_error) {
-      toast.error('Failed to upload user picture')
+      toast.error("Failed to upload user picture");
     } finally {
-      setIsUploading(false)
+      setIsUploading(false);
     }
-  }
+  };
 
   const handleEmailChange = () => {
     // Implement email change modal/flow
-    toast.info('Email change functionality coming soon')
-  }
+    toast.info("Email change functionality coming soon");
+  };
 
   const handlePasswordChange = () => {
     // Implement password change modal/flow
-    toast.info('Password change functionality coming soon')
-  }
+    toast.info("Password change functionality coming soon");
+  };
 
   const handleVerificationAdd = () => {
     // Implement 2FA setup modal/flow
-    toast.info('2FA setup functionality coming soon')
-  }
+    toast.info("2FA setup functionality coming soon");
+  };
 
   const getInitials = (name: string) => {
     return name
-      .split(' ')
+      .split(" ")
       .map((n) => n[0])
-      .join('')
-      .toUpperCase()
-  }
+      .join("")
+      .toUpperCase();
+  };
 
   return (
     <div className="container mx-auto max-w-3xl space-y-8 py-6">
@@ -113,11 +116,11 @@ export default function Page() {
                 <TooltipTrigger asChild>
                   <div className="relative">
                     <Avatar className="size-20">
-                      <AvatarImage src={selectedUser?.profile?.avatar || ''} />
+                      <AvatarImage src={selectedUser?.profile?.avatar || ""} />
                       <AvatarFallback>
                         {selectedUser?.profile?.name
                           ? getInitials(selectedUser?.profile?.name)
-                          : '?'}
+                          : "?"}
                       </AvatarFallback>
                     </Avatar>
                     <input
@@ -133,8 +136,11 @@ export default function Page() {
               </Tooltip>
             </TooltipProvider>
             <div className="flex-1">
-              <label className="text-sm font-medium">Preferred name</label>
+              <label htmlFor="preferred-name" className="text-sm font-medium">
+                Preferred name
+              </label>
               <Input
+                id="preferred-name"
                 placeholder="Enter your name"
                 value={selectedUser?.profile?.name || ``}
                 onChange={handleNameChange}
@@ -203,5 +209,5 @@ export default function Page() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

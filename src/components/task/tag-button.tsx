@@ -1,15 +1,15 @@
-import {TagIcon} from 'lucide-react'
+import { TagIcon } from "lucide-react";
 
-import {Button} from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 
-import {Task} from './types'
+import type { Task } from "./types";
 
 type Props = {
-  task: Task
-  setOpen: (open: boolean) => void
-}
+  task: Task;
+  setOpen: (open: boolean) => void;
+};
 
-export const TagButton = ({setOpen}: Props) => {
+export const TagButton = ({ setOpen }: Props) => {
   return (
     <Button
       variant="ghost"
@@ -19,5 +19,5 @@ export const TagButton = ({setOpen}: Props) => {
     >
       <TagIcon className="size-4" />
     </Button>
-  )
-}
+  );
+};

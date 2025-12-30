@@ -1,24 +1,24 @@
-'use client'
+"use client";
 
-import {observer} from 'mobx-react-lite'
-import {useContext} from 'react'
+import { observer } from "mobx-react-lite";
+import { useContext } from "react";
 
-import {Button} from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import {WorkspaceDeleteModal} from '@/components/workspace/workspace-delete-modal'
-import {WorkspaceInfoEditor} from '@/components/workspace/workspace-info-editor'
-import {RootStoreContext} from '@/lib/stores/root-store'
+} from "@/components/ui/card";
+import { WorkspaceDeleteModal } from "@/components/workspace/workspace-delete-modal";
+import { WorkspaceInfoEditor } from "@/components/workspace/workspace-info-editor";
+import { RootStoreContext } from "@/lib/stores/root-store";
 
 const Page = observer(() => {
   const {
-    localStore: {selectedWorkspaceId},
-  } = useContext(RootStoreContext)
+    localStore: { selectedWorkspaceId },
+  } = useContext(RootStoreContext);
 
   return (
     <div className="container mx-auto max-w-3xl space-y-8 py-6">
@@ -26,10 +26,10 @@ const Page = observer(() => {
       <SectionInfoEditor workspaceId={selectedWorkspaceId} />
       <SectionDangerZone workspaceId={selectedWorkspaceId} />
     </div>
-  )
-})
+  );
+});
 
-export default Page
+export default Page;
 
 const SectionTitle = () => {
   return (
@@ -39,14 +39,14 @@ const SectionTitle = () => {
         Manage your workspace settings and preferences.
       </p>
     </div>
-  )
-}
+  );
+};
 
-const SectionInfoEditor = ({workspaceId}: {workspaceId?: string}) =>
-  workspaceId && <WorkspaceInfoEditor.Block workspaceId={workspaceId} />
+const SectionInfoEditor = ({ workspaceId }: { workspaceId?: string }) =>
+  workspaceId && <WorkspaceInfoEditor.Block workspaceId={workspaceId} />;
 
-const SectionDangerZone = ({workspaceId}: {workspaceId?: string}) => {
-  const fromWorkspaceDelete = WorkspaceDeleteModal.useBlock(workspaceId)
+const SectionDangerZone = ({ workspaceId }: { workspaceId?: string }) => {
+  const fromWorkspaceDelete = WorkspaceDeleteModal.useBlock(workspaceId);
 
   return (
     <>
@@ -78,5 +78,5 @@ const SectionDangerZone = ({workspaceId}: {workspaceId?: string}) => {
 
       {workspaceId && <WorkspaceDeleteModal {...fromWorkspaceDelete} />}
     </>
-  )
-}
+  );
+};

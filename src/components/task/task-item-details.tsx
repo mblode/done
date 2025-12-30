@@ -1,34 +1,34 @@
-import {observer} from 'mobx-react-lite'
-import {useContext, useState} from 'react'
+import { observer } from "mobx-react-lite";
+import { useContext, useState } from "react";
 
-import {RootStoreContext} from '@/lib/stores/root-store'
+import { RootStoreContext } from "@/lib/stores/root-store";
 
-import {ChecklistButton} from './checklist-button'
-import {ChecklistList} from './checklist-list'
-import {TagButton} from './tag-button'
-import {TagDialog} from './tag-dialog'
-import {TagList} from './tag-list'
-import {TaskHeader} from './task-header'
-import {TaskNotes} from './task-notes'
-import {Task} from './types'
-import {WhenButton} from './when-button'
-import {WhenLabel} from './when-label'
+import { ChecklistButton } from "./checklist-button";
+import { ChecklistList } from "./checklist-list";
+import { TagButton } from "./tag-button";
+import { TagDialog } from "./tag-dialog";
+import { TagList } from "./tag-list";
+import { TaskHeader } from "./task-header";
+import { TaskNotes } from "./task-notes";
+import type { Task } from "./types";
+import { WhenButton } from "./when-button";
+import { WhenLabel } from "./when-label";
 
 type Props = {
-  task: Task
-  checked: boolean
-  onComplete: (checked: boolean) => void
-  showDashedCheckbox?: boolean
-}
+  task: Task;
+  checked: boolean;
+  onComplete: (checked: boolean) => void;
+  showDashedCheckbox?: boolean;
+};
 
 export const TaskItemDetails = observer(
-  ({task, checked, onComplete, showDashedCheckbox}: Props) => {
+  ({ task, checked, onComplete, showDashedCheckbox }: Props) => {
     const {
-      localStore: {tempTask},
-    } = useContext(RootStoreContext)
-    const [tagOpen, setTagOpen] = useState(false)
+      localStore: { tempTask },
+    } = useContext(RootStoreContext);
+    const [tagOpen, setTagOpen] = useState(false);
 
-    const newTask = tempTask || task
+    const newTask = tempTask || task;
 
     return (
       <div className="task-outside-click py-5">
@@ -52,7 +52,7 @@ export const TaskItemDetails = observer(
 
           <div className="flex items-center gap-1 pb-4 pl-9 pr-3">
             <div className="flex-1">
-              {newTask?.start !== 'not_started' && <WhenLabel task={newTask} />}
+              {newTask?.start !== "not_started" && <WhenLabel task={newTask} />}
             </div>
 
             {(task?.tags || []).length === 0 && (
@@ -63,7 +63,7 @@ export const TaskItemDetails = observer(
               <ChecklistButton task={task} />
             )}
 
-            {newTask?.start === 'not_started' && <WhenButton task={newTask} />}
+            {newTask?.start === "not_started" && <WhenButton task={newTask} />}
           </div>
         </div>
 
@@ -71,6 +71,6 @@ export const TaskItemDetails = observer(
           <TagDialog task={task} open={tagOpen} setOpen={setTagOpen} />
         )}
       </div>
-    )
-  },
-)
+    );
+  }
+);

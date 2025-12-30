@@ -1,20 +1,20 @@
-import React, {ReactNode} from 'react'
-import {useController} from 'react-hook-form'
+import type { ReactNode } from "react";
+import { type Control, useController } from "react-hook-form";
 
-import {FormControl} from '@/components/ui/form-control'
-import {Input, InputProps} from '@/components/ui/input'
-import {useErrorState} from '@/hooks/use-error-state'
+import { FormControl } from "@/components/ui/form-control";
+import { Input, type InputProps } from "@/components/ui/input";
+import { useErrorState } from "@/hooks/use-error-state";
 
 type Props = InputProps & {
-  name: string
-  label?: ReactNode
-  caption?: ReactNode
-  control: any
-  className?: string
-  captionClassName?: string
-  labelClassName?: string
-  inputClassName?: string
-}
+  name: string;
+  label?: ReactNode;
+  caption?: ReactNode;
+  control: Control<Record<string, unknown>>;
+  className?: string;
+  captionClassName?: string;
+  labelClassName?: string;
+  inputClassName?: string;
+};
 
 export const InputField = ({
   label,
@@ -28,8 +28,8 @@ export const InputField = ({
   disabled,
   ...rest
 }: Props) => {
-  const {field, fieldState} = useController({control, name})
-  const hasError = useErrorState(fieldState, control)
+  const { field, fieldState } = useController({ control, name });
+  const hasError = useErrorState(fieldState, control);
 
   return (
     <FormControl
@@ -50,5 +50,5 @@ export const InputField = ({
         disabled={disabled}
       />
     </FormControl>
-  )
-}
+  );
+};

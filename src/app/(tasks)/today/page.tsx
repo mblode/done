@@ -1,64 +1,55 @@
-'use client'
+"use client";
 
-import {SortableContext, verticalListSortingStrategy} from '@dnd-kit/sortable'
-import {useQuery} from '@rocicorp/zero/react'
-import {addDays, startOfDay} from 'date-fns'
-import {MoonIcon, StarIcon} from 'lucide-react'
-import {observer} from 'mobx-react-lite'
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { useQuery } from "@rocicorp/zero/react";
+import { addDays, startOfDay } from "date-fns";
+import { MoonIcon, StarIcon } from "lucide-react";
+import { observer } from "mobx-react-lite";
 
-import {useDndContext} from '@/components/dnd/dnd-context'
-import {PageContainer} from '@/components/shared/page-container'
-import {TaskList} from '@/components/task/task-list'
-import {useTaskSelection} from '@/hooks/use-task-selection'
-import {useZero} from '@/hooks/use-zero'
+import { useDndContext } from "@/components/dnd/dnd-context";
+import { PageContainer } from "@/components/shared/page-container";
+import { TaskList } from "@/components/task/task-list";
+import { useTaskSelection } from "@/hooks/use-task-selection";
+import { queries } from "@/lib/zero/queries";
 
 const Page = observer(() => {
-  const {dragOverId, activeId} = useDndContext()
+  const { dragOverId, activeId } = useDndContext();
 
-  const zero = useZero()
+  const tomorrow = addDays(startOfDay(new Date()), 1).getTime();
 
-  const tomorrow = addDays(startOfDay(new Date()), 1).getTime()
-
-  const [tasks] = useQuery(
-    zero.query.task
-      .where('start', '=', 'started')
-      .where('start_date', 'IS NOT', null)
-      .where('start_date', '<', tomorrow)
-      .where('archived_at', 'IS', null)
-      .where('completed_at', 'IS', null)
-      .orderBy('sort_order', 'asc')
-      .related('tags', (q) => q.orderBy('updated_at', 'desc'))
-      .related('checklistItems', (q) => q.orderBy('sort_order', 'asc')),
-  )
+  const [tasks] = useQuery(queries.tasks.today({ tomorrow }));
 
   const initialTodayTasks = tasks.filter(
-    (task) => task.start_bucket !== 'evening',
-  )
+    (task) => task.start_bucket !== "evening"
+  );
 
   const todayTasks = tasks.filter((task) => {
     if (dragOverId && task.id === activeId) {
       // Show dragged task in the list it's over
-      return dragOverId === 'today'
+      return dragOverId === "today";
     }
-    return task.start_bucket !== 'evening'
-  })
+    return task.start_bucket !== "evening";
+  });
 
   const initialEveningTasks = tasks.filter(
-    (task) => task.start_bucket === 'evening',
-  )
+    (task) => task.start_bucket === "evening"
+  );
 
   const eveningTasks = tasks.filter((task) => {
     if (dragOverId && task.id === activeId) {
-      return dragOverId === 'evening'
+      return dragOverId === "evening";
     }
-    return task.start_bucket === 'evening'
-  })
+    return task.start_bucket === "evening";
+  });
 
-  const {handleClick} = useTaskSelection(
+  const { handleClick } = useTaskSelection(
     [initialTodayTasks, initialEveningTasks].flatMap((tasks) =>
-      tasks.map((task) => task.id),
-    ),
-  )
+      tasks.map((task) => task.id)
+    )
+  );
 
   return (
     <PageContainer>
@@ -76,7 +67,7 @@ const Page = observer(() => {
       </div>
 
       <SortableContext
-        items={[{id: 'today'}, {id: 'evening'}]}
+        items={[{ id: "today" }, { id: "evening" }]}
         strategy={verticalListSortingStrategy}
       >
         <div className="flex flex-col">
@@ -86,7 +77,7 @@ const Page = observer(() => {
 
           <TaskList
             tasks={todayTasks}
-            listData={{id: 'today', start: 'started', start_bucket: 'today'}}
+            listData={{ id: "today", start: "started", start_bucket: "today" }}
             onTaskClick={handleClick}
           />
 
@@ -104,9 +95,9 @@ const Page = observer(() => {
               <TaskList
                 tasks={eveningTasks}
                 listData={{
-                  id: 'evening',
-                  start: 'started',
-                  start_bucket: 'evening',
+                  id: "evening",
+                  start: "started",
+                  start_bucket: "evening",
                 }}
                 onTaskClick={handleClick}
               />
@@ -115,7 +106,7 @@ const Page = observer(() => {
         </div>
       </SortableContext>
     </PageContainer>
-  )
-})
+  );
+});
 
-export default Page
+export default Page;

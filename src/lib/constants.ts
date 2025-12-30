@@ -1,1 +1,1 @@
-export const INITIAL_GAP = 1000
+export const INITIAL_GAP = 1000;

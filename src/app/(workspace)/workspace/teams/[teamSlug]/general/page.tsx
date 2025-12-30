@@ -1,37 +1,41 @@
-'use client'
+"use client";
 
-import {useQuery} from '@rocicorp/zero/react'
-import {ChevronRight, Users} from 'lucide-react'
-import Link from 'next/link'
-import {toast} from 'sonner'
+import { useQuery } from "@rocicorp/zero/react";
+import { ChevronRight, Users } from "lucide-react";
+import Link from "next/link";
+import { toast } from "sonner";
 
-import {Button} from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import {Input} from '@/components/ui/input'
-import {useZero} from '@/hooks/use-zero'
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { useZero } from "@/hooks/use-zero";
+import { mutators } from "@/lib/zero/mutators";
+import { queries } from "@/lib/zero/queries";
 
 type Props = {
-  params: {workspaceSlug: string; teamSlug: string}
-}
+  params: { workspaceSlug: string; teamSlug: string };
+};
 
-export default function Page({params: {workspaceSlug, teamSlug}}: Props) {
-  const zero = useZero()
-  const [team] = useQuery(zero.query.team)
+export default function Page({ params: { workspaceSlug, teamSlug } }: Props) {
+  const zero = useZero();
+  const [team] = useQuery(queries.teams.bySlug({ slug: teamSlug }));
 
   const handleDeleteTeam = async () => {
+    if (!team) return;
+
     try {
-      await zero.mutate.team.delete({id: team?.id})
-      toast.success('Team scheduled for deletion')
+      await zero.mutate(mutators.team.delete({ id: team.id }));
+      toast.success("Team scheduled for deletion");
     } catch (_error) {
-      toast.error('Failed to delete team')
+      toast.error("Failed to delete team");
     }
-  }
+  };
 
   return (
     <div className="container mx-auto max-w-4xl space-y-8 py-6">
@@ -47,20 +51,22 @@ export default function Page({params: {workspaceSlug, teamSlug}}: Props) {
         <CardContent className="space-y-6">
           <div className="flex gap-4">
             <div className="flex-1 space-y-2">
-              <label className="text-sm font-medium">Name</label>
+              <label htmlFor="team-name" className="text-sm font-medium">
+                Name
+              </label>
               <div className="flex items-center gap-2">
-                <Input defaultValue="Product" />
+                <Input id="team-name" defaultValue="Product" />
               </div>
             </div>
 
             <div className="flex-1 space-y-2">
-              <label className="text-sm font-medium">
+              <label htmlFor="team-slug" className="text-sm font-medium">
                 Slug
                 <span className="ml-2 text-sm font-normal text-muted-foreground">
                   Used in issue IDs
                 </span>
               </label>
-              <Input defaultValue="PRO" />
+              <Input id="team-slug" defaultValue="PRO" />
             </div>
           </div>
         </CardContent>
@@ -113,5 +119,5 @@ export default function Page({params: {workspaceSlug, teamSlug}}: Props) {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

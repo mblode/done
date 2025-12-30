@@ -1,31 +1,31 @@
-import {LucideIcon} from 'lucide-react'
-import {ComponentProps} from 'react'
+import type { LucideIcon } from "lucide-react";
+import type { ComponentProps } from "react";
 
-import {Button} from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip'
-import {ButtonState} from '@/lib/stores/local-store'
-import {cn} from '@/lib/utils'
+} from "@/components/ui/tooltip";
+import type { ButtonState } from "@/lib/stores/local-store";
+import { cn } from "@/lib/utils";
 
 type FooterButtonProps = {
-  icon: LucideIcon
-  title: string
-  state?: ButtonState
-} & Omit<ComponentProps<typeof Button>, 'children' | 'disabled'>
+  icon: LucideIcon;
+  title: string;
+  state?: ButtonState;
+} & Omit<ComponentProps<typeof Button>, "children" | "disabled">;
 
 export const FooterButton = ({
   icon: Icon,
   title,
-  state = 'visible',
-  className = '',
+  state = "visible",
+  className = "",
   ...props
 }: FooterButtonProps) => {
-  if (state === 'hidden') {
-    return null
+  if (state === "hidden") {
+    return null;
   }
 
   return (
@@ -35,19 +35,19 @@ export const FooterButton = ({
           <Button
             variant="ghost"
             size="sm"
-            disabled={state === 'disabled'}
+            disabled={state === "disabled"}
             className={cn(
-              'h-8 w-full max-w-[200px] p-0',
-              'border border-transparent !bg-transparent hover:border-border focus:border-border',
-              'disabled:cursor-not-allowed disabled:opacity-50',
-              'rounded-md transition-colors',
-              className,
+              "h-8 w-full max-w-[200px] p-0",
+              "border border-transparent !bg-transparent hover:border-border focus:border-border",
+              "disabled:cursor-not-allowed disabled:opacity-50",
+              "rounded-md transition-colors",
+              className
             )}
             {...props}
           >
             <Icon
-              className={cn('h-4 w-4 text-foreground', {
-                'opacity-60': state === 'disabled',
+              className={cn("h-4 w-4 text-foreground", {
+                "opacity-60": state === "disabled",
               })}
             />
           </Button>
@@ -57,5 +57,5 @@ export const FooterButton = ({
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
-  )
-}
+  );
+};

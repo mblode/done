@@ -1,49 +1,42 @@
-'use client'
-import {SortableContext, verticalListSortingStrategy} from '@dnd-kit/sortable'
-import {useQuery} from '@rocicorp/zero/react'
-import {TrashIcon} from 'lucide-react'
-import {useCallback} from 'react'
+"use client";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { useQuery } from "@rocicorp/zero/react";
+import { TrashIcon } from "lucide-react";
+import { observer } from "mobx-react-lite";
+import { useCallback } from "react";
 
-import {PageContainer} from '@/components/shared/page-container'
-import {Section} from '@/components/shared/section'
-import {TaskList} from '@/components/task/task-list'
-import {Button} from '@/components/ui/button'
-import { useTaskSelection } from '@/hooks/use-task-selection'
-import {useZero} from '@/hooks/use-zero'
-import { observer } from 'mobx-react-lite'
+import { PageContainer } from "@/components/shared/page-container";
+import { Section } from "@/components/shared/section";
+import { TaskList } from "@/components/task/task-list";
+import { Button } from "@/components/ui/button";
+import { useTaskSelection } from "@/hooks/use-task-selection";
+import { useZero } from "@/hooks/use-zero";
+import { mutators } from "@/lib/zero/mutators";
+import { queries } from "@/lib/zero/queries";
 
 const Page = observer(() => {
   return (
     <PageContainer>
       <SectionTrash />
     </PageContainer>
-  )
-}
+  );
+});
 
 const SectionTrash = () => {
-  const zero = useZero()
+  const zero = useZero();
 
-  const [tasks] = useQuery(
-    zero.query.task
-      .where('archived_at', 'IS NOT', null)
-      .orderBy('archived_at', 'asc')
-      .related('tags', (q) => q.orderBy('updated_at', 'desc'))
-      .related('checklistItems', (q) => q.orderBy('sort_order', 'asc')),
-  )
+  const [tasks] = useQuery(queries.tasks.trash());
 
-  const { handleClick } = useTaskSelection(
-    tasks.map(task => task.id)
-  );
+  const { handleClick } = useTaskSelection(tasks.map((task) => task.id));
 
-
-  const handleEmptyTrash = useCallback(() => {
-    // Loop through each task and delete it
-    ;(tasks || []).forEach((task) => {
-      zero.mutate.task.delete({
-        id: task.id,
-      })
-    })
-  }, [tasks, zero.mutate.task])
+  const handleEmptyTrash = useCallback(async () => {
+    await Promise.all(
+      tasks.map((task) => zero.mutate(mutators.task.delete({ id: task.id })))
+    );
+  }, [tasks, zero]);
 
   return (
     <Section>
@@ -65,17 +58,17 @@ const SectionTrash = () => {
       )}
 
       <SortableContext
-        items={[{id: 'trash'}]}
+        items={[{ id: "trash" }]}
         strategy={verticalListSortingStrategy}
       >
         <TaskList
           tasks={tasks}
-          listData={{id: 'trash'}}
+          listData={{ id: "trash" }}
           onTaskClick={handleClick}
         />
       </SortableContext>
     </Section>
-  )
-  })
+  );
+};
 
-  export default Page
+export default Page;

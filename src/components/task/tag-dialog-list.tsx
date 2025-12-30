@@ -1,23 +1,25 @@
 // components/tag-dialog/tag-list.tsx
-import {useQuery} from '@rocicorp/zero/react'
-import {Check} from 'lucide-react'
-import {useState} from 'react'
+import { useQuery } from "@rocicorp/zero/react";
+import { Check } from "lucide-react";
+import { useState } from "react";
 
-import {Button} from '@/components/ui/button'
-import {Input} from '@/components/ui/input'
-import {ScrollArea} from '@/components/ui/scroll-area'
-import {useZero} from '@/hooks/use-zero'
-import {TagRow} from '@/schema'
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useZero } from "@/hooks/use-zero";
+import { mutators } from "@/lib/zero/mutators";
+import { queries } from "@/lib/zero/queries";
+import type { TagRow } from "@/schema";
 
-import {DialogTitle} from '../ui/dialog'
-import {Task} from './types'
+import { DialogTitle } from "../ui/dialog";
+import type { Task } from "./types";
 
 type Props = {
-  task: Task
-  onNewTag: () => void
-  onManageTags: () => void
-  onClose: () => void
-}
+  task: Task;
+  onNewTag: () => void;
+  onManageTags: () => void;
+  onClose: () => void;
+};
 
 export const TagDialogList = ({
   task,
@@ -25,30 +27,34 @@ export const TagDialogList = ({
   onManageTags,
   onClose,
 }: Props) => {
-  const [search, setSearch] = useState('')
-  const zero = useZero()
-  const [availableTags] = useQuery(zero.query.tag.orderBy('updated_at', 'desc'))
+  const [search, setSearch] = useState("");
+  const zero = useZero();
+  const [availableTags] = useQuery(queries.tags.all());
 
   const filteredTags = availableTags?.filter((tag) =>
-    tag.title.toLowerCase().includes(search.toLowerCase()),
-  )
+    tag.title.toLowerCase().includes(search.toLowerCase())
+  );
 
   const handleToggleTag = async (tag: TagRow) => {
-    const isSelected = task.tags.some((t) => t.id === tag.id)
+    const isSelected = task.tags.some((t) => t.id === tag.id);
 
     if (isSelected) {
-      await zero.mutate.task_tag.delete({
-        task_id: task.id,
-        tag_id: tag.id,
-      })
+      await zero.mutate(
+        mutators.task_tag.delete({
+          task_id: task.id,
+          tag_id: tag.id,
+        })
+      );
     } else {
-      await zero.mutate.task_tag.insert({
-        task_id: task.id,
-        tag_id: tag.id,
-        created_at: Date.now(),
-      })
+      await zero.mutate(
+        mutators.task_tag.insert({
+          task_id: task.id,
+          tag_id: tag.id,
+          created_at: Date.now(),
+        })
+      );
     }
-  }
+  };
 
   return (
     <div className="space-y-4">
@@ -69,16 +75,17 @@ export const TagDialogList = ({
       <ScrollArea className="h-[300px]">
         <div className="space-y-2">
           {filteredTags?.map((tag) => (
-            <div
+            <button
               key={tag.id}
-              className="flex cursor-pointer items-center justify-between rounded-md p-2 hover:bg-accent"
+              type="button"
+              className="flex w-full cursor-pointer items-center justify-between rounded-md p-2 text-left hover:bg-accent"
               onClick={() => handleToggleTag(tag)}
             >
               <span>{tag.title}</span>
               {task.tags.some((t) => t.id === tag.id) && (
                 <Check className="size-4 text-blue-500" />
               )}
-            </div>
+            </button>
           ))}
         </div>
       </ScrollArea>
@@ -93,5 +100,5 @@ export const TagDialogList = ({
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};

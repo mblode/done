@@ -1,7 +1,7 @@
-import {useContext} from 'react'
-import {useHotkeys} from 'react-hotkeys-hook'
+import { useContext } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 
-import {RootStoreContext} from '@/lib/stores/root-store'
+import { RootStoreContext } from "@/lib/stores/root-store";
 
 export const useTaskSelection = (taskIds: string[]) => {
   const {
@@ -14,54 +14,54 @@ export const useTaskSelection = (taskIds: string[]) => {
       setOpenTaskId,
       lastSelectedTaskId,
     },
-  } = useContext(RootStoreContext)
+  } = useContext(RootStoreContext);
 
   useHotkeys(
-    'enter',
+    "enter",
     (e) => {
-      e.preventDefault()
+      e.preventDefault();
       if (selectedTaskIds.size > 0) {
-        setSelectedTaskIds([])
-        setOpenTaskId(lastSelectedTaskId)
+        setSelectedTaskIds([]);
+        setOpenTaskId(lastSelectedTaskId);
       }
     },
     {
       enabled: !openTaskId && selectedTaskIds.size > 0,
-    },
-  )
+    }
+  );
 
   useHotkeys(
-    'up',
+    "up",
     (e) => {
-      e.preventDefault()
-      moveTaskSelection('up', taskIds)
+      e.preventDefault();
+      moveTaskSelection("up", taskIds);
     },
     {
       enabled: !openTaskId,
-    },
-  )
+    }
+  );
 
   useHotkeys(
-    'down',
+    "down",
     (e) => {
-      e.preventDefault()
-      moveTaskSelection('down', taskIds)
+      e.preventDefault();
+      moveTaskSelection("down", taskIds);
     },
     {
       enabled: !openTaskId,
-    },
-  )
+    }
+  );
 
   const handleClick = (id: string, event: React.MouseEvent) => {
     toggleTaskSelection(
       id,
       event.metaKey || event.ctrlKey,
       event.shiftKey,
-      taskIds,
-    )
-  }
+      taskIds
+    );
+  };
 
   return {
     handleClick,
-  }
-}
+  };
+};

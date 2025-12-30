@@ -4,10 +4,10 @@ import {
   HomeIcon,
   TagIcon,
   UsersIcon,
-} from 'lucide-react'
-import {observer} from 'mobx-react-lite'
-import Link from 'next/link'
-import {usePathname} from 'next/navigation'
+} from "lucide-react";
+import { observer } from "mobx-react-lite";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import {
   Sidebar,
@@ -15,46 +15,46 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenu,
-} from '@/components/ui/sidebar'
-import {WorkspaceSelect} from '@/components/workspace/workspace-select'
+} from "@/components/ui/sidebar";
+import { WorkspaceSelect } from "@/components/workspace/workspace-select";
 
 type WorkspaceSidebarItemType = {
-  id: string
-  title: string
-  url: string
-  icon: React.ComponentType
-}
+  id: string;
+  title: string;
+  url: string;
+  icon: React.ComponentType;
+};
 
 const items: WorkspaceSidebarItemType[] = [
   {
-    id: 'general',
-    title: 'General',
-    url: '/workspace/general',
+    id: "general",
+    title: "General",
+    url: "/workspace/general",
     icon: HomeIcon,
   },
   {
-    id: 'members',
-    title: 'Members',
-    url: '/workspace/members',
+    id: "members",
+    title: "Members",
+    url: "/workspace/members",
     icon: UsersIcon,
   },
   {
-    id: 'tags',
-    title: 'Tags',
-    url: '/workspace/tags',
+    id: "tags",
+    title: "Tags",
+    url: "/workspace/tags",
     icon: TagIcon,
   },
   {
-    id: 'teams',
-    title: 'Teams',
-    url: '/workspace/teams',
+    id: "teams",
+    title: "Teams",
+    url: "/workspace/teams",
     icon: GroupIcon,
   },
-]
+];
 
 export const WorkspaceSidebar = observer(() => {
-  const pathname = usePathname()
-  const fromWorkspaceSelect = WorkspaceSelect.useBlock()
+  const pathname = usePathname();
+  const fromWorkspaceSelect = WorkspaceSelect.useBlock();
 
   return (
     <Sidebar>
@@ -77,8 +77,8 @@ export const WorkspaceSidebar = observer(() => {
               )}
 
               {items.map((item) => {
-                const Icon = item.icon
-                const isActive = pathname.startsWith(item.url)
+                const Icon = item.icon;
+                const isActive = pathname.startsWith(item.url);
 
                 return (
                   <Link
@@ -86,19 +86,19 @@ export const WorkspaceSidebar = observer(() => {
                     href={item.url}
                     className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
                       isActive
-                        ? 'bg-accent text-accent-foreground'
-                        : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                        ? "bg-accent text-accent-foreground"
+                        : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                     }`}
                   >
                     <Icon />
                     {item.title}
                   </Link>
-                )
+                );
               })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  )
-})
+  );
+});

@@ -1,26 +1,27 @@
-import {useSortable} from '@dnd-kit/sortable'
-import {CSS} from '@dnd-kit/utilities'
-import {GripVertical} from 'lucide-react'
-import {KeyboardEvent, useCallback, useRef} from 'react'
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { GripVertical } from "lucide-react";
+import { type KeyboardEvent, useCallback, useRef } from "react";
 
-import {Checkbox} from '@/components/ui/checkbox'
-import {Input} from '@/components/ui/input'
-import {useZero} from '@/hooks/use-zero'
-import {cn} from '@/lib/utils'
-import {ChecklistItemRow, TaskRow} from '@/schema'
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { useZero } from "@/hooks/use-zero";
+import { cn } from "@/lib/utils";
+import { mutators } from "@/lib/zero/mutators";
+import type { ChecklistItemRow, TaskRow } from "@/schema";
 
 type Props = {
-  task: TaskRow & {checklistItems: readonly ChecklistItemRow[]}
-  item: ChecklistItemRow
-  isDragging: boolean
-  onAddItem?: (afterId: string) => void
-  isFocused: boolean
-  onFocusChange: (id: string | null) => void
-  showTopLine: boolean
-  showBottomLine: boolean
-  isEndMode: boolean
-  setIsEndMode: (isEndMode: boolean) => void
-}
+  task: TaskRow & { checklistItems: readonly ChecklistItemRow[] };
+  item: ChecklistItemRow;
+  isDragging: boolean;
+  onAddItem?: (afterId: string) => void;
+  isFocused: boolean;
+  onFocusChange: (id: string | null) => void;
+  showTopLine: boolean;
+  showBottomLine: boolean;
+  isEndMode: boolean;
+  setIsEndMode: (isEndMode: boolean) => void;
+};
 
 export const ChecklistItem = ({
   task,
@@ -34,181 +35,187 @@ export const ChecklistItem = ({
   isEndMode,
   setIsEndMode,
 }: Props) => {
-  const zero = useZero()
-  const inputRef = useRef<HTMLInputElement>(null)
+  const zero = useZero();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFocus = useCallback(() => {
-    onFocusChange(item.id)
-  }, [item.id, onFocusChange])
+    onFocusChange(item.id);
+  }, [item.id, onFocusChange]);
 
   const handleBlur = useCallback(() => {
-    onFocusChange(null)
-  }, [onFocusChange])
+    onFocusChange(null);
+  }, [onFocusChange]);
 
   const handleDeleteItem = useCallback(() => {
-    const items = task?.checklistItems || []
-    const currentIndex = items.findIndex((i) => i.id === item.id)
+    const items = task?.checklistItems || [];
+    const currentIndex = items.findIndex((i) => i.id === item.id);
 
     // Find the previous item to focus on
-    const previousItem = items[currentIndex - 1]
+    const previousItem = items[currentIndex - 1];
 
     // Delete the current item
-    zero.mutate.checklist_item.delete({
-      id: item.id,
-    })
+    zero.mutate(mutators.checklist_item.delete({ id: item.id }));
 
     // Update sort orders for remaining items
-    const remainingItems = items.filter((i) => i.id !== item.id)
+    const remainingItems = items.filter((i) => i.id !== item.id);
     remainingItems.forEach((item, index) => {
-      zero.mutate.checklist_item.update({
-        id: item.id,
-        sort_order: index,
-      })
-    })
+      zero.mutate(
+        mutators.checklist_item.update({
+          id: item.id,
+          sort_order: index,
+        })
+      );
+    });
 
     // Focus on the previous item's input if it exists
     if (previousItem) {
       const previousInput = document.querySelector(
-        `input[data-checklist-id="${previousItem.id}"]`,
-      ) as HTMLInputElement
+        `input[data-checklist-id="${previousItem.id}"]`
+      ) as HTMLInputElement;
       if (previousInput) {
-        previousInput.focus()
+        previousInput.focus();
         // Place cursor at the end of the input
-        const length = previousInput.value.length
-        previousInput.setSelectionRange(length, length)
+        const length = previousInput.value.length;
+        previousInput.setSelectionRange(length, length);
       }
     }
-  }, [task?.checklistItems, zero.mutate.checklist_item, item.id])
+  }, [task?.checklistItems, zero, item.id]);
 
   const handleCheckedChange = useCallback(
-    (checked: any) => {
-      zero.mutate.checklist_item.update({
-        id: item.id,
-        completed_at: checked === true ? Date.now() : null,
-      })
+    (checked: boolean | "indeterminate") => {
+      zero.mutate(
+        mutators.checklist_item.update({
+          id: item.id,
+          completed_at: checked === true ? Date.now() : null,
+        })
+      );
     },
-    [zero.mutate.checklist_item, item.id],
-  )
+    [zero, item.id]
+  );
 
   const handleTitleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const cursorPosition = e.target.selectionStart
-      zero.mutate.checklist_item.update({
-        id: item.id,
-        title: e.target.value,
-      })
+      const cursorPosition = e.target.selectionStart;
+      zero.mutate(
+        mutators.checklist_item.update({
+          id: item.id,
+          title: e.target.value,
+        })
+      );
       // Restore cursor position after the update
       requestAnimationFrame(() => {
-        e.target.setSelectionRange(cursorPosition, cursorPosition)
-      })
+        e.target.setSelectionRange(cursorPosition, cursorPosition);
+      });
     },
-    [zero.mutate.checklist_item, item.id],
-  )
+    [zero, item.id]
+  );
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
-      if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') {
-        setIsEndMode(false)
+      if (e.key !== "ArrowUp" && e.key !== "ArrowDown") {
+        setIsEndMode(false);
       }
 
-      const input = e.target as HTMLInputElement
-      const items = task?.checklistItems || []
-      const currentIndex = items.findIndex((i) => i.id === item.id)
-      const isFirstItem = currentIndex === 0
-      const isOnlyItem = items.length === 1
+      const input = e.target as HTMLInputElement;
+      const items = task?.checklistItems || [];
+      const currentIndex = items.findIndex((i) => i.id === item.id);
+      const isFirstItem = currentIndex === 0;
+      const isOnlyItem = items.length === 1;
       const cursorAtStart =
-        input.selectionStart === 0 && input.selectionEnd === 0
+        input.selectionStart === 0 && input.selectionEnd === 0;
 
-      if (e.key === 'Enter') {
-        e.preventDefault()
+      if (e.key === "Enter") {
+        e.preventDefault();
         if (cursorAtStart) {
           // Add new item before current item
-          onAddItem?.(items[currentIndex - 1]?.id || '') // Pass previous item's ID or empty string if first item
+          onAddItem?.(items[currentIndex - 1]?.id || ""); // Pass previous item's ID or empty string if first item
         } else {
           // Add new item after current item (existing behavior)
-          onAddItem?.(item.id)
+          onAddItem?.(item.id);
         }
-      } else if (e.key === 'Backspace' || e.key === 'Delete') {
+      } else if (e.key === "Backspace" || e.key === "Delete") {
         if (cursorAtStart) {
-          e.preventDefault()
+          e.preventDefault();
 
           // Early returns remain the same...
-          if (isFirstItem && input.value === '' && isOnlyItem) {
-            handleDeleteItem()
-            return
+          if (isFirstItem && input.value === "" && isOnlyItem) {
+            handleDeleteItem();
+            return;
           }
 
           if (isFirstItem) {
-            return
+            return;
           }
 
           // Get the previous item
-          const previousItem = items[currentIndex - 1]
-          if (!previousItem) return
+          const previousItem = items[currentIndex - 1];
+          if (!previousItem) return;
 
           // Get the previous input element
           const previousInput = document.querySelector(
-            `input[data-checklist-id="${previousItem.id}"]`,
-          ) as HTMLInputElement
+            `input[data-checklist-id="${previousItem.id}"]`
+          ) as HTMLInputElement;
 
           if (previousInput) {
-            const currentText = input.value
-            const previousText = previousItem.title
-            const focusPosition = previousText.length // Store the position where texts will join
+            const currentText = input.value;
+            const previousText = previousItem.title;
+            const focusPosition = previousText.length; // Store the position where texts will join
 
             // Update previous item with concatenated text
-            zero.mutate.checklist_item.update({
-              id: previousItem.id,
-              title: previousText + currentText,
-            })
+            zero.mutate(
+              mutators.checklist_item.update({
+                id: previousItem.id,
+                title: previousText + currentText,
+              })
+            );
 
             // Delete current item
-            handleDeleteItem()
+            handleDeleteItem();
 
             // Focus and set cursor position after the update is complete
             requestAnimationFrame(() => {
-              previousInput.focus()
-              previousInput.setSelectionRange(focusPosition, focusPosition)
-            })
+              previousInput.focus();
+              previousInput.setSelectionRange(focusPosition, focusPosition);
+            });
           }
         }
-      } else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-        e.preventDefault()
-        const currentCursorPosition = input.selectionStart
-        const isAtEnd = currentCursorPosition === input.value.length
+      } else if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+        e.preventDefault();
+        const currentCursorPosition = input.selectionStart;
+        const isAtEnd = currentCursorPosition === input.value.length;
 
-        let targetIndex
-        if (e.key === 'ArrowUp') {
-          targetIndex = currentIndex - 1
+        let targetIndex: number;
+        if (e.key === "ArrowUp") {
+          targetIndex = currentIndex - 1;
         } else {
-          targetIndex = currentIndex + 1
+          targetIndex = currentIndex + 1;
         }
 
         if (targetIndex >= 0 && targetIndex < items.length) {
-          const targetItem = items[targetIndex]!
+          const targetItem = items[targetIndex]!;
           const targetInput = document.querySelector(
-            `input[data-checklist-id="${targetItem.id}"]`,
-          ) as HTMLInputElement
+            `input[data-checklist-id="${targetItem.id}"]`
+          ) as HTMLInputElement;
 
           if (targetInput) {
             // Update end mode state
             if (isAtEnd && input.value.length > targetItem.title.length) {
-              setIsEndMode(true)
+              setIsEndMode(true);
             }
 
-            targetInput.focus()
+            targetInput.focus();
 
             if (isEndMode) {
               // Always go to end if in end mode
-              const endPosition = targetItem.title.length
-              targetInput.setSelectionRange(endPosition, endPosition)
+              const endPosition = targetItem.title.length;
+              targetInput.setSelectionRange(endPosition, endPosition);
             } else {
               // Regular behavior - maintain horizontal position
               const targetPosition = Math.min(
                 currentCursorPosition!,
-                targetItem.title.length,
-              )
-              targetInput.setSelectionRange(targetPosition, targetPosition)
+                targetItem.title.length
+              );
+              targetInput.setSelectionRange(targetPosition, targetPosition);
             }
           }
         }
@@ -220,30 +227,30 @@ export const ChecklistItem = ({
       item.id,
       onAddItem,
       handleDeleteItem,
-      zero.mutate.checklist_item,
+      zero,
       isEndMode,
-    ],
-  )
+    ]
+  );
 
-  const {attributes, listeners, setNodeRef, transform, transition} =
-    useSortable({id: item.id})
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: item.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-  }
+  };
 
   return (
     <div
       ref={setNodeRef}
       style={style}
       className={cn(
-        'group relative rounded-md border border-transparent px-1',
+        "group relative rounded-md border border-transparent px-1",
         {
-          'border-blue-400 bg-blue-200 dark:border-blue-600 dark:bg-blue-800':
+          "border-blue-400 bg-blue-200 dark:border-blue-600 dark:bg-blue-800":
             isDragging,
-          'border-border bg-muted': isFocused,
-        },
+          "border-border bg-muted": isFocused,
+        }
       )}
       {...attributes}
     >
@@ -251,7 +258,7 @@ export const ChecklistItem = ({
         <div className="pointer-events-none absolute inset-x-1 -top-px h-px bg-border" />
       )}
 
-      <div className={cn('flex items-center gap-2 py-1')}>
+      <div className={cn("flex items-center gap-2 py-1")}>
         <Checkbox
           id={`checklist-item-${item.id}`}
           checked={!!item.completed_at}
@@ -278,10 +285,10 @@ export const ChecklistItem = ({
         >
           <GripVertical
             className={cn(
-              'size-4 text-muted-foreground opacity-0 transition-opacity',
+              "size-4 text-muted-foreground opacity-0 transition-opacity",
               {
-                'opacity-100': isFocused || isDragging,
-              },
+                "opacity-100": isFocused || isDragging,
+              }
             )}
           />
         </button>
@@ -291,5 +298,5 @@ export const ChecklistItem = ({
         <div className="pointer-events-none absolute inset-x-1 -bottom-px h-px bg-border" />
       )}
     </div>
-  )
-}
+  );
+};

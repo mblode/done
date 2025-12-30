@@ -1,44 +1,44 @@
-'use client'
-import {observer} from 'mobx-react-lite'
-import {ReactNode, useCallback, useContext} from 'react'
+"use client";
+import { observer } from "mobx-react-lite";
+import { type ReactNode, useCallback, useContext } from "react";
 
-import {DndProvider} from '@/components/dnd/dnd-context'
-import {AppSidebar} from '@/components/nav/app-sidebar'
-import {Footer} from '@/components/nav/footer'
-import {QuickFindCommand} from '@/components/quick-find/quick-find-command'
-import {WhenDialogWrapper} from '@/components/task/when-dialog-wrapper'
+import { DndProvider } from "@/components/dnd/dnd-context";
+import { AppSidebar } from "@/components/nav/app-sidebar";
+import { Footer } from "@/components/nav/footer";
+import { QuickFindCommand } from "@/components/quick-find/quick-find-command";
+import { WhenDialogWrapper } from "@/components/task/when-dialog-wrapper";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from '@/components/ui/sidebar'
-import {RootStoreContext} from '@/lib/stores/root-store'
-import {cn} from '@/lib/utils'
+} from "@/components/ui/sidebar";
+import { RootStoreContext } from "@/lib/stores/root-store";
+import { cn } from "@/lib/utils";
 
 const Layout = observer(
   ({
     children,
   }: Readonly<{
-    children: ReactNode
+    children: ReactNode;
   }>) => {
     const {
-      localStore: {openTaskId, setOpenTaskId, setSelectedTaskIds},
-    } = useContext(RootStoreContext)
+      localStore: { openTaskId, setOpenTaskId, setSelectedTaskIds },
+    } = useContext(RootStoreContext);
 
     const handleBackgroundClick = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
-        const target = e.target as HTMLElement
+        const target = e.target as HTMLElement;
 
         if (
           e.target === e.currentTarget ||
-          target.classList.contains('task-outside-click')
+          target.classList.contains("task-outside-click")
         ) {
-          setOpenTaskId(null)
-          setSelectedTaskIds([])
+          setOpenTaskId(null);
+          setSelectedTaskIds([]);
         }
       },
-      [setOpenTaskId, setSelectedTaskIds],
-    )
+      [setOpenTaskId, setSelectedTaskIds]
+    );
 
     return (
       <>
@@ -49,9 +49,18 @@ const Layout = observer(
             <SidebarInset>
               <SidebarTrigger />
               <div
+                role="button"
+                tabIndex={-1}
                 onClick={handleBackgroundClick}
-                className={cn('flex flex-1 transition-colors', {
-                  'bg-sidebar dark:bg-background': !!openTaskId,
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    handleBackgroundClick(
+                      e as unknown as React.MouseEvent<HTMLDivElement>
+                    );
+                  }
+                }}
+                className={cn("flex flex-1 transition-colors", {
+                  "bg-sidebar dark:bg-background": !!openTaskId,
                 })}
               >
                 <div className="task-outside-click mx-auto flex w-full max-w-[1000px] flex-1 flex-col gap-4 px-4 py-10 md:px-8 lg:px-12">
@@ -66,8 +75,8 @@ const Layout = observer(
         <QuickFindCommand />
         <WhenDialogWrapper />
       </>
-    )
-  },
-)
+    );
+  }
+);
 
-export default Layout
+export default Layout;

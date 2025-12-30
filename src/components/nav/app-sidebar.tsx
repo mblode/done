@@ -1,6 +1,6 @@
-import {useDroppable} from '@dnd-kit/core'
-import {useQuery} from '@rocicorp/zero/react'
-import {addDays, startOfDay} from 'date-fns'
+import { useDroppable } from "@dnd-kit/core";
+import { useQuery } from "@rocicorp/zero/react";
+import { addDays, startOfDay } from "date-fns";
 import {
   ArchiveIcon,
   BookCheckIcon,
@@ -10,8 +10,8 @@ import {
   LogIn,
   StarIcon,
   TrashIcon,
-} from 'lucide-react'
-import {usePathname, useSearchParams} from 'next/navigation'
+} from "lucide-react";
+import { usePathname, useSearchParams } from "next/navigation";
 
 import {
   Sidebar,
@@ -19,64 +19,64 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenu,
-} from '@/components/ui/sidebar'
-import {useZero} from '@/hooks/use-zero'
+} from "@/components/ui/sidebar";
+import { queries } from "@/lib/zero/queries";
 
-import {WorkspaceSwitch} from '../workspace/workspace-switch'
-import {AppSidebarItem, AppSidebarItemType} from './app-sidebar-item'
+import { WorkspaceSwitch } from "../workspace/workspace-switch";
+import { AppSidebarItem, type AppSidebarItemType } from "./app-sidebar-item";
 
 const items: AppSidebarItemType[] = [
   {
-    id: 'inbox',
-    title: 'Inbox',
-    url: '/inbox',
+    id: "inbox",
+    title: "Inbox",
+    url: "/inbox",
     icon: InboxIcon,
   },
   {
-    id: 'today',
-    title: 'Today',
-    url: '/today',
+    id: "today",
+    title: "Today",
+    url: "/today",
     icon: StarIcon,
   },
   {
-    id: 'upcoming',
-    title: 'Upcoming',
-    url: '/upcoming',
+    id: "upcoming",
+    title: "Upcoming",
+    url: "/upcoming",
     icon: CalendarIcon,
   },
   {
-    id: 'anytime',
-    title: 'Anytime',
-    url: '/anytime',
+    id: "anytime",
+    title: "Anytime",
+    url: "/anytime",
     icon: LayersIcon,
   },
   {
-    id: 'someday',
-    title: 'Someday',
-    url: '/someday',
+    id: "someday",
+    title: "Someday",
+    url: "/someday",
     icon: ArchiveIcon,
   },
   {
-    id: 'logbook',
-    title: 'Logbook',
-    url: '/logbook',
+    id: "logbook",
+    title: "Logbook",
+    url: "/logbook",
     icon: BookCheckIcon,
   },
   {
-    id: 'trash',
-    title: 'Trash',
-    url: '/trash',
+    id: "trash",
+    title: "Trash",
+    url: "/trash",
     icon: TrashIcon,
   },
-]
+];
 
 export const AppSidebar = () => {
-  const {setNodeRef} = useDroppable({
-    id: 'sidebar-container',
+  const { setNodeRef } = useDroppable({
+    id: "sidebar-container",
     data: {
-      type: 'sidebar',
+      type: "sidebar",
     },
-  })
+  });
 
   return (
     <div>
@@ -95,57 +95,44 @@ export const AppSidebar = () => {
         </SidebarContent>
       </Sidebar>
     </div>
-  )
-}
+  );
+};
 
 const useGithubLogin = () => {
-  const pathname = usePathname()
-  const searchParams = useSearchParams().toString()
-  const link = [pathname, searchParams].filter(Boolean).join('?')
-  return '/api/auth/github?redirect=' + encodeURIComponent(link)
-}
+  const pathname = usePathname();
+  const searchParams = useSearchParams().toString();
+  const link = [pathname, searchParams].filter(Boolean).join("?");
+  return `/api/auth/github?redirect=${encodeURIComponent(link)}`;
+};
 
 const useGoogleLogin = () => {
-  const pathname = usePathname()
-  const searchParams = useSearchParams().toString()
-  const link = [pathname, searchParams].filter(Boolean).join('?')
-  return '/api/auth/google?redirect_url=' + encodeURIComponent(link)
-}
+  const pathname = usePathname();
+  const searchParams = useSearchParams().toString();
+  const link = [pathname, searchParams].filter(Boolean).join("?");
+  return `/api/auth/google?redirect_url=${encodeURIComponent(link)}`;
+};
 
 const useIsLoggedIn = () => {
-  const zero = useZero()
-  const [sessions] = useQuery(zero.query.session)
-  return sessions.length > 0
-}
+  const [sessions] = useQuery(queries.sessions.all());
+  return sessions.length > 0;
+};
 
 const BlockSidebarItems = () => {
-  const pathname = usePathname()
-  const zero = useZero()
+  const pathname = usePathname();
 
-  const tomorrow = addDays(startOfDay(new Date()), 1).getTime()
+  const tomorrow = addDays(startOfDay(new Date()), 1).getTime();
 
-  const [inboxTasks] = useQuery(
-    zero.query.task
-      .where('start', '=', 'not_started')
-      .where('archived_at', 'IS', null)
-      .where('completed_at', 'IS', null),
-  )
+  const [inboxTasks] = useQuery(queries.tasks.inbox());
 
-  const [todayTasks] = useQuery(
-    zero.query.task
-      .where('start', '=', 'started')
-      .where('start_date', '<', tomorrow)
-      .where('archived_at', 'IS', null)
-      .where('completed_at', 'IS', null),
-  )
+  const [todayTasks] = useQuery(queries.tasks.today({ tomorrow }));
 
   return items.map((item) => {
-    let count = undefined
+    let count: number | undefined;
 
-    if (item.id === 'inbox' && inboxTasks.length > 0) {
-      count = inboxTasks.length
-    } else if (item.id === 'today' && todayTasks.length > 0) {
-      count = todayTasks.length
+    if (item.id === "inbox" && inboxTasks.length > 0) {
+      count = inboxTasks.length;
+    } else if (item.id === "today" && todayTasks.length > 0) {
+      count = todayTasks.length;
     }
     return (
       <AppSidebarItem
@@ -154,38 +141,38 @@ const BlockSidebarItems = () => {
         count={count}
         isActive={pathname === item.url}
       />
-    )
-  })
-}
+    );
+  });
+};
 
 const BlockWorkspaceSwitch = () => {
-  const isLoggedIn = useIsLoggedIn()
+  const isLoggedIn = useIsLoggedIn();
 
   if (!isLoggedIn) {
-    return null
+    return null;
   }
 
-  return <WorkspaceSwitch.Block />
-}
+  return <WorkspaceSwitch.Block />;
+};
 
 const BlockLoginGoogle = () => {
-  const loginRef = useGoogleLogin()
+  const loginRef = useGoogleLogin();
 
   return (
     <div className="flex gap-2 px-2">
       <LogIn size={16} />
       <a href={loginRef}>Login (google)</a>
     </div>
-  )
-}
+  );
+};
 
 const BlockLoginGithub = () => {
-  const loginRef = useGithubLogin()
+  const loginRef = useGithubLogin();
 
   return (
     <div className="flex gap-2 px-2">
       <LogIn size={16} />
       <a href={loginRef}>Login (github)</a>
     </div>
-  )
-}
+  );
+};

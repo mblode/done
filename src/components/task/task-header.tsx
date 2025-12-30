@@ -1,17 +1,18 @@
-import {useCallback, useEffect, useRef} from 'react'
+import { useCallback, useEffect, useRef } from "react";
 
-import {Checkbox} from '@/components/ui/checkbox'
-import {Input} from '@/components/ui/input'
-import {useZero} from '@/hooks/use-zero'
-import {cn} from '@/lib/utils'
-import {TaskRow} from '@/schema'
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { useZero } from "@/hooks/use-zero";
+import { cn } from "@/lib/utils";
+import { mutators } from "@/lib/zero/mutators";
+import type { TaskRow } from "@/schema";
 
 type Props = {
-  task: TaskRow
-  checked: boolean
-  onComplete: (checked: boolean) => void
-  showDashedCheckbox?: boolean
-}
+  task: TaskRow;
+  checked: boolean;
+  onComplete: (checked: boolean) => void;
+  showDashedCheckbox?: boolean;
+};
 
 export const TaskHeader = ({
   task,
@@ -19,23 +20,25 @@ export const TaskHeader = ({
   onComplete,
   showDashedCheckbox,
 }: Props) => {
-  const zero = useZero()
+  const zero = useZero();
 
-  const firstInputRef = useRef(null)
+  const firstInputRef = useRef<HTMLInputElement>(null);
 
   const handleTitleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      zero.mutate.task.update({
-        id: task.id,
-        title: e.target.value,
-      })
+      zero.mutate(
+        mutators.task.update({
+          id: task.id,
+          title: e.target.value,
+        })
+      );
     },
-    [task.id, zero.mutate.task],
-  )
+    [task.id, zero]
+  );
 
   useEffect(() => {
-    ;(firstInputRef?.current as any).focus()
-  }, [])
+    firstInputRef?.current?.focus();
+  }, []);
 
   return (
     <div className="flex gap-2 px-4">
@@ -45,8 +48,8 @@ export const TaskHeader = ({
             id={`task-${task.id}-status`}
             checked={checked}
             onCheckedChange={onComplete}
-            className={cn('shrink-0', {
-              'ft-checkbox-dashed': showDashedCheckbox,
+            className={cn("shrink-0", {
+              "ft-checkbox-dashed": showDashedCheckbox,
             })}
           />
         </div>
@@ -61,5 +64,5 @@ export const TaskHeader = ({
         ref={firstInputRef}
       />
     </div>
-  )
-}
+  );
+};

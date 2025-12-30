@@ -1,21 +1,21 @@
-'use client'
+"use client";
 
-import {observer} from 'mobx-react-lite'
-import {ReactNode} from 'react'
+import { observer } from "mobx-react-lite";
+import type { ReactNode } from "react";
 
-import {WorkspaceSidebar} from '@/components/nav/workspace-sidebar'
-import {Separator} from '@/components/ui/separator'
+import { WorkspaceSidebar } from "@/components/nav/workspace-sidebar";
+import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from '@/components/ui/sidebar'
+} from "@/components/ui/sidebar";
 
 const Layout = observer(
   ({
     children,
   }: Readonly<{
-    children: ReactNode
+    children: ReactNode;
   }>) => {
     return (
       <SidebarProvider>
@@ -31,8 +31,8 @@ const Layout = observer(
           <div className="flex-1 px-8 py-6">{children}</div>
         </SidebarInset>
       </SidebarProvider>
-    )
-  },
-)
+    );
+  }
+);
 
-export default Layout
+export default Layout;

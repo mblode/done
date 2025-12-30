@@ -1,8 +1,8 @@
-import {useQuery} from '@rocicorp/zero/react'
-import {addDays, startOfDay} from 'date-fns'
-import {observer} from 'mobx-react-lite'
-import {useRouter} from 'next/navigation'
-import {useCallback, useContext} from 'react'
+import { useQuery } from "@rocicorp/zero/react";
+import { addDays, startOfDay } from "date-fns";
+import { observer } from "mobx-react-lite";
+import { useRouter } from "next/navigation";
+import { useCallback, useContext } from "react";
 
 import {
   CommandDialog,
@@ -11,28 +11,27 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '@/components/ui/command'
-import {useZero} from '@/hooks/use-zero'
-import {RootStoreContext} from '@/lib/stores/root-store'
-import {TaskRow} from '@/schema'
+} from "@/components/ui/command";
+import { RootStoreContext } from "@/lib/stores/root-store";
+import { queries } from "@/lib/zero/queries";
+import type { TaskRow } from "@/schema";
 
 const sections = [
   {
-    title: 'Recent',
+    title: "Recent",
     items: [
-      {id: 'today', title: 'Today', url: '/today'},
-      {id: 'anytime', title: 'Anytime', url: '/anytime'},
-      {id: 'inbox', title: 'Inbox', url: '/inbox'},
-      {id: 'upcoming', title: 'Upcoming', url: '/upcoming'},
-      {id: 'someday', title: 'Someday', url: '/someday'},
-      {id: 'logbook', title: 'Logbook', url: '/logbook'},
+      { id: "today", title: "Today", url: "/today" },
+      { id: "anytime", title: "Anytime", url: "/anytime" },
+      { id: "inbox", title: "Inbox", url: "/inbox" },
+      { id: "upcoming", title: "Upcoming", url: "/upcoming" },
+      { id: "someday", title: "Someday", url: "/someday" },
+      { id: "logbook", title: "Logbook", url: "/logbook" },
     ],
   },
-]
+];
 
 export const QuickFindCommand = observer(() => {
-  const router = useRouter()
-  const zero = useZero()
+  const router = useRouter();
   const {
     localStore: {
       quickFindQuery,
@@ -41,64 +40,62 @@ export const QuickFindCommand = observer(() => {
       setQuickFindOpen,
       setSelectedTaskIds,
     },
-  } = useContext(RootStoreContext)
+  } = useContext(RootStoreContext);
 
   // Fetch all non-archived, non-completed tasks
   const [filteredTasks] = useQuery(
-    zero.query.task
-      .where('title', 'ILIKE', `%${quickFindQuery}%`)
-      .where('archived_at', 'IS', null)
-      .where('completed_at', 'IS', null),
-    !!quickFindQuery,
-  )
+    queries.tasks.search({ query: quickFindQuery }),
+    !!quickFindQuery
+  );
 
   const handleSelect = useCallback(
     (url: string) => {
-      setQuickFindOpen(false)
-      router.push(url)
+      setQuickFindOpen(false);
+      router.push(url);
     },
-    [router, setQuickFindOpen],
-  )
+    [router, setQuickFindOpen]
+  );
 
   const handleTaskSelect = useCallback(
     (task: TaskRow) => {
-      setQuickFindOpen(false)
+      setQuickFindOpen(false);
 
       // Set the selected task ID first
-      setSelectedTaskIds([task.id])
+      setSelectedTaskIds([task.id]);
 
       // Determine which route to navigate to based on task properties
-      let targetRoute = '/inbox' // default route
+      let targetRoute = "/inbox"; // default route
 
       if (task.completed_at) {
-        targetRoute = '/logbook'
+        targetRoute = "/logbook";
       } else if (task.archived_at) {
-        targetRoute = '/trash'
+        targetRoute = "/trash";
       } else {
         switch (task.start) {
-          case 'started':
+          case "started": {
             if (!task.start_date) {
-              targetRoute = '/anytime'
-              break
+              targetRoute = "/anytime";
+              break;
             }
 
-            const tomorrow = addDays(startOfDay(new Date()), 1).getTime()
-            targetRoute = task.start_date < tomorrow ? '/today' : '/upcoming'
-            break
-          case 'someday':
+            const tomorrow = addDays(startOfDay(new Date()), 1).getTime();
+            targetRoute = task.start_date < tomorrow ? "/today" : "/upcoming";
+            break;
+          }
+          case "someday":
             // Someday tasks have start='started' and no start_date
-            targetRoute = '/someday'
-            break
-          case 'not_started':
-            targetRoute = '/inbox'
-            break
+            targetRoute = "/someday";
+            break;
+          case "not_started":
+            targetRoute = "/inbox";
+            break;
         }
       }
 
-      router.push(targetRoute)
+      router.push(targetRoute);
     },
-    [router, setQuickFindOpen, setSelectedTaskIds],
-  )
+    [router, setQuickFindOpen, setSelectedTaskIds]
+  );
 
   return (
     <CommandDialog open={quickFindOpen} onOpenChange={setQuickFindOpen}>
@@ -142,5 +139,5 @@ export const QuickFindCommand = observer(() => {
           ))}
       </CommandList>
     </CommandDialog>
-  )
-})
+  );
+});

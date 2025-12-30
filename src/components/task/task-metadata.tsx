@@ -1,21 +1,21 @@
 // import {useQuery} from '@rocicorp/zero/react'
-import {differenceInDays, format} from 'date-fns'
-import {ClockIcon, FileIcon, ListIcon} from 'lucide-react'
+import { differenceInDays, format } from "date-fns";
+import { ClockIcon, FileIcon, ListIcon } from "lucide-react";
 
 // import {useCallback} from 'react'
 // import {useZero} from '@/hooks/use-zero'
-import {cn} from '@/lib/utils'
+import { cn } from "@/lib/utils";
 
-import {Badge} from '../ui/badge'
+import { Badge } from "../ui/badge";
 // import {AssigneeSwitcher} from './assignee-switcher'
-import {Task} from './types'
+import type { Task } from "./types";
 
 type Props = {
-  task: Task
-  className?: string
-}
+  task: Task;
+  className?: string;
+};
 
-export const TaskMetadata = ({task, className}: Props) => {
+export const TaskMetadata = ({ task, className }: Props) => {
   // const zero = useZero()
 
   // const [workspaceMembers] = useQuery(
@@ -33,29 +33,29 @@ export const TaskMetadata = ({task, className}: Props) => {
   // )
 
   const getDaysLeft = (deadline_at: Date) => {
-    const days = differenceInDays(deadline_at, new Date())
-    return `${days} days left`
-  }
+    const days = differenceInDays(deadline_at, new Date());
+    return `${days} days left`;
+  };
 
   const hasLeftMetadata =
     (task?.tags || []).length > 0 ||
     (task?.checklistItems || []).length > 0 ||
     task.reminder_at ||
-    task.description
+    task.description;
 
   if (!hasLeftMetadata && !task.deadline_at) {
-    return null
+    return null;
   }
 
   return (
-    <div className={cn('flex items-center justify-between px-3', className)}>
+    <div className={cn("flex items-center justify-between px-3", className)}>
       {/* Left side metadata */}
       <div className="flex items-center gap-2">
         {task.reminder_at && (
           <div className="flex items-center gap-1">
             <ClockIcon className="size-3 text-muted-foreground" />
             <span className="text-xs text-muted-foreground">
-              {format(task.reminder_at, 'h:mm a')}
+              {format(task.reminder_at, "h:mm a")}
             </span>
           </div>
         )}
@@ -102,5 +102,5 @@ export const TaskMetadata = ({task, className}: Props) => {
         onAssigneeChange={handleAssigneeChange}
       /> */}
     </div>
-  )
-}
+  );
+};

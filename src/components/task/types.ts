@@ -1,6 +1,6 @@
-import {ChecklistItemRow, TagRow, TaskRow} from '@/schema'
+import type { ChecklistItemRow, TagRow, TaskRow } from "@/schema";
 
 export type Task = TaskRow & {
-  tags: readonly TagRow[]
-  checklistItems: readonly ChecklistItemRow[]
-}
+  tags: readonly TagRow[];
+  checklistItems: readonly ChecklistItemRow[];
+};

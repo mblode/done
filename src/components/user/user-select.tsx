@@ -1,32 +1,32 @@
-'use client'
+"use client";
 
-import {useQuery} from '@rocicorp/zero/react'
-import {useEffect, useMemo, useState} from 'react'
+import { useQuery } from "@rocicorp/zero/react";
+import { useEffect, useMemo, useState } from "react";
 
-import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import {useZero} from '@/hooks/use-zero'
-import {getUserInitials} from '@/lib/helpers'
-import {UserRow} from '@/schema'
+} from "@/components/ui/select";
+import { getUserInitials } from "@/lib/helpers";
+import { queries } from "@/lib/zero/queries";
+import type { UserRow } from "@/schema";
 
 type ExtendedUserRow = UserRow & {
   profile: {
-    id: string
-    name: string
-    avatar?: string | null
-  }
-}
+    id: string;
+    name: string;
+    avatar?: string | null;
+  };
+};
 
 type Compound = typeof View & {
-  useBlock: typeof useBlock
-  Block: typeof Block
-}
+  useBlock: typeof useBlock;
+  Block: typeof Block;
+};
 
 export const View = ({
   users,
@@ -34,10 +34,10 @@ export const View = ({
   selectedUserId,
   changeUser: changeProfile,
 }: {
-  users: readonly ExtendedUserRow[]
-  selectedUser?: ExtendedUserRow
-  selectedUserId?: string
-  changeUser: (profileId: string) => void
+  users: readonly ExtendedUserRow[];
+  selectedUser?: ExtendedUserRow;
+  selectedUserId?: string;
+  changeUser: (profileId: string) => void;
 }) => (
   <Select value={selectedUserId} onValueChange={changeProfile}>
     <SelectTrigger className="w-[280px]">
@@ -65,7 +65,7 @@ export const View = ({
       ))}
     </SelectContent>
   </Select>
-)
+);
 
 const ProfileItem = ({
   name,
@@ -73,14 +73,14 @@ const ProfileItem = ({
   email,
   showEmail,
 }: {
-  name: string
-  avatar?: string | null
-  email?: string | null
-  showEmail: boolean
+  name: string;
+  avatar?: string | null;
+  email?: string | null;
+  showEmail: boolean;
 }) => (
   <div className="flex items-center gap-2">
     <Avatar className="size-6">
-      <AvatarImage src={avatar || undefined} alt={name || 'Profile'} />
+      <AvatarImage src={avatar || undefined} alt={name || "Profile"} />
       <AvatarFallback>{getUserInitials(name || ``)}</AvatarFallback>
     </Avatar>
     <span className="max-w-[160px] truncate">{name}</span>
@@ -88,54 +88,48 @@ const ProfileItem = ({
       <span className="ml-2 text-xs text-muted-foreground">{email}</span>
     )}
   </div>
-)
+);
 
 const useBlock = () => {
-  const zero = useZero()
+  const [sessions] = useQuery(queries.sessions.withUserProfile());
 
-  const [sessions] = useQuery(
-    zero.query.session.related('user', (q) =>
-      q.one().related('profile', (q) => q.one()),
-    ),
-  )
-
-  const [selectedUserId, setSelectedUserId] = useState<string | undefined>()
+  const [selectedUserId, setSelectedUserId] = useState<string | undefined>();
 
   const users = useMemo(() => {
     if (!sessions) {
-      return []
+      return [];
     }
     return sessions
       .map((s) => s.user)
-      .filter((user) => user?.profile?.id) as ExtendedUserRow[]
-  }, [sessions])
+      .filter((user) => user?.profile?.id) as ExtendedUserRow[];
+  }, [sessions]);
 
-  const selectedUser = users.find((user) => user.profile.id === selectedUserId)
+  const selectedUser = users.find((user) => user.profile.id === selectedUserId);
 
   useEffect(() => {
     if (!selectedUser && users[0]?.profile?.id) {
-      setSelectedUserId(users[0]?.profile.id)
+      setSelectedUserId(users[0]?.profile.id);
     }
-  }, [users, selectedUser])
+  }, [users, selectedUser]);
 
   const changeProfile = async (profileId: string) => {
-    setSelectedUserId(profileId)
-  }
+    setSelectedUserId(profileId);
+  };
 
   return {
     users,
     selectedUser,
     selectedUserId,
     changeUser: changeProfile,
-  }
-}
+  };
+};
 
 const Block = () => {
-  const fromUserSelect = useBlock()
-  return <UserSelect {...fromUserSelect} />
-}
+  const fromUserSelect = useBlock();
+  return <UserSelect {...fromUserSelect} />;
+};
 
 // @ts-expect-error compound
-export const UserSelect: Compound = View
-UserSelect.useBlock = useBlock
-UserSelect.Block = Block
+export const UserSelect: Compound = View;
+UserSelect.useBlock = useBlock;
+UserSelect.Block = Block;

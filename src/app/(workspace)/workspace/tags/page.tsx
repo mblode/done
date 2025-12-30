@@ -1,18 +1,18 @@
-'use client'
+"use client";
 
-import {useQuery} from '@rocicorp/zero/react'
-import {MoreHorizontal, Plus, Search} from 'lucide-react'
-import {useMemo, useState} from 'react'
-import {toast} from 'sonner'
+import { useQuery } from "@rocicorp/zero/react";
+import { MoreHorizontal, Plus, Search } from "lucide-react";
+import { useMemo, useState } from "react";
+import { toast } from "sonner";
 
-import {Button} from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import {Input} from '@/components/ui/input'
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -20,28 +20,27 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import {useZero} from '@/hooks/use-zero'
+} from "@/components/ui/table";
+import { queries } from "@/lib/zero/queries";
 
 type Props = {
-  params: {workspaceSlug: string}
-}
+  params: { workspaceSlug: string };
+};
 
-export default function Page({params: {}}: Props) {
-  const zero = useZero()
-  const [tags] = useQuery(zero.query.tag.orderBy('updated_at', 'desc'))
-  const [search, setSearch] = useState('')
+export default function Page(_props: Props) {
+  const [tags] = useQuery(queries.tags.all());
+  const [search, setSearch] = useState("");
 
   const filteredTags = useMemo(() => {
     return tags.filter((tag) =>
-      tag.title.toLowerCase().includes(search.toLowerCase()),
-    )
-  }, [tags, search])
+      tag.title.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [tags, search]);
 
   const handleNewTag = () => {
     // Implement new tag creation
-    toast.info('New tag creation coming soon')
-  }
+    toast.info("New tag creation coming soon");
+  };
 
   return (
     <div className="container mx-auto max-w-6xl space-y-6 py-6">
@@ -93,14 +92,14 @@ export default function Page({params: {}}: Props) {
               </TableCell>
               <TableCell>
                 {new Date(tag.created_at).toLocaleDateString(undefined, {
-                  month: 'short',
-                  day: 'numeric',
+                  month: "short",
+                  day: "numeric",
                 })}
               </TableCell>
               <TableCell>
                 {new Date(tag.updated_at).toLocaleDateString(undefined, {
-                  month: 'short',
-                  day: 'numeric',
+                  month: "short",
+                  day: "numeric",
                 })}
               </TableCell>
               <TableCell>
@@ -123,5 +122,5 @@ export default function Page({params: {}}: Props) {
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }

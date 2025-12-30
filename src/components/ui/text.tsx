@@ -1,96 +1,96 @@
-import {Slot} from '@radix-ui/react-slot'
-import {cva, VariantProps} from 'class-variance-authority'
-import * as React from 'react'
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
+import * as React from "react";
 
-import {cn} from '@/lib/utils'
+import { cn } from "@/lib/utils";
 
-const textVariants = cva('', {
+const textVariants = cva("", {
   variants: {
     size: {
-      xsmall: '',
-      small: '',
-      base: '',
-      large: '',
-      xlarge: '',
+      xsmall: "",
+      small: "",
+      base: "",
+      large: "",
+      xlarge: "",
     },
     weight: {
-      regular: 'font-normal',
-      plus: 'font-medium',
+      regular: "font-normal",
+      plus: "font-medium",
     },
     family: {
-      sans: 'font-sans',
-      mono: 'font-mono',
+      sans: "font-sans",
+      mono: "font-mono",
     },
     leading: {
-      normal: '',
-      compact: '',
+      normal: "",
+      compact: "",
     },
   },
   defaultVariants: {
-    family: 'sans',
-    size: 'base',
-    weight: 'regular',
-    leading: 'normal',
+    family: "sans",
+    size: "base",
+    weight: "regular",
+    leading: "normal",
   },
   compoundVariants: [
     {
-      size: 'xsmall',
-      leading: 'normal',
-      className: 'txt-xsmall',
+      size: "xsmall",
+      leading: "normal",
+      className: "txt-xsmall",
     },
     {
-      size: 'xsmall',
-      leading: 'compact',
-      className: 'txt-compact-xsmall',
+      size: "xsmall",
+      leading: "compact",
+      className: "txt-compact-xsmall",
     },
     {
-      size: 'small',
-      leading: 'normal',
-      className: 'txt-small',
+      size: "small",
+      leading: "normal",
+      className: "txt-small",
     },
     {
-      size: 'small',
-      leading: 'compact',
-      className: 'txt-compact-small',
+      size: "small",
+      leading: "compact",
+      className: "txt-compact-small",
     },
     {
-      size: 'base',
-      leading: 'normal',
-      className: 'txt-medium',
+      size: "base",
+      leading: "normal",
+      className: "txt-medium",
     },
     {
-      size: 'base',
-      leading: 'compact',
-      className: 'txt-compact-medium',
+      size: "base",
+      leading: "compact",
+      className: "txt-compact-medium",
     },
     {
-      size: 'large',
-      leading: 'normal',
-      className: 'txt-large',
+      size: "large",
+      leading: "normal",
+      className: "txt-large",
     },
     {
-      size: 'large',
-      leading: 'compact',
-      className: 'txt-compact-large',
+      size: "large",
+      leading: "compact",
+      className: "txt-compact-large",
     },
     {
-      size: 'xlarge',
-      leading: 'normal',
-      className: 'txt-xlarge',
+      size: "xlarge",
+      leading: "normal",
+      className: "txt-xlarge",
     },
     {
-      size: 'xlarge',
-      leading: 'compact',
-      className: 'txt-compact-xlarge',
+      size: "xlarge",
+      leading: "compact",
+      className: "txt-compact-xlarge",
     },
   ],
-})
+});
 
 interface TextProps
-  extends React.ComponentPropsWithoutRef<'p'>,
+  extends React.ComponentPropsWithoutRef<"p">,
     VariantProps<typeof textVariants> {
-  asChild?: boolean
-  as?: 'p' | 'span' | 'div'
+  asChild?: boolean;
+  as?: "p" | "span" | "div";
 }
 
 /**
@@ -108,41 +108,44 @@ const Text = React.forwardRef<HTMLParagraphElement, TextProps>(
       /**
        * The wrapper element to use when `asChild` is disabled.
        */
-      as = 'p',
+      as = "p",
       /**
        * The text's size.
        */
-      size = 'base',
+      size = "base",
       /**
        * The text's font weight.
        */
-      weight = 'regular',
+      weight = "regular",
       /**
        * The text's font family.
        */
-      family = 'sans',
+      family = "sans",
       /**
        * The text's line height.
        */
-      leading = 'normal',
+      leading = "normal",
       children,
       ...props
     }: TextProps,
-    ref,
+    ref
   ) => {
-    const Component = asChild ? Slot : as
+    const Component = asChild ? Slot : as;
 
     return (
       <Component
         ref={ref}
-        className={cn(textVariants({size, weight, family, leading}), className)}
+        className={cn(
+          textVariants({ size, weight, family, leading }),
+          className
+        )}
         {...props}
       >
         {children}
       </Component>
-    )
-  },
-)
-Text.displayName = 'Text'
+    );
+  }
+);
+Text.displayName = "Text";
 
-export {Text}
+export { Text };

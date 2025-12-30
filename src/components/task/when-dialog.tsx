@@ -6,7 +6,7 @@ import {
   isToday,
   startOfDay,
   startOfToday,
-} from 'date-fns'
+} from "date-fns";
 import {
   Check,
   ChevronLeft,
@@ -17,198 +17,203 @@ import {
   Package,
   Star,
   StarIcon,
-} from 'lucide-react'
-import {observer} from 'mobx-react-lite'
-import {useCallback, useContext} from 'react'
-import {DayPicker, DayProps} from 'react-day-picker'
+} from "lucide-react";
+import { observer } from "mobx-react-lite";
+import { useCallback, useContext } from "react";
+import { DayPicker, type DayProps } from "react-day-picker";
 
-import {Button} from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import {useZero} from '@/hooks/use-zero'
-import {RootStoreContext} from '@/lib/stores/root-store'
-import {cn} from '@/lib/utils'
-import {TaskRow} from '@/schema'
+} from "@/components/ui/dialog";
+import { useZero } from "@/hooks/use-zero";
+import { RootStoreContext } from "@/lib/stores/root-store";
+import { cn } from "@/lib/utils";
+import { mutators } from "@/lib/zero/mutators";
+import type { TaskRow } from "@/schema";
 
 type BaseDialogProps = {
-  open: boolean
-  setOpen: (open: boolean) => void
-}
+  open: boolean;
+  setOpen: (open: boolean) => void;
+};
 
 type SingleTaskProps = BaseDialogProps & {
-  type: 'single'
-  task: TaskRow
-  immediate?: boolean
-}
+  type: "single";
+  task: TaskRow;
+  immediate?: boolean;
+};
 
 type MultipleTaskProps = BaseDialogProps & {
-  type: 'multiple'
-  taskIds: string[]
-}
+  type: "multiple";
+  taskIds: string[];
+};
 
-type Props = SingleTaskProps | MultipleTaskProps
+type Props = SingleTaskProps | MultipleTaskProps;
 
 type TaskUpdate = {
-  start?: 'not_started' | 'started' | 'someday'
-  start_bucket: 'today' | 'evening'
-  start_date: number | null
-}
+  start?: "not_started" | "started" | "someday";
+  start_bucket: "today" | "evening";
+  start_date: number | null;
+};
 
 export const getButtonIcon = (task: TaskRow) => {
-  if (task.start === 'started' && !task.start_date)
-    return <LayersIcon className="size-4" />
-  if (task.start === 'someday' && !task.start_date)
-    return <Package className="size-4" />
-  if (task.start === 'not_started') return <Inbox className="size-4" />
-  if (task.start_bucket === 'evening') return <Moon className="size-4" />
-  return <Star className="size-4" />
-}
+  if (task.start === "started" && !task.start_date)
+    return <LayersIcon className="size-4" />;
+  if (task.start === "someday" && !task.start_date)
+    return <Package className="size-4" />;
+  if (task.start === "not_started") return <Inbox className="size-4" />;
+  if (task.start_bucket === "evening") return <Moon className="size-4" />;
+  return <Star className="size-4" />;
+};
 
 export const getButtonText = (task: TaskRow) => {
-  const tomorrow = addDays(startOfDay(new Date()), 1).getTime()
+  const tomorrow = addDays(startOfDay(new Date()), 1).getTime();
 
-  if (task.start === 'started' && !task.start_date) return 'Anytime'
-  if (task.start === 'someday' && !task.start_date) return 'Someday'
-  if (task.start === 'not_started') return 'Inbox'
+  if (task.start === "started" && !task.start_date) return "Anytime";
+  if (task.start === "someday" && !task.start_date) return "Someday";
+  if (task.start === "not_started") return "Inbox";
   if (
-    task.start === 'started' &&
-    task.start_bucket === 'evening' &&
+    task.start === "started" &&
+    task.start_bucket === "evening" &&
     !!task.start_date &&
     task.start_date < tomorrow
   )
-    return 'This Evening'
+    return "This Evening";
   if (
-    task.start === 'started' &&
-    task.start_bucket === 'today' &&
+    task.start === "started" &&
+    task.start_bucket === "today" &&
     !!task.start_date &&
     task.start_date < tomorrow
   )
-    return 'Today'
-  if (task.start_date) return format(new Date(task.start_date), 'MMM d')
-  return 'Today'
-}
+    return "Today";
+  if (task.start_date) return format(new Date(task.start_date), "MMM d");
+  return "Today";
+};
 
 const CustomDaycell = (
-  props: DayProps & {selected?: Date; onClick?: (date: Date) => void},
+  props: DayProps & { selected?: Date; onClick?: (date: Date) => void }
 ) => {
-  const {date, selected, onClick, ...rest} = props
+  const { date, selected, onClick, ...rest } = props;
 
-  const isSelectedDate = selected && isSameDay(date, selected)
+  const isSelectedDate = selected && isSameDay(date, selected);
 
-  const today = startOfToday()
-  const disabled = isBefore(date, today)
+  const today = startOfToday();
+  const disabled = isBefore(date, today);
 
   return (
     <button
       {...rest}
       onClick={() => onClick?.(date)}
       className={cn(
-        'flex h-9 w-9 items-center justify-center rounded-[8px] p-0 font-normal text-foreground hover:bg-muted hover:text-foreground focus:bg-muted focus:outline-none',
+        "flex h-9 w-9 items-center justify-center rounded-[8px] p-0 font-normal text-foreground hover:bg-muted hover:text-foreground focus:bg-muted focus:outline-none",
         {
-          'bg-primary text-primary-foreground': isSelectedDate,
-          'pointer-events-none opacity-60': disabled,
-        },
+          "bg-primary text-primary-foreground": isSelectedDate,
+          "pointer-events-none opacity-60": disabled,
+        }
       )}
       disabled={disabled}
     >
-      {isToday(date) ? <StarIcon className="size-4" /> : format(date, 'd')}
+      {isToday(date) ? <StarIcon className="size-4" /> : format(date, "d")}
     </button>
-  )
-}
+  );
+};
 
 export const WhenDialog = observer((props: Props) => {
-  const zero = useZero()
+  const zero = useZero();
 
   const {
-    localStore: {setOpenTaskId, setSelectedTaskIds, setTempTask},
-  } = useContext(RootStoreContext)
+    localStore: { setOpenTaskId, setSelectedTaskIds, setTempTask },
+  } = useContext(RootStoreContext);
 
   const updateTasks = useCallback(
     async (update: TaskUpdate) => {
-      if (props.type === 'single' && !!props.immediate) {
-        zero.mutate.task.update({
-          id: props.task.id,
-          archived_at: null,
-          ...update,
-        })
-      } else if (props.type === 'single') {
+      if (props.type === "single" && !!props.immediate) {
+        zero.mutate(
+          mutators.task.update({
+            id: props.task.id,
+            archived_at: null,
+            ...update,
+          })
+        );
+      } else if (props.type === "single") {
         setTempTask({
           ...props.task,
           archived_at: null,
           ...update,
-        })
+        });
       } else {
         await Promise.all(
           props.taskIds.map((id) =>
-            zero.mutate.task.update({
-              id,
-              archived_at: null,
-              ...update,
-            }),
-          ),
-        )
+            zero.mutate(
+              mutators.task.update({
+                id,
+                archived_at: null,
+                ...update,
+              })
+            )
+          )
+        );
 
-        setOpenTaskId(null)
-        setSelectedTaskIds([])
+        setOpenTaskId(null);
+        setSelectedTaskIds([]);
       }
     },
-    [props, setOpenTaskId, setSelectedTaskIds, setTempTask, zero.mutate.task],
-  )
+    [props, setOpenTaskId, setSelectedTaskIds, setTempTask, zero]
+  );
 
   const handleSelect = async (date: Date | undefined) => {
-    if (!date) return
+    if (!date) return;
 
     await updateTasks({
-      start: 'started',
+      start: "started",
       start_date: date ? date.getTime() : null,
-      start_bucket: 'today',
-    })
+      start_bucket: "today",
+    });
 
-    props.setOpen(false)
-  }
+    props.setOpen(false);
+  };
 
   const handleToday = async () => {
     await updateTasks({
-      start: 'started',
-      start_bucket: 'today',
+      start: "started",
+      start_bucket: "today",
       start_date: Date.now(),
-    })
-    props.setOpen(false)
-  }
+    });
+    props.setOpen(false);
+  };
 
   const handleEvening = async () => {
     await updateTasks({
-      start: 'started',
-      start_bucket: 'evening',
+      start: "started",
+      start_bucket: "evening",
       start_date: Date.now(),
-    })
-    props.setOpen(false)
-  }
+    });
+    props.setOpen(false);
+  };
 
   const handleSomeday = async () => {
     await updateTasks({
-      start: 'someday',
-      start_bucket: 'today',
+      start: "someday",
+      start_bucket: "today",
       start_date: null,
-    })
-    props.setOpen(false)
-  }
+    });
+    props.setOpen(false);
+  };
 
   const handleClear = async () => {
     await updateTasks({
-      start_bucket: 'today',
+      start_bucket: "today",
       start_date: null,
-    })
-    props.setOpen(false)
-  }
+    });
+    props.setOpen(false);
+  };
 
-  const tomorrow = addDays(startOfDay(new Date()), 1).getTime()
+  const tomorrow = addDays(startOfDay(new Date()), 1).getTime();
 
-  const singleTask = props.type === 'single' ? props.task : null
+  const singleTask = props.type === "single" ? props.task : null;
 
   return (
     <Dialog open={props.open} onOpenChange={props.setOpen}>
@@ -221,20 +226,20 @@ export const WhenDialog = observer((props: Props) => {
           <Button
             size="xs"
             variant={
-              singleTask?.start_bucket === 'today' &&
-              singleTask?.start === 'started' &&
+              singleTask?.start_bucket === "today" &&
+              singleTask?.start === "started" &&
               !!singleTask?.start_date &&
               singleTask.start_date < tomorrow
-                ? 'secondary'
-                : 'ghost'
+                ? "secondary"
+                : "ghost"
             }
             onClick={handleToday}
             className="w-full justify-start"
           >
             <Star className="mr-2 size-4" />
             Today
-            {singleTask?.start_bucket === 'today' &&
-              singleTask?.start === 'started' &&
+            {singleTask?.start_bucket === "today" &&
+              singleTask?.start === "started" &&
               !!singleTask?.start_date &&
               singleTask.start_date < tomorrow && (
                 <Check className="ml-auto size-4" />
@@ -244,20 +249,20 @@ export const WhenDialog = observer((props: Props) => {
           <Button
             size="xs"
             variant={
-              singleTask?.start_bucket === 'evening' &&
-              singleTask?.start === 'started' &&
+              singleTask?.start_bucket === "evening" &&
+              singleTask?.start === "started" &&
               !!singleTask?.start_date &&
               singleTask.start_date < tomorrow
-                ? 'secondary'
-                : 'ghost'
+                ? "secondary"
+                : "ghost"
             }
             onClick={handleEvening}
             className="w-full justify-start"
           >
             <Moon className="mr-2 size-4" />
             This Evening
-            {singleTask?.start_bucket === 'evening' &&
-              singleTask?.start === 'started' &&
+            {singleTask?.start_bucket === "evening" &&
+              singleTask?.start === "started" &&
               !!singleTask?.start_date &&
               singleTask.start_date < tomorrow && (
                 <Check className="ml-auto size-4" />
@@ -273,32 +278,32 @@ export const WhenDialog = observer((props: Props) => {
           fromDate={new Date()}
           mode="single"
           classNames={{
-            months: 'flex flex-col',
-            month: 'space-y-2',
-            caption: 'flex relative items-center h-8',
-            caption_label: 'text-sm font-medium text-foreground flex-1',
-            nav: 'space-x-1 flex items-center',
+            months: "flex flex-col",
+            month: "space-y-2",
+            caption: "flex relative items-center h-8",
+            caption_label: "text-sm font-medium text-foreground flex-1",
+            nav: "space-x-1 flex items-center",
             nav_button: cn(
-              'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 text-foreground',
+              "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 text-foreground"
             ),
-            table: 'w-full border-collapse space-y-1',
-            head_row: 'flex justify-between',
-            head_cell: 'text-muted-foreground w-9 font-normal text-[0.8rem]',
-            row: 'flex w-full mt-2 justify-between',
+            table: "w-full border-collapse space-y-1",
+            head_row: "flex justify-between",
+            head_cell: "text-muted-foreground w-9 font-normal text-[0.8rem]",
+            row: "flex w-full mt-2 justify-between",
             cell: cn(
-              'relative p-0 text-center text-sm focus-within:relative',
-              'first:[&:not([disabled])]:rounded-l-md last:[&:not([disabled])]:rounded-r-md',
+              "relative p-0 text-center text-sm focus-within:relative",
+              "first:[&:not([disabled])]:rounded-l-md last:[&:not([disabled])]:rounded-r-md"
             ),
             day: cn(
-              'h-9 w-9 p-0 font-normal',
-              'hover:bg-muted focus:bg-muted focus:outline-none',
-              'text-foreground/60 hover:text-foreground',
+              "h-9 w-9 p-0 font-normal",
+              "hover:bg-muted focus:bg-muted focus:outline-none",
+              "text-foreground/60 hover:text-foreground"
             ),
-            day_today: 'bg-muted text-foreground',
-            day_selected: 'bg-muted text-foreground',
-            day_outside: 'text-muted-foreground/50',
-            day_disabled: 'text-muted-foreground/50',
-            day_hidden: 'invisible',
+            day_today: "bg-muted text-foreground",
+            day_selected: "bg-muted text-foreground",
+            day_outside: "text-muted-foreground/50",
+            day_disabled: "text-muted-foreground/50",
+            day_hidden: "invisible",
           }}
           components={{
             IconLeft: () => <ChevronLeft className="size-4" />,
@@ -319,9 +324,9 @@ export const WhenDialog = observer((props: Props) => {
 
         <Button
           variant={
-            singleTask?.start === 'someday' && !singleTask.start_date
-              ? 'secondary'
-              : 'ghost'
+            singleTask?.start === "someday" && !singleTask.start_date
+              ? "secondary"
+              : "ghost"
           }
           size="xs"
           className="w-full justify-start text-left"
@@ -329,7 +334,7 @@ export const WhenDialog = observer((props: Props) => {
         >
           <Package className="mr-2 size-4" />
           Someday
-          {singleTask?.start === 'someday' && !singleTask.start_date && (
+          {singleTask?.start === "someday" && !singleTask.start_date && (
             <Check className="ml-auto size-4" />
           )}
         </Button>
@@ -354,5 +359,5 @@ export const WhenDialog = observer((props: Props) => {
         </div>
       </DialogContent>
     </Dialog>
-  )
-})
+  );
+});

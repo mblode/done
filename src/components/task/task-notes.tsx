@@ -1,20 +1,21 @@
-import Highlight from '@tiptap/extension-highlight'
-import Placeholder from '@tiptap/extension-placeholder'
-import Typography from '@tiptap/extension-typography'
-import {EditorContent, useEditor} from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import {useEffect} from 'react'
+import Highlight from "@tiptap/extension-highlight";
+import Placeholder from "@tiptap/extension-placeholder";
+import Typography from "@tiptap/extension-typography";
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import { useEffect } from "react";
 
-import {useZero} from '@/hooks/use-zero'
-import {cn} from '@/lib/utils'
-import {TaskRow} from '@/schema'
+import { useZero } from "@/hooks/use-zero";
+import { cn } from "@/lib/utils";
+import { mutators } from "@/lib/zero/mutators";
+import type { TaskRow } from "@/schema";
 
 type Props = {
-  task: TaskRow
-}
+  task: TaskRow;
+};
 
-export const TaskNotes = ({task}: Props) => {
-  const zero = useZero()
+export const TaskNotes = ({ task }: Props) => {
+  const zero = useZero();
 
   const editor = useEditor({
     extensions: [
@@ -22,33 +23,35 @@ export const TaskNotes = ({task}: Props) => {
       Typography,
       Highlight,
       Placeholder.configure({
-        placeholder: 'Notes',
+        placeholder: "Notes",
       }),
     ],
-    content: task.description || '',
+    content: task.description || "",
     editorProps: {
       attributes: {
         class: cn(
-          'w-full resize-none p-0 pb-4 pl-10 text-current [&_*]:text-current',
-          'bg-transparent outline-none focus:outline-none focus:ring-0',
-          'prose prose-sm max-w-none',
+          "w-full resize-none p-0 pb-4 pl-10 text-current [&_*]:text-current",
+          "bg-transparent outline-none focus:outline-none focus:ring-0",
+          "prose prose-sm max-w-none"
         ),
       },
     },
-    onUpdate: ({editor}) => {
-      const html = editor.isEmpty ? '' : editor.getHTML()
-      zero.mutate.task.update({
-        id: task.id,
-        description: html,
-      })
+    onUpdate: ({ editor }) => {
+      const html = editor.isEmpty ? "" : editor.getHTML();
+      zero.mutate(
+        mutators.task.update({
+          id: task.id,
+          description: html,
+        })
+      );
     },
-  })
+  });
 
   useEffect(() => {
     if (editor && task.description !== editor.getHTML()) {
-      editor.commands.setContent(task.description || '')
+      editor.commands.setContent(task.description || "");
     }
-  }, [editor, task.description])
+  }, [editor, task.description]);
 
-  return <EditorContent editor={editor} className="w-full" />
-}
+  return <EditorContent editor={editor} className="w-full" />;
+};

@@ -1,23 +1,23 @@
-import {CalendarIcon} from 'lucide-react'
-import {useCallback, useContext} from 'react'
+import { CalendarIcon } from "lucide-react";
+import { useCallback, useContext } from "react";
 
-import {Button} from '@/components/ui/button'
-import {RootStoreContext} from '@/lib/stores/root-store'
-import {TaskRow} from '@/schema'
+import { Button } from "@/components/ui/button";
+import { RootStoreContext } from "@/lib/stores/root-store";
+import type { TaskRow } from "@/schema";
 
 type Props = {
-  task: TaskRow
-}
+  task: TaskRow;
+};
 
-export const WhenButton = ({task}: Props) => {
+export const WhenButton = ({ task }: Props) => {
   const {
-    localStore: {setWhenOpen, setWhenState},
-  } = useContext(RootStoreContext)
+    localStore: { setWhenOpen, setWhenState },
+  } = useContext(RootStoreContext);
 
   const handleClick = useCallback(() => {
-    setWhenState({type: 'single', task})
-    setWhenOpen(true)
-  }, [setWhenOpen, setWhenState, task])
+    setWhenState({ type: "single", task });
+    setWhenOpen(true);
+  }, [setWhenOpen, setWhenState, task]);
 
   return (
     <Button
@@ -28,5 +28,5 @@ export const WhenButton = ({task}: Props) => {
     >
       <CalendarIcon className="size-4" />
     </Button>
-  )
-}
+  );
+};

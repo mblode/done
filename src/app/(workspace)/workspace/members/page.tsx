@@ -1,80 +1,74 @@
-'use client'
+"use client";
 
-import {useQuery} from '@rocicorp/zero/react'
-import {ArrowUpDown, MoreHorizontal, PlusCircle} from 'lucide-react'
-import {observer} from 'mobx-react-lite'
-import {useContext, useState} from 'react'
+import { useQuery } from "@rocicorp/zero/react";
+import { ArrowUpDown, MoreHorizontal, PlusCircle } from "lucide-react";
+import { observer } from "mobx-react-lite";
+import { useContext, useState } from "react";
 
-import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar'
-import {Button} from '@/components/ui/button'
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import {Input} from '@/components/ui/input'
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import {useZero} from '@/hooks/use-zero'
-import {getUserInitials} from '@/lib/helpers'
-import {RootStoreContext} from '@/lib/stores/root-store'
+} from "@/components/ui/select";
+import { getUserInitials } from "@/lib/helpers";
+import { RootStoreContext } from "@/lib/stores/root-store";
+import { queries } from "@/lib/zero/queries";
 
-export default observer(function () {
+export default observer(() => {
   const {
-    localStore: {selectedWorkspaceId},
-  } = useContext(RootStoreContext)
+    localStore: { selectedWorkspaceId },
+  } = useContext(RootStoreContext);
 
-  const zero = useZero()
-
-  let query = zero.query.workspace_member.related('user', (q) =>
-    q.one().related('profile', (q) => q.one()),
-  )
-
-  if (selectedWorkspaceId) {
-    query = query.where('workspace_id', '=', selectedWorkspaceId).limit(0)
-  }
-
-  const [members] = useQuery(query)
-  const [search, setSearch] = useState('')
-  const [filter, setFilter] = useState<'All' | 'Admin' | 'Member'>('All')
+  const [members] = useQuery(
+    queries.workspaceMembers.withUserProfile({
+      workspaceId: selectedWorkspaceId,
+    })
+  );
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState<"All" | "Admin" | "Member">("All");
 
   const filteredMembers = members.filter((member) => {
-    const name = member.user?.profile?.name || ''
-    const email = member.user?.email || ''
+    const name = member.user?.profile?.name || "";
+    const email = member.user?.email || "";
     const matchesSearch =
       name.toLowerCase().includes(search.toLowerCase()) ||
-      email.toLowerCase().includes(search.toLowerCase())
-    const matchesFilter = filter === 'All' || member.role === filter
-    return matchesSearch && matchesFilter
-  })
+      email.toLowerCase().includes(search.toLowerCase());
+    const matchesFilter = filter === "All" || member.role === filter;
+    return matchesSearch && matchesFilter;
+  });
 
   const exportToCSV = () => {
     const csv = [
-      ['Name', 'Email', 'Role', 'Joined'],
+      ["Name", "Email", "Role", "Joined"],
       ...filteredMembers.map((member) => [
-        member.user?.profile?.name || '',
-        member.user?.email || '',
+        member.user?.profile?.name || "",
+        member.user?.email || "",
         member.role,
         new Date(member.created_at).toLocaleDateString(),
       ]),
     ]
-      .map((row) => row.join(','))
-      .join('\n')
+      .map((row) => row.join(","))
+      .join("\n");
 
-    const blob = new Blob([csv], {type: 'text/csv'})
-    const url = window.URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = 'members.csv'
-    a.click()
-  }
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "members.csv";
+    a.click();
+  };
 
   return (
     <div className="container mx-auto max-w-5xl space-y-8 py-6">
@@ -133,16 +127,16 @@ export default observer(function () {
                     <Avatar>
                       <AvatarImage
                         src={member.user?.profile?.avatar || undefined}
-                        alt={member.user?.profile?.name || ''}
+                        alt={member.user?.profile?.name || ""}
                       />
                       <AvatarFallback>
-                        {getUserInitials(member.user?.profile?.name || '')}
+                        {getUserInitials(member.user?.profile?.name || "")}
                       </AvatarFallback>
                     </Avatar>
                   </div>
                   <div>
                     <div className="font-medium">
-                      {member.user?.profile?.name || 'Unnamed'}
+                      {member.user?.profile?.name || "Unnamed"}
                     </div>
                     <div className="text-sm text-muted-foreground">
                       {member.user?.email}
@@ -178,5 +172,5 @@ export default observer(function () {
         </div>
       </div>
     </div>
-  )
-})
+  );
+});

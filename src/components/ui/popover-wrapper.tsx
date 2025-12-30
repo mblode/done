@@ -1,13 +1,13 @@
-import {ReactNode} from 'react'
+import type { ReactNode } from "react";
 
-import {PopoverContent} from '@/components/ui/popover'
+import { PopoverContent } from "@/components/ui/popover";
 
 type PopoverWrapperProps = {
-  title: string
-  description?: string
-  children: ReactNode
-  className?: string
-}
+  title: string;
+  description?: string;
+  children: ReactNode;
+  className?: string;
+};
 
 export const PopoverWrapper = ({
   title,
@@ -29,5 +29,5 @@ export const PopoverWrapper = ({
         <div className="grid gap-2">{children}</div>
       </div>
     </PopoverContent>
-  )
-}
+  );
+};
