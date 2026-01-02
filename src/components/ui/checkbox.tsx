@@ -15,21 +15,22 @@ const Checkbox = React.forwardRef<
   CheckboxProps
 >(({ className, ...props }, ref) => (
   <CheckboxPrimitive.Root
-    ref={ref}
     className={cn(
-      "ft-checkbox focus-visible:ring-offset-px peer relative size-[14px] shrink-0 overflow-hidden rounded-[3px] ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:text-background",
+      "ft-checkbox peer relative size-[14px] shrink-0 overflow-hidden rounded-[3px] ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring focus-visible:ring-ring focus-visible:ring-offset-px disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:text-background",
       className
     )}
+    ref={ref}
     {...props}
   >
     <div className="flex items-center justify-center text-current">
       <svg
         aria-hidden="true"
+        className="z-10 h-2 w-3"
         role="presentation"
         viewBox="0 0 17 18"
-        className="z-10 h-2 w-3"
       >
         <polyline
+          className="ft-checkbox-polyline"
           fill="none"
           points="1 9 7 14 15 4"
           stroke="currentColor"
@@ -37,7 +38,6 @@ const Checkbox = React.forwardRef<
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={3}
-          className="ft-checkbox-polyline"
         />
       </svg>
     </div>

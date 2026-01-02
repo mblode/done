@@ -25,12 +25,12 @@ export const DateRangePicker = ({ className, date, setDate }: Props) => {
       <Popover>
         <PopoverTrigger asChild>
           <Button
-            id="date"
-            variant="secondary"
             className={cn(
-              "justify-start text-left !font-normal",
+              "!font-normal justify-start text-left",
               !currentDate && "text-muted-foreground"
             )}
+            id="date"
+            variant="secondary"
           >
             <Calendar1Icon className="mr-2 size-4" />
             {date?.from ? (
@@ -48,19 +48,19 @@ export const DateRangePicker = ({ className, date, setDate }: Props) => {
           </Button>
         </PopoverTrigger>
 
-        <PopoverContent className="w-auto p-0" align="start">
+        <PopoverContent align="start" className="w-auto p-0">
           <Calendar
+            defaultMonth={currentDate?.from}
             initialFocus
             mode="range"
-            defaultMonth={currentDate?.from}
-            selected={currentDate}
-            onSelect={setCurrentDate}
             numberOfMonths={1}
+            onSelect={setCurrentDate}
+            selected={currentDate}
             toDate={addMonths(new Date(), 6)}
           />
 
           <div className="mb-2 px-4">
-            <Button size="sm" onClick={() => setDate(currentDate)}>
+            <Button onClick={() => setDate(currentDate)} size="sm">
               Apply
             </Button>
           </div>

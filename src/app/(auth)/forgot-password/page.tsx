@@ -21,17 +21,17 @@ export default async function Page() {
 
         <ForgotPasswordForm />
 
-        <p className="mb-4 mt-6 flex flex-wrap items-center justify-center text-center text-sm">
+        <p className="mt-6 mb-4 flex flex-wrap items-center justify-center text-center text-sm">
           Already have an account?{" "}
           <Link
-            href="/sign-in"
             className="group flex items-center font-medium text-primary"
+            href="/sign-in"
           >
             Sign in
             <ArrowRightIcon
-              width={16}
-              height={16}
               className="ml-0.5 transition-transform group-hover:translate-x-1"
+              height={16}
+              width={16}
             />
           </Link>
         </p>

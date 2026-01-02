@@ -14,12 +14,12 @@ import type { TagRow } from "@/schema";
 import { DialogTitle } from "../ui/dialog";
 import type { Task } from "./types";
 
-type Props = {
+interface Props {
   task: Task;
   onNewTag: () => void;
   onManageTags: () => void;
   onClose: () => void;
-};
+}
 
 export const TagDialogList = ({
   task,
@@ -61,25 +61,25 @@ export const TagDialogList = ({
       <div className="flex items-center justify-between">
         <div className="w-[52px]" />
         <DialogTitle>Tags</DialogTitle>
-        <Button variant="ghost" onClick={onClose}>
+        <Button onClick={onClose} variant="ghost">
           Done
         </Button>
       </div>
 
       <Input
+        onChange={(e) => setSearch(e.target.value)}
         placeholder="Search tags..."
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
       />
 
       <ScrollArea className="h-[300px]">
         <div className="space-y-2">
           {filteredTags?.map((tag) => (
             <button
-              key={tag.id}
-              type="button"
               className="flex w-full cursor-pointer items-center justify-between rounded-md p-2 text-left hover:bg-accent"
+              key={tag.id}
               onClick={() => handleToggleTag(tag)}
+              type="button"
             >
               <span>{tag.title}</span>
               {task.tags.some((t) => t.id === tag.id) && (
@@ -91,11 +91,11 @@ export const TagDialogList = ({
       </ScrollArea>
 
       <div className="flex justify-between gap-2">
-        <Button variant="secondary" onClick={onManageTags} className="w-full">
+        <Button className="w-full" onClick={onManageTags} variant="secondary">
           Manage Tags
         </Button>
 
-        <Button variant="secondary" onClick={onNewTag} className="w-full">
+        <Button className="w-full" onClick={onNewTag} variant="secondary">
           New Tag
         </Button>
       </div>

@@ -3,28 +3,31 @@ import type { FieldError, FieldErrors } from "react-hook-form";
 
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 
-type Props = {
+interface Props {
   className?: string;
   errors: FieldErrors<Record<string, unknown>>;
-};
+}
 
 const renderError = (key: string, error: FieldError | unknown, prefix = "") => {
   // Handle nested array of errors
   if (Array.isArray(error)) {
-    return error.map((e, index) => (
-      <div key={`${prefix}${key}-error-${index}`}>
-        {Object.entries(e).map(([nestedKey, nestedError]) =>
-          renderError(nestedKey, nestedError, `${prefix}${key}[${index}].`)
-        )}
-      </div>
-    ));
+    return error.map((e, index) => {
+      const errorKey = `${prefix}${key}[${index}]`;
+      return (
+        <div key={errorKey}>
+          {Object.entries(e).map(([nestedKey, nestedError]) =>
+            renderError(nestedKey, nestedError, `${errorKey}.`)
+          )}
+        </div>
+      );
+    });
   }
 
   // Handle single error
   return (
     <li key={`${prefix}${key}`}>
       {prefix}
-      {key}: {String(error?.message)}
+      {key}: {String((error as { message?: string })?.message)}
     </li>
   );
 };

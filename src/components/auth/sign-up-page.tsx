@@ -8,15 +8,15 @@ import useQueryParams from "@/hooks/use-query-params";
 
 const getReturnTo = (returnTo: string | null | undefined): string => {
   if (!returnTo) {
-    return `/inbox`;
+    return "/inbox";
   }
 
   return returnTo;
 };
 
-type Props = {
+interface Props {
   overrideReturnTo?: string;
-};
+}
 
 export const SignUpPage = ({ overrideReturnTo }: Props) => {
   const searchParams = useSearchParams();
@@ -34,27 +34,27 @@ export const SignUpPage = ({ overrideReturnTo }: Props) => {
     <>
       <div className="mb-8">
         <SignUpForm
-          returnTo={getReturnTo(returnTo)}
           forwardQuery={forwardQuery}
+          returnTo={getReturnTo(returnTo)}
         />
       </div>
 
       <p className="mb-8 text-center text-sm">
         Signing up for a Done account means you agree to the{" "}
         <a
-          href={`https://trydone.io/terms`}
-          target="_blank"
           className="text-primary underline-offset-4 hover:underline"
+          href={"https://trydone.io/terms"}
           rel="noopener"
+          target="_blank"
         >
           Terms of Service
         </a>{" "}
         and{" "}
         <a
-          href={`https://trydone.io/privacy`}
-          target="_blank"
           className="text-primary underline-offset-4 hover:underline"
+          href={"https://trydone.io/privacy"}
           rel="noopener"
+          target="_blank"
         >
           Privacy Policy
         </a>
@@ -64,8 +64,8 @@ export const SignUpPage = ({ overrideReturnTo }: Props) => {
       <p className="mb-3 text-center text-sm">
         Already signed up?{" "}
         <Link
-          href={`/sign-in?${queryParams}`}
           className="text-primary underline-offset-2 hover:underline"
+          href={`/sign-in?${queryParams}`}
         >
           Sign in
         </Link>

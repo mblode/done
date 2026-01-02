@@ -89,6 +89,9 @@ export const QuickFindCommand = observer(() => {
           case "not_started":
             targetRoute = "/inbox";
             break;
+          default:
+            targetRoute = "/inbox";
+            break;
         }
       }
 
@@ -98,11 +101,11 @@ export const QuickFindCommand = observer(() => {
   );
 
   return (
-    <CommandDialog open={quickFindOpen} onOpenChange={setQuickFindOpen}>
+    <CommandDialog onOpenChange={setQuickFindOpen} open={quickFindOpen}>
       <CommandInput
+        onValueChange={setQuickFindQuery}
         placeholder="Quick Find"
         value={quickFindQuery}
-        onValueChange={setQuickFindQuery}
       />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
@@ -112,8 +115,8 @@ export const QuickFindCommand = observer(() => {
             {filteredTasks.map((task) => (
               <CommandItem
                 key={task.id}
-                value={`task-${task.id}-${task.title}`} // Make value more unique
-                onSelect={() => handleTaskSelect(task)}
+                onSelect={() => handleTaskSelect(task)} // Make value more unique
+                value={`task-${task.id}-${task.title}`}
               >
                 {task.title}
               </CommandItem>
@@ -124,7 +127,7 @@ export const QuickFindCommand = observer(() => {
         {/* Show standard sections when not searching */}
         {!quickFindQuery &&
           sections.map((section) => (
-            <CommandGroup key={section.title} heading={section.title}>
+            <CommandGroup heading={section.title} key={section.title}>
               {section.items.map((item) => (
                 <CommandItem
                   key={item.id}

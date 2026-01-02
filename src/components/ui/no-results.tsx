@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 
-type Props = {
+interface Props {
   dataSetLength: number;
   resultsLength: number;
   children?: ReactNode;
-};
+}
 
 export const NoResults = ({
   dataSetLength,

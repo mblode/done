@@ -10,9 +10,9 @@ import { cn } from "@/lib/utils";
 import { mutators } from "@/lib/zero/mutators";
 import type { TaskRow } from "@/schema";
 
-type Props = {
+interface Props {
   task: TaskRow;
-};
+}
 
 export const TaskNotes = ({ task }: Props) => {
   const zero = useZero();
@@ -53,5 +53,5 @@ export const TaskNotes = ({ task }: Props) => {
     }
   }, [editor, task.description]);
 
-  return <EditorContent editor={editor} className="w-full" />;
+  return <EditorContent className="w-full" editor={editor} />;
 };

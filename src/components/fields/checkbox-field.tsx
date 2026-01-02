@@ -1,16 +1,21 @@
 import type { ReactNode } from "react";
-import { type Control, useController } from "react-hook-form";
+import {
+  type Control,
+  type FieldValues,
+  type Path,
+  useController,
+} from "react-hook-form";
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { FormControl } from "@/components/ui/form-control";
 import { Switch } from "@/components/ui/switch";
 
-type Props = {
+interface Props<T extends FieldValues = FieldValues> {
   id?: string;
-  name: string;
+  name: Path<T>;
   label?: ReactNode;
   caption?: ReactNode;
-  control: Control<Record<string, unknown>>;
+  control: Control<T>;
   children?: ReactNode;
   disabled?: boolean;
   switchToggle?: boolean;
@@ -18,9 +23,9 @@ type Props = {
   className?: string;
   captionClassName?: string;
   labelClassName?: string;
-};
+}
 
-export const CheckboxField = ({
+export const CheckboxField = <T extends FieldValues = FieldValues>({
   id,
   name,
   label,
@@ -34,24 +39,24 @@ export const CheckboxField = ({
   captionClassName,
   labelClassName,
   ...props
-}: Props) => {
+}: Props<T>) => {
   const { field, fieldState } = useController({ name, control });
   const hasError = !!fieldState.error;
 
   return (
     <FormControl
       caption={caption}
-      error={hasError ? fieldState.error?.message : null}
-      name={name}
-      className={className}
-      labelClassName={labelClassName}
       captionClassName={captionClassName}
+      className={className}
+      error={hasError ? fieldState.error?.message : null}
+      labelClassName={labelClassName}
+      name={name}
     >
       <div className="flex items-center space-x-2">
         {switchToggle ? (
           <Switch
+            checked={field.value as boolean}
             disabled={disabled}
-            checked={field.value}
             onCheckedChange={(value) => {
               field.onChange?.(value);
               onChange?.(value);
@@ -62,8 +67,8 @@ export const CheckboxField = ({
           />
         ) : (
           <Checkbox
+            checked={field.value as boolean | "indeterminate"}
             disabled={disabled}
-            checked={field.value}
             onCheckedChange={(value) => {
               field.onChange?.(value);
               onChange?.(value);
@@ -75,8 +80,8 @@ export const CheckboxField = ({
         )}
 
         <label
+          className="font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           htmlFor={name}
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
           {label ?? children}
         </label>

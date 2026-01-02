@@ -60,7 +60,7 @@ export const Footer = observer(() => {
     // Default values
     let start = "not_started";
     let start_bucket = "today";
-    let start_date = null;
+    let start_date: number | null = null;
 
     switch (pathname) {
       case "/today":
@@ -99,7 +99,7 @@ export const Footer = observer(() => {
       mutators.task.insert({
         id: taskId,
         workspace_id:
-          selectedWorkspaceId || `9d190060-d582-4136-827d-cd0468d081ec`,
+          selectedWorkspaceId || "9d190060-d582-4136-827d-cd0468d081ec",
         title: "",
         description: "",
         created_at: Date.now(),
@@ -193,7 +193,7 @@ export const Footer = observer(() => {
 
   return (
     <footer
-      className="fixed bottom-0 flex items-center justify-center gap-1 border-t border-sidebar-border bg-background px-2 py-1"
+      className="fixed bottom-0 flex items-center justify-center gap-1 border-sidebar-border border-t bg-background px-2 py-1"
       style={{
         paddingBottom: "max(8px, calc(2 * env(safe-area-inset-bottom)))",
         width:
@@ -204,7 +204,6 @@ export const Footer = observer(() => {
     >
       <FooterButton
         icon={PlusIcon}
-        title="New To-Do"
         onClick={handleNewTask}
         state={
           buttonStates.newTask === "visible" &&
@@ -212,29 +211,30 @@ export const Footer = observer(() => {
             ? "disabled"
             : buttonStates.newTask
         }
+        title="New To-Do"
       />
 
       {buttonStates.when !== "hidden" && (
         <FooterButton
           icon={CalendarIcon}
-          title="When"
-          state={buttonStates.when}
           onClick={handleWhenClick}
+          state={buttonStates.when}
+          title="When"
         />
       )}
 
       <FooterButton
         icon={SearchIcon}
-        title="Quick Find"
         onClick={handleQuickFind}
         state={buttonStates.quickFind}
+        title="Quick Find"
       />
 
       <FooterButton
         icon={TrashIcon}
-        title="Delete"
         onClick={handleDelete}
         state={buttonStates.delete}
+        title="Delete"
       />
     </footer>
   );

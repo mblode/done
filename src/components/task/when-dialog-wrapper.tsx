@@ -11,25 +11,27 @@ export const WhenDialogWrapper = observer(() => {
   } = useContext(RootStoreContext);
 
   if (whenState.type === "single") {
-    if (!whenState.task) return null;
+    if (!whenState.task) {
+      return null;
+    }
 
     return (
       <WhenDialog
-        type="single"
-        task={whenState.task}
         immediate={whenState.immediate}
         open={whenOpen}
         setOpen={setWhenOpen}
+        task={whenState.task}
+        type="single"
       />
     );
   }
 
   return (
     <WhenDialog
-      type="multiple"
-      taskIds={Array.from(selectedTaskIds)}
       open={whenOpen}
       setOpen={setWhenOpen}
+      taskIds={Array.from(selectedTaskIds)}
+      type="multiple"
     />
   );
 });

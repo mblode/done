@@ -1,10 +1,10 @@
 import { LogoLink } from "@/components/ui/logo-link";
 import { cn } from "@/lib/utils";
 
-type Props = {
+interface Props {
   className?: string;
   isSticky?: boolean;
-};
+}
 
 export const AuthNavbar = ({ className, isSticky }: Props) => {
   return (

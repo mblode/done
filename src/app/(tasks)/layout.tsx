@@ -49,19 +49,10 @@ const Layout = observer(
             <SidebarInset>
               <SidebarTrigger />
               <div
-                role="button"
-                tabIndex={-1}
-                onClick={handleBackgroundClick}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    handleBackgroundClick(
-                      e as unknown as React.MouseEvent<HTMLDivElement>
-                    );
-                  }
-                }}
                 className={cn("flex flex-1 transition-colors", {
                   "bg-sidebar dark:bg-background": !!openTaskId,
                 })}
+                onClick={handleBackgroundClick}
               >
                 <div className="task-outside-click mx-auto flex w-full max-w-[1000px] flex-1 flex-col gap-4 px-4 py-10 md:px-8 lg:px-12">
                   {children}

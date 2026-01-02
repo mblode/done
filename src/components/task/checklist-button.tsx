@@ -7,9 +7,9 @@ import { useZero } from "@/hooks/use-zero";
 import { mutators } from "@/lib/zero/mutators";
 import type { ChecklistItemRow, TaskRow } from "@/schema";
 
-type Props = {
+interface Props {
   task: TaskRow & { checklistItems: readonly ChecklistItemRow[] };
-};
+}
 
 export const ChecklistButton = ({ task }: Props) => {
   const zero = useZero();
@@ -30,10 +30,10 @@ export const ChecklistButton = ({ task }: Props) => {
 
   return (
     <Button
-      variant="ghost"
-      size="sm"
       className="h-auto gap-1.5 rounded-md p-1"
       onClick={handleAddItem}
+      size="sm"
+      variant="ghost"
     >
       <ListIcon className="size-4" />
     </Button>

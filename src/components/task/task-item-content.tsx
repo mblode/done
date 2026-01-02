@@ -7,13 +7,13 @@ import { cn } from "@/lib/utils";
 import { TaskMetadata } from "./task-metadata";
 import type { Task } from "./types";
 
-type Props = {
+interface Props {
   task: Task;
   checked: boolean;
   onComplete?: (checked: boolean) => void;
   showWhenIcon?: boolean;
   showDashedCheckbox?: boolean;
-};
+}
 
 export const TaskItemContent = ({
   task,
@@ -34,17 +34,17 @@ export const TaskItemContent = ({
       <div className="flex h-[20px] w-4 items-center">
         <Checkbox
           checked={checked}
-          onCheckedChange={(checked) => onComplete?.(checked as boolean)}
           className={cn("shrink-0", {
             "ft-checkbox-dashed": showDashedCheckbox,
           })}
+          onCheckedChange={(checked) => onComplete?.(checked as boolean)}
         />
       </div>
 
       <div className="flex min-w-0 grow">
         <div className="flex items-center gap-2">
           {task.completed_at && (
-            <span className="text-xs font-bold text-blue-600 dark:text-blue-500">
+            <span className="font-bold text-blue-600 text-xs dark:text-blue-500">
               {formatCompletedDate(task.completed_at)}
             </span>
           )}

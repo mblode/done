@@ -32,13 +32,13 @@ export const Validation = ({ children, className, variant }: Props) => {
     <p className={cn(validationVariants({ variant, className }))}>
       {children}
       {variant === "error" && (
-        <TriangleAlertIcon width={16} height={16} className="ml-1" />
+        <TriangleAlertIcon className="ml-1" height={16} width={16} />
       )}
       {variant === "success" && (
-        <CheckIcon width={16} height={16} className="ml-1" />
+        <CheckIcon className="ml-1" height={16} width={16} />
       )}
       {variant === "warning" && (
-        <TriangleAlertIcon width={16} height={16} className="ml-1" />
+        <TriangleAlertIcon className="ml-1" height={16} width={16} />
       )}
       {variant === "loading" && (
         <span className="ml-1">

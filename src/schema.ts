@@ -483,9 +483,9 @@ export type UserRow = Row<typeof schema.tables.user>;
 export type ProfileRow = Row<typeof schema.tables.profile>;
 export type Schema = typeof schema;
 
-export type ZeroContext = {
+export interface ZeroContext {
   userID: string;
-};
+}
 
 declare module "@rocicorp/zero" {
   interface DefaultTypes {

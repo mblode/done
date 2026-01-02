@@ -14,12 +14,12 @@ import type { Task } from "./types";
 import { WhenButton } from "./when-button";
 import { WhenLabel } from "./when-label";
 
-type Props = {
+interface Props {
   task: Task;
   checked: boolean;
   onComplete: (checked: boolean) => void;
   showDashedCheckbox?: boolean;
-};
+}
 
 export const TaskItemDetails = observer(
   ({ task, checked, onComplete, showDashedCheckbox }: Props) => {
@@ -34,10 +34,10 @@ export const TaskItemDetails = observer(
       <div className="task-outside-click py-5">
         <div className="flex h-full flex-col rounded-lg bg-card shadow-lg">
           <TaskHeader
-            task={task}
             checked={checked}
             onComplete={onComplete}
             showDashedCheckbox={showDashedCheckbox}
+            task={task}
           />
 
           <TaskNotes task={task} />
@@ -47,16 +47,16 @@ export const TaskItemDetails = observer(
           )}
 
           {(task?.tags || []).length > 0 && (
-            <TagList task={task} setOpen={setTagOpen} />
+            <TagList setOpen={setTagOpen} task={task} />
           )}
 
-          <div className="flex items-center gap-1 pb-4 pl-9 pr-3">
+          <div className="flex items-center gap-1 pr-3 pb-4 pl-9">
             <div className="flex-1">
               {newTask?.start !== "not_started" && <WhenLabel task={newTask} />}
             </div>
 
             {(task?.tags || []).length === 0 && (
-              <TagButton task={task} setOpen={setTagOpen} />
+              <TagButton setOpen={setTagOpen} task={task} />
             )}
 
             {(task?.checklistItems || []).length === 0 && (
@@ -68,7 +68,7 @@ export const TaskItemDetails = observer(
         </div>
 
         {tagOpen && (
-          <TagDialog task={task} open={tagOpen} setOpen={setTagOpen} />
+          <TagDialog open={tagOpen} setOpen={setTagOpen} task={task} />
         )}
       </div>
     );

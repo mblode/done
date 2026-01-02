@@ -17,11 +17,11 @@ const SelectTrigger = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
 >(({ className, children, ...props }, ref) => (
   <SelectPrimitive.Trigger
-    ref={ref}
     className={cn(
-      "hover:border-input-hover placeholder:text-placeholder-foreground flex h-[52px] w-full items-center justify-between rounded-2xl border-[1.5px] border-input bg-card py-[14px] pl-4 pr-3 font-sans text-base font-normal leading-[22px] ring-offset-background transition-colors focus:border-ring focus:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+      "flex h-[52px] w-full items-center justify-between rounded-2xl border-[1.5px] border-input bg-card py-[14px] pr-3 pl-4 font-normal font-sans text-base leading-[22px] ring-offset-background transition-colors placeholder:text-placeholder-foreground hover:border-input-hover focus:border-ring focus:outline-none disabled:cursor-not-allowed disabled:opacity-50",
       className
     )}
+    ref={ref}
     {...props}
   >
     <span className="flex-1 pr-0.5 text-left">{children}</span>
@@ -37,11 +37,11 @@ const SelectScrollUpButton = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollUpButton>
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.ScrollUpButton
-    ref={ref}
     className={cn(
       "flex cursor-default items-center justify-center py-1",
       className
     )}
+    ref={ref}
     {...props}
   >
     <ChevronUpIcon className="size-4" />
@@ -54,11 +54,11 @@ const SelectScrollDownButton = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollDownButton>
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.ScrollDownButton
-    ref={ref}
     className={cn(
       "flex cursor-default items-center justify-center py-1",
       className
     )}
+    ref={ref}
     {...props}
   >
     <ChevronDownIcon className="size-4" />
@@ -73,13 +73,13 @@ const SelectContent = React.forwardRef<
 >(({ className, children, position = "popper", ...props }, ref) => (
   <SelectPrimitive.Portal>
     <SelectPrimitive.Content
-      ref={ref}
       className={cn(
-        "relative z-[110] min-w-[8rem] overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-lg animate-in fade-in-80",
+        "fade-in-80 relative z-[110] min-w-[8rem] animate-in overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-lg",
         position === "popper" && "translate-y-1",
         className
       )}
       position={position}
+      ref={ref}
       {...props}
     >
       <SelectScrollUpButton />
@@ -103,8 +103,8 @@ const SelectLabel = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.Label
+    className={cn("py-1.5 pr-8 pl-2 font-semibold", className)}
     ref={ref}
-    className={cn("py-1.5 pl-2 pr-8 font-semibold", className)}
     {...props}
   />
 ));
@@ -115,11 +115,11 @@ const SelectItem = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
 >(({ className, children, ...props }, ref) => (
   <SelectPrimitive.Item
-    ref={ref}
     className={cn(
-      "relative flex w-full cursor-default select-none items-center rounded-lg py-1.5 pl-2 pr-8 text-base leading-[22px] outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex w-full cursor-default select-none items-center rounded-lg py-1.5 pr-8 pl-2 text-base leading-[22px] outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className
     )}
+    ref={ref}
     {...props}
   >
     <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
@@ -138,8 +138,8 @@ const SelectSeparator = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Separator>
 >(({ className, ...props }, ref) => (
   <SelectPrimitive.Separator
-    ref={ref}
     className={cn("mx-3 my-1 h-px bg-input", className)}
+    ref={ref}
     {...props}
   />
 ));

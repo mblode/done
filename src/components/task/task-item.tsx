@@ -17,7 +17,7 @@ import { TaskItemContent } from "./task-item-content";
 import type { Task } from "./types";
 import { WhenHoverButton } from "./when-hover-button";
 
-type Props = {
+interface Props {
   task: Task;
   isDragging?: boolean;
   isSelected?: boolean;
@@ -32,7 +32,7 @@ type Props = {
   listData: DndListData;
   isOverlay?: boolean;
   onClick: (e: MouseEvent<HTMLDivElement>) => void;
-};
+}
 
 export const TaskItem = observer(
   ({
@@ -92,7 +92,7 @@ export const TaskItem = observer(
       <ContextMenu>
         <ContextMenuTrigger>
           <div className="relative mx-2 select-none">
-            <div className="absolute left-0 top-[2px] -translate-x-full">
+            <div className="absolute top-[2px] left-0 -translate-x-full">
               <WhenHoverButton task={task} />
             </div>
 
@@ -105,8 +105,7 @@ export const TaskItem = observer(
                 "group relative flex items-center gap-2 rounded-lg px-2 py-1 outline-0 transition-all duration-200 ease-in-out",
                 {
                   "bg-[#CBE2FF] dark:bg-[#244174]":
-                    !isDragging &&
-                    !isDraggingMultiple &&
+                    !(isDragging || isDraggingMultiple) &&
                     (isSelected || isOverlay),
                   "shadow-lg": isOverlay,
                   "!rounded-t-none":
@@ -122,11 +121,11 @@ export const TaskItem = observer(
               onDoubleClick={handleDoubleClick}
             >
               <TaskItemContent
-                task={task}
-                onComplete={onComplete}
                 checked={checked}
-                showWhenIcon={showWhenIcon}
+                onComplete={onComplete}
                 showDashedCheckbox={showDashedCheckbox}
+                showWhenIcon={showWhenIcon}
+                task={task}
               />
 
               {isDragging && (

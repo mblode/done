@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { mutators } from "@/lib/zero/mutators";
 import type { ChecklistItemRow, TaskRow } from "@/schema";
 
-type Props = {
+interface Props {
   task: TaskRow & { checklistItems: readonly ChecklistItemRow[] };
   item: ChecklistItemRow;
   isDragging: boolean;
@@ -21,7 +21,7 @@ type Props = {
   showBottomLine: boolean;
   isEndMode: boolean;
   setIsEndMode: (isEndMode: boolean) => void;
-};
+}
 
 export const ChecklistItem = ({
   task,
@@ -149,7 +149,9 @@ export const ChecklistItem = ({
 
           // Get the previous item
           const previousItem = items[currentIndex - 1];
-          if (!previousItem) return;
+          if (!previousItem) {
+            return;
+          }
 
           // Get the previous input element
           const previousInput = document.querySelector(
@@ -242,8 +244,6 @@ export const ChecklistItem = ({
 
   return (
     <div
-      ref={setNodeRef}
-      style={style}
       className={cn(
         "group relative rounded-md border border-transparent px-1",
         {
@@ -252,6 +252,8 @@ export const ChecklistItem = ({
           "border-border bg-muted": isFocused,
         }
       )}
+      ref={setNodeRef}
+      style={style}
       {...attributes}
     >
       {showTopLine && (
@@ -260,22 +262,22 @@ export const ChecklistItem = ({
 
       <div className={cn("flex items-center gap-2 py-1")}>
         <Checkbox
-          id={`checklist-item-${item.id}`}
           checked={!!item.completed_at}
-          onCheckedChange={handleCheckedChange}
           className="data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+          id={`checklist-item-${item.id}`}
+          onCheckedChange={handleCheckedChange}
         />
 
         <Input
-          ref={inputRef}
-          data-checklist-id={item.id}
-          value={item.title}
-          onChange={handleTitleChange}
-          onKeyDown={handleKeyDown}
-          className="h-auto !rounded-none border-none bg-transparent p-0 text-sm focus-visible:ring-0"
-          onFocus={handleFocus}
-          onBlur={handleBlur}
           autoFocus
+          className="!rounded-none h-auto border-none bg-transparent p-0 text-sm focus-visible:ring-0"
+          data-checklist-id={item.id}
+          onBlur={handleBlur}
+          onChange={handleTitleChange}
+          onFocus={handleFocus}
+          onKeyDown={handleKeyDown}
+          ref={inputRef}
+          value={item.title}
         />
 
         <button

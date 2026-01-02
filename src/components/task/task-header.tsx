@@ -7,12 +7,12 @@ import { cn } from "@/lib/utils";
 import { mutators } from "@/lib/zero/mutators";
 import type { TaskRow } from "@/schema";
 
-type Props = {
+interface Props {
   task: TaskRow;
   checked: boolean;
   onComplete: (checked: boolean) => void;
   showDashedCheckbox?: boolean;
-};
+}
 
 export const TaskHeader = ({
   task,
@@ -42,26 +42,26 @@ export const TaskHeader = ({
 
   return (
     <div className="flex gap-2 px-4">
-      <div className="pb-1 pt-4">
+      <div className="pt-4 pb-1">
         <div className="flex h-[20px] w-4 items-center">
           <Checkbox
-            id={`task-${task.id}-status`}
             checked={checked}
-            onCheckedChange={onComplete}
             className={cn("shrink-0", {
               "ft-checkbox-dashed": showDashedCheckbox,
             })}
+            id={`task-${task.id}-status`}
+            onCheckedChange={onComplete}
           />
         </div>
       </div>
 
       <Input
+        className="!rounded-none h-auto border-none bg-transparent p-0 pt-4 pb-1 text-sm placeholder:text-muted-foreground focus-visible:ring-0"
         id={`task-${task.id}-title`}
-        value={task.title}
         onChange={handleTitleChange}
         placeholder="New To-Do"
-        className="h-auto !rounded-none border-none bg-transparent p-0 pb-1 pt-4 text-sm placeholder:text-muted-foreground focus-visible:ring-0"
         ref={firstInputRef}
+        value={task.title}
       />
     </div>
   );

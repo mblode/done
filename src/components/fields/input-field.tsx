@@ -1,22 +1,27 @@
 import type { ReactNode } from "react";
-import { type Control, useController } from "react-hook-form";
+import {
+  type Control,
+  type FieldValues,
+  type Path,
+  useController,
+} from "react-hook-form";
 
 import { FormControl } from "@/components/ui/form-control";
 import { Input, type InputProps } from "@/components/ui/input";
 import { useErrorState } from "@/hooks/use-error-state";
 
-type Props = InputProps & {
-  name: string;
+type Props<T extends FieldValues = FieldValues> = InputProps & {
+  name: Path<T>;
   label?: ReactNode;
   caption?: ReactNode;
-  control: Control<Record<string, unknown>>;
+  control: Control<T>;
   className?: string;
   captionClassName?: string;
   labelClassName?: string;
   inputClassName?: string;
 };
 
-export const InputField = ({
+export const InputField = <T extends FieldValues = FieldValues>({
   label,
   name,
   control,
@@ -27,27 +32,27 @@ export const InputField = ({
   captionClassName,
   disabled,
   ...rest
-}: Props) => {
+}: Props<T>) => {
   const { field, fieldState } = useController({ control, name });
   const hasError = useErrorState(fieldState, control);
 
   return (
     <FormControl
-      label={label}
       caption={caption}
-      error={hasError ? fieldState.error?.message : null}
-      name={name}
-      className={className}
       captionClassName={captionClassName}
+      className={className}
+      error={hasError ? fieldState.error?.message : null}
+      label={label}
       labelClassName={labelClassName}
+      name={name}
     >
       <Input
         {...field}
         {...rest}
-        id={name}
-        hasError={hasError}
         className={inputClassName}
         disabled={disabled}
+        hasError={hasError}
+        id={name}
       />
     </FormControl>
   );

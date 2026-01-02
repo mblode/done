@@ -1,15 +1,20 @@
 import type { ReactNode } from "react";
-import { type Control, useController } from "react-hook-form";
+import {
+  type Control,
+  type FieldValues,
+  type Path,
+  useController,
+} from "react-hook-form";
 
 import { FormControl } from "@/components/ui/form-control";
 import { Textarea, type TextareaProps } from "@/components/ui/textarea";
 import { useErrorState } from "@/hooks/use-error-state";
 
-interface Props extends TextareaProps {
-  name: string;
+interface Props<T extends FieldValues = FieldValues> extends TextareaProps {
+  name: Path<T>;
   label?: ReactNode;
   caption?: ReactNode;
-  control: Control<Record<string, unknown>>;
+  control: Control<T>;
   minRows?: number;
   className?: string;
   captionClassName?: string;
@@ -17,7 +22,7 @@ interface Props extends TextareaProps {
   labelClassName?: string;
 }
 
-export const TextareaField = ({
+export const TextareaField = <T extends FieldValues = FieldValues>({
   label,
   name,
   caption,
@@ -28,27 +33,28 @@ export const TextareaField = ({
   inputClassName,
   captionClassName,
   ...rest
-}: Props) => {
+}: Props<T>) => {
   const { field, fieldState } = useController({ name, control });
   const hasError = useErrorState(fieldState, control);
 
   return (
     <FormControl
-      label={label}
       caption={caption}
-      error={hasError ? fieldState.error?.message : null}
-      name={name}
       captionClassName={captionClassName}
       className={className}
+      error={hasError ? fieldState.error?.message : null}
+      label={label}
       labelClassName={labelClassName}
+      name={name}
     >
       <Textarea
         {...field}
         {...rest}
-        id={name}
-        hasError={hasError}
-        disabled={disabled}
         className={inputClassName}
+        disabled={disabled}
+        hasError={hasError}
+        id={name}
+        value={field.value as string}
       />
     </FormControl>
   );

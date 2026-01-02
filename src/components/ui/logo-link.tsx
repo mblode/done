@@ -2,17 +2,17 @@ import Link from "next/link";
 
 import { ConditionalWrapper } from "./conditional-wrapper";
 
-type Props = {
+interface Props {
   href?: string;
   hasLink?: boolean;
-};
+}
 
 export const LogoLink = ({ href = "/", hasLink = true }: Props) => {
   return (
     <ConditionalWrapper
       condition={hasLink}
       wrapper={(children) => (
-        <Link href={href} className="flex items-center">
+        <Link className="flex items-center" href={href}>
           {children}
         </Link>
       )}

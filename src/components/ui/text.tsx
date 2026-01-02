@@ -134,11 +134,11 @@ const Text = React.forwardRef<HTMLParagraphElement, TextProps>(
 
     return (
       <Component
-        ref={ref}
         className={cn(
           textVariants({ size, weight, family, leading }),
           className
         )}
+        ref={ref}
         {...props}
       >
         {children}

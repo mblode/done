@@ -5,8 +5,8 @@ import type { Schema, ZeroContext } from "@/schema";
 
 const defineMutator = defineMutatorWithType<Schema, ZeroContext>();
 const defineMutators = defineMutatorsWithType<Schema>();
-const anyArgs = z.record(z.any());
-const toArgs = (args: Record<string, unknown>) => args as any;
+const anyArgs = z.record(z.string(), z.any()) as any;
+const toArgs = (args: any) => args as any;
 
 export const mutators = defineMutators({
   task: {

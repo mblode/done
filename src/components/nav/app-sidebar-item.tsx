@@ -9,20 +9,20 @@ import { cn } from "@/lib/utils";
 import { useDndContext } from "../dnd/dnd-context";
 import { SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
 
-export type AppSidebarItemType = {
+export interface AppSidebarItemType {
   id: string;
   title: string;
   url: string;
   icon: ForwardRefExoticComponent<
     Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
   >;
-};
+}
 
-type Props = {
+interface Props {
   item: AppSidebarItemType;
   count: number | undefined;
   isActive?: boolean;
-};
+}
 
 export const AppSidebarItem = observer(({ item, count, isActive }: Props) => {
   const { isDragging } = useDndContext();
@@ -37,14 +37,14 @@ export const AppSidebarItem = observer(({ item, count, isActive }: Props) => {
 
   return (
     <SidebarMenuItem
-      ref={setNodeRef}
       className={cn("w-full rounded-[8px]", {
         "ring-2 ring-blue-200": isOver && isDragging,
         "hover:bg-muted": !isOver,
       })}
+      ref={setNodeRef}
     >
       <SidebarMenuButton asChild isActive={isActive}>
-        <Link href={item.url} className="flex items-center gap-2">
+        <Link className="flex items-center gap-2" href={item.url}>
           <item.icon className="size-4" />
 
           <div className="flex-1">
@@ -52,7 +52,7 @@ export const AppSidebarItem = observer(({ item, count, isActive }: Props) => {
           </div>
 
           {(count || 0) > 0 && (
-            <span className="text-xs font-medium text-muted-foreground">
+            <span className="font-medium text-muted-foreground text-xs">
               {count}
             </span>
           )}

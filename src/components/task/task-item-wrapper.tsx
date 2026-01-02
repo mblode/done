@@ -18,7 +18,7 @@ import { TaskItem } from "./task-item";
 import { TaskItemDetails } from "./task-item-details";
 import type { Task } from "./types";
 
-type Props = {
+interface Props {
   task: Task;
   isDragging?: boolean;
   isSelected?: boolean;
@@ -28,7 +28,7 @@ type Props = {
   noRadiusBottom?: boolean;
   listData: DndListData;
   onClick: (e: MouseEvent<HTMLDivElement>) => void;
-};
+}
 
 export const TaskItemWrapper = observer(({ task, ...props }: Props) => {
   const zero = useZero();
@@ -92,25 +92,25 @@ export const TaskItemWrapper = observer(({ task, ...props }: Props) => {
     <AnimatePresence>
       {isOpen ? (
         <motion.div
-          initial={{ height: 48 }}
           animate={{ height: "auto" }}
           exit={{ height: 48 }}
+          initial={{ height: 48 }}
           transition={{ duration: 0.2 }}
         >
           <TaskItemDetails
-            task={task}
-            onComplete={handleComplete}
             checked={isCheckedLocally}
+            onComplete={handleComplete}
             showDashedCheckbox={props.showDashedCheckbox}
+            task={task}
           />
         </motion.div>
       ) : (
         <TaskItem
           task={task}
           {...props}
-          onComplete={handleComplete}
-          onArchive={handleArchived}
           checked={isCheckedLocally}
+          onArchive={handleArchived}
+          onComplete={handleComplete}
         />
       )}
     </AnimatePresence>

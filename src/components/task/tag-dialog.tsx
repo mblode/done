@@ -8,11 +8,11 @@ import { TagDialogList } from "./tag-dialog-list";
 import { TagDialogManage } from "./tag-dialog-manage";
 import type { Task } from "./types";
 
-type Props = {
+interface Props {
   open: boolean;
   setOpen: (open: boolean) => void;
   task: Task;
-};
+}
 
 type View = "list" | "form" | "manage";
 
@@ -27,43 +27,43 @@ export const TagDialog = ({ open, setOpen, task }: Props) => {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog onOpenChange={setOpen} open={open}>
       <DialogContent className="sm:max-w-[425px]">
         {view === "list" && (
           <TagDialogList
-            task={task}
-            onNewTag={() => setView("form")}
-            onManageTags={() => setView("manage")}
             onClose={handleClose}
+            onManageTags={() => setView("manage")}
+            onNewTag={() => setView("form")}
+            task={task}
           />
         )}
 
         {view === "form" && (
           <TagDialogForm
-            task={task}
-            tag={editingTag || undefined}
-            onSuccess={() => {
-              setEditingTag(null);
-              setView(editingTag ? "manage" : "list");
-            }}
             onCancel={() => {
               setEditingTag(null);
               setView(editingTag ? "manage" : "list");
             }}
+            onSuccess={() => {
+              setEditingTag(null);
+              setView(editingTag ? "manage" : "list");
+            }}
+            tag={editingTag || undefined}
+            task={task}
           />
         )}
 
         {view === "manage" && (
           <TagDialogManage
-            task={task}
-            onEditTag={(tag) => {
-              setEditingTag(tag);
-              setView("form");
-            }}
             onCancel={() => {
               setEditingTag(null);
               setView("list");
             }}
+            onEditTag={(tag) => {
+              setEditingTag(tag);
+              setView("form");
+            }}
+            task={task}
           />
         )}
       </DialogContent>

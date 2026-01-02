@@ -44,8 +44,11 @@ const formatDateHeader = (date: Date) => {
 const groupTasksByDate = (tasks: readonly Task[]) => {
   const groups = tasks.reduce(
     (groups: Record<string, { date: Date; tasks: Task[] }>, task) => {
+      if (!task.start_date) {
+        return groups;
+      }
       // Changed to string
-      const date = new Date(task.start_date!);
+      const date = new Date(task.start_date);
       const dateKey = date.getTime();
       if (!groups[dateKey]) {
         groups[dateKey] = {
@@ -84,7 +87,7 @@ const Page = observer(() => {
       // If task is being dragged, only show it in the list it's currently over
       const targetDateKey = dragOverId.replace("upcoming-", "");
 
-      return { ...task, start_date: parseInt(targetDateKey, 10) };
+      return { ...task, start_date: Number.parseInt(targetDateKey, 10) };
     }
     return task;
   });
@@ -120,27 +123,31 @@ const Page = observer(() => {
       >
         <div className="flex flex-col">
           {Object.keys(initialGroupedTasks).map((dateKey) => {
-            const item = initialGroupedTasks[dateKey]!;
+            const item = initialGroupedTasks[dateKey];
             const newItem = groupedTasks[dateKey];
+
+            if (!item) {
+              return null;
+            }
 
             return (
               <div key={dateKey}>
                 <div className="task-outside-click mx-4 pb-2">
-                  <div className="task-outside-click flex items-center gap-2 border-b border-border py-1 pt-6">
-                    <h1 className="task-outside-click text-base font-bold tracking-tight">
+                  <div className="task-outside-click flex items-center gap-2 border-border border-b py-1 pt-6">
+                    <h1 className="task-outside-click font-bold text-base tracking-tight">
                       {formatDateHeader(item.date)}
                     </h1>
                   </div>
                 </div>
 
                 <TaskList
-                  tasks={newItem?.tasks || []}
                   listData={{
                     id: `upcoming-${dateKey}`,
                     start: "started",
                     start_date: item.date.getTime(),
                   }}
                   onTaskClick={handleClick}
+                  tasks={newItem?.tasks || []}
                 />
               </div>
             );

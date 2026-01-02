@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button";
 import { RootStoreContext } from "@/lib/stores/root-store";
 import type { TaskRow } from "@/schema";
 
-type Props = {
+interface Props {
   task: TaskRow;
-};
+}
 
 export const WhenHoverButton = observer(({ task }: Props) => {
   const {
@@ -16,10 +16,10 @@ export const WhenHoverButton = observer(({ task }: Props) => {
   } = useContext(RootStoreContext);
 
   const handleClick = useCallback(() => {
-    if (!selectedTaskIds.has(task.id)) {
-      setWhenState({ type: "single", task, immediate: true });
-    } else {
+    if (selectedTaskIds.has(task.id)) {
       setWhenState({ type: "multiple" });
+    } else {
+      setWhenState({ type: "single", task, immediate: true });
     }
 
     setWhenOpen(true);
@@ -27,10 +27,10 @@ export const WhenHoverButton = observer(({ task }: Props) => {
 
   return (
     <Button
-      variant="ghost"
-      size="sm"
-      className="h-auto gap-1.5 rounded-md p-1 opacity-0 hover:!bg-transparent hover:opacity-60"
+      className="hover:!bg-transparent h-auto gap-1.5 rounded-md p-1 opacity-0 hover:opacity-60"
       onClick={handleClick}
+      size="sm"
+      variant="ghost"
     >
       <CalendarIcon className="size-4" />
     </Button>

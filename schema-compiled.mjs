@@ -7,7 +7,7 @@ import {
   table,
 } from "@rocicorp/zero";
 
-var enterpriseSchema = table("enterprise")
+const enterpriseSchema = table("enterprise")
   .columns({
     id: string(),
     name: string(),
@@ -16,7 +16,7 @@ var enterpriseSchema = table("enterprise")
     updated_at: number(),
   })
   .primaryKey("id");
-var workspaceSchema = table("workspace")
+const workspaceSchema = table("workspace")
   .columns({
     id: string(),
     name: string(),
@@ -25,7 +25,7 @@ var workspaceSchema = table("workspace")
     updated_at: number(),
   })
   .primaryKey("id");
-var teamSchema = table("team")
+const teamSchema = table("team")
   .columns({
     id: string(),
     name: string(),
@@ -35,7 +35,7 @@ var teamSchema = table("team")
     updated_at: number(),
   })
   .primaryKey("id");
-var workspaceMemberSchema = table("workspace_member")
+const workspaceMemberSchema = table("workspace_member")
   .columns({
     id: string(),
     workspace_id: string(),
@@ -45,7 +45,7 @@ var workspaceMemberSchema = table("workspace_member")
     updated_at: number(),
   })
   .primaryKey("id");
-var teamMemberSchema = table("team_member")
+const teamMemberSchema = table("team_member")
   .columns({
     id: string(),
     team_id: string(),
@@ -55,7 +55,7 @@ var teamMemberSchema = table("team_member")
     updated_at: number(),
   })
   .primaryKey("id");
-var projectSchema = table("project")
+const projectSchema = table("project")
   .columns({
     id: string(),
     name: string(),
@@ -68,7 +68,7 @@ var projectSchema = table("project")
     updated_at: number(),
   })
   .primaryKey("id");
-var userSchema = table("user")
+const userSchema = table("user")
   .columns({
     id: string(),
     username: string(),
@@ -79,7 +79,7 @@ var userSchema = table("user")
     updated_at: number(),
   })
   .primaryKey("id");
-var profileSchema = table("profile")
+const profileSchema = table("profile")
   .columns({
     id: string(),
     user_id: string(),
@@ -89,7 +89,7 @@ var profileSchema = table("profile")
     updated_at: number(),
   })
   .primaryKey("id");
-var taskSchema = table("task")
+const taskSchema = table("task")
   .columns({
     id: string(),
     title: string(),
@@ -115,7 +115,7 @@ var taskSchema = table("task")
     team_id: string().optional(),
   })
   .primaryKey("id");
-var viewStateSchema = table("view_state")
+const viewStateSchema = table("view_state")
   .columns({
     id: string(),
     task_id: string(),
@@ -123,7 +123,7 @@ var viewStateSchema = table("view_state")
     viewed_at: number(),
   })
   .primaryKey("id");
-var taskCommentSchema = table("task_comment")
+const taskCommentSchema = table("task_comment")
   .columns({
     id: string(),
     task_id: string(),
@@ -132,7 +132,7 @@ var taskCommentSchema = table("task_comment")
     creator_id: string(),
   })
   .primaryKey("id");
-var checklistItemSchema = table("checklist_item")
+const checklistItemSchema = table("checklist_item")
   .columns({
     id: string(),
     task_id: string(),
@@ -143,7 +143,7 @@ var checklistItemSchema = table("checklist_item")
     updated_at: number(),
   })
   .primaryKey("id");
-var tagSchema = table("tag")
+const tagSchema = table("tag")
   .columns({
     id: string(),
     title: string(),
@@ -152,14 +152,14 @@ var tagSchema = table("tag")
     updated_at: number(),
   })
   .primaryKey("id");
-var taskTagSchema = table("task_tag")
+const taskTagSchema = table("task_tag")
   .columns({
     task_id: string(),
     tag_id: string(),
     created_at: number(),
   })
   .primaryKey("tag_id", "task_id");
-var emojiSchema = table("emoji")
+const emojiSchema = table("emoji")
   .columns({
     id: string(),
     value: string(),
@@ -170,7 +170,7 @@ var emojiSchema = table("emoji")
     updated_at: number(),
   })
   .primaryKey("id");
-var sessionSchema = table("session")
+const sessionSchema = table("session")
   .columns({
     id: string(),
     user_id: string(),
@@ -178,7 +178,7 @@ var sessionSchema = table("session")
     updated_at: number(),
   })
   .primaryKey("id", "user_id");
-var workspaceRelationships = relationships(workspaceSchema, ({ many }) => ({
+const workspaceRelationships = relationships(workspaceSchema, ({ many }) => ({
   sessionMembers: many(
     {
       sourceField: ["id"],
@@ -192,14 +192,14 @@ var workspaceRelationships = relationships(workspaceSchema, ({ many }) => ({
     }
   ),
 }));
-var teamRelationships = relationships(teamSchema, ({ one }) => ({
+const teamRelationships = relationships(teamSchema, ({ one }) => ({
   workspace: one({
     sourceField: ["workspace_id"],
     destField: ["id"],
     destSchema: workspaceSchema,
   }),
 }));
-var projectRelationships = relationships(projectSchema, ({ one }) => ({
+const projectRelationships = relationships(projectSchema, ({ one }) => ({
   workspace: one({
     sourceField: ["workspace_id"],
     destField: ["id"],
@@ -211,7 +211,7 @@ var projectRelationships = relationships(projectSchema, ({ one }) => ({
     destSchema: teamSchema,
   }),
 }));
-var workspaceMemberRelationships = relationships(
+const workspaceMemberRelationships = relationships(
   workspaceMemberSchema,
   ({ one, many }) => ({
     workspace: one({
@@ -231,7 +231,7 @@ var workspaceMemberRelationships = relationships(
     }),
   })
 );
-var teamMemberRelationships = relationships(teamMemberSchema, ({ one }) => ({
+const teamMemberRelationships = relationships(teamMemberSchema, ({ one }) => ({
   team: one({
     sourceField: ["team_id"],
     destField: ["id"],
@@ -243,7 +243,7 @@ var teamMemberRelationships = relationships(teamMemberSchema, ({ one }) => ({
     destSchema: userSchema,
   }),
 }));
-var userRelationships = relationships(userSchema, ({ one, many }) => ({
+const userRelationships = relationships(userSchema, ({ one, many }) => ({
   session: many({
     sourceField: ["id"],
     destField: ["user_id"],
@@ -272,14 +272,14 @@ var userRelationships = relationships(userSchema, ({ one, many }) => ({
     destSchema: profileSchema,
   }),
 }));
-var profileRelationships = relationships(profileSchema, ({ many }) => ({
+const profileRelationships = relationships(profileSchema, ({ many }) => ({
   session: many({
     sourceField: ["user_id"],
     destField: ["user_id"],
     destSchema: sessionSchema,
   }),
 }));
-var taskRelationships = relationships(taskSchema, ({ one, many }) => ({
+const taskRelationships = relationships(taskSchema, ({ one, many }) => ({
   session: many({
     sourceField: ["creator_id"],
     destField: ["user_id"],
@@ -343,7 +343,7 @@ var taskRelationships = relationships(taskSchema, ({ one, many }) => ({
     destSchema: teamSchema,
   }),
 }));
-var taskCommentRelationships = relationships(
+const taskCommentRelationships = relationships(
   taskCommentSchema,
   ({ one, many }) => ({
     creator: one({
@@ -363,7 +363,7 @@ var taskCommentRelationships = relationships(
     }),
   })
 );
-var checklistItemRelationships = relationships(
+const checklistItemRelationships = relationships(
   checklistItemSchema,
   ({ one }) => ({
     task: one({
@@ -373,14 +373,14 @@ var checklistItemRelationships = relationships(
     }),
   })
 );
-var taskTagRelationships = relationships(taskTagSchema, ({ one }) => ({
+const taskTagRelationships = relationships(taskTagSchema, ({ one }) => ({
   task: one({
     sourceField: ["task_id"],
     destField: ["id"],
     destSchema: taskSchema,
   }),
 }));
-var emojiRelationships = relationships(emojiSchema, ({ one }) => ({
+const emojiRelationships = relationships(emojiSchema, ({ one }) => ({
   creator: one({
     sourceField: ["creator_id"],
     destField: ["id"],
@@ -397,14 +397,14 @@ var emojiRelationships = relationships(emojiSchema, ({ one }) => ({
     destSchema: taskCommentSchema,
   }),
 }));
-var sessionRelationships = relationships(sessionSchema, ({ one }) => ({
+const sessionRelationships = relationships(sessionSchema, ({ one }) => ({
   user: one({
     sourceField: ["user_id"],
     destField: ["id"],
     destSchema: userSchema,
   }),
 }));
-var schema = createSchema({
+const schema = createSchema({
   tables: [
     enterpriseSchema,
     workspaceSchema,

@@ -50,7 +50,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <div className="w-full">
           <input
             className={cn(
-              "input hover:border-input-hover placeholder:text-placeholder-foreground flex h-[52px] w-full rounded-2xl border-[1.5px] border-input bg-card px-4 py-[14px] font-sans text-base font-normal leading-snug text-foreground ring-offset-background transition-colors focus:border-ring focus:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+              "input flex h-[52px] w-full rounded-2xl border-[1.5px] border-input bg-card px-4 py-[14px] font-normal font-sans text-base text-foreground leading-snug ring-offset-background transition-colors placeholder:text-placeholder-foreground hover:border-input-hover focus:border-ring focus:outline-none disabled:cursor-not-allowed disabled:opacity-50",
               {
                 "border-destructive-foreground": hasError,
                 "pr-9": clearable && !!props.value,
@@ -63,21 +63,21 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           />
 
           {clearable && !!props.value && (
-            <div className="absolute right-0 top-0 flex flex-row gap-1 pr-3">
+            <div className="absolute top-0 right-0 flex flex-row gap-1 pr-3">
               <button
-                tabIndex={-1}
+                aria-label="clear input"
                 className={cn(
-                  "flex h-[52px] items-center justify-center !p-0 text-muted-foreground",
+                  "!p-0 flex h-[52px] items-center justify-center text-muted-foreground",
                   clearClassName
                 )}
-                type="button"
                 onClick={() => onClear?.()}
-                aria-label="clear input"
+                tabIndex={-1}
+                type="button"
               >
                 <CircleXIcon
-                  width={20}
-                  height={20}
                   className="text-muted-foreground/50"
+                  height={20}
+                  width={20}
                 />
               </button>
             </div>
@@ -85,7 +85,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         </div>
 
         {rightControl && (
-          <div className="absolute right-3 top-0 flex h-full flex-row place-items-center items-center justify-center">
+          <div className="absolute top-0 right-3 flex h-full flex-row place-items-center items-center justify-center">
             {rightControl}
           </div>
         )}

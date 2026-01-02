@@ -101,7 +101,7 @@ export const RenderPrompt = ({
           </Prompt.Header>
 
           {verificationText && (
-            <div className="mb-4 mt-6 flex flex-col gap-y-4">
+            <div className="mt-6 mb-4 flex flex-col gap-y-4">
               <Label htmlFor="verificationText">
                 Please type{" "}
                 <span className="font-bold">{verificationText}</span> to
@@ -109,11 +109,11 @@ export const RenderPrompt = ({
               </Label>
 
               <Input
-                autoFocus
                 autoComplete="off"
+                autoFocus
                 id="verificationText"
-                placeholder={verificationText}
                 onChange={handleUserInput}
+                placeholder={verificationText}
               />
             </div>
           )}
@@ -122,8 +122,8 @@ export const RenderPrompt = ({
             <Prompt.Cancel onClick={onCancel}>{cancelText}</Prompt.Cancel>
             <Prompt.Action
               disabled={!validInput}
-              type={verificationText ? "submit" : "button"}
               onClick={verificationText ? undefined : onConfirm}
+              type={verificationText ? "submit" : "button"}
             >
               {confirmText}
             </Prompt.Action>

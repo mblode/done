@@ -1,15 +1,15 @@
 import { Button } from "./button";
 
-type Item = {
+interface Item {
   id: string;
   label: string;
-};
+}
 
-type Props = {
+interface Props {
   items: Item[];
   handleClick: (item: Item) => void;
   value?: string;
-};
+}
 
 export const SimpleScrollMenu = ({ items, handleClick, value }: Props) => {
   const activeIndex = items.findIndex((item) => item.id === value);
@@ -19,10 +19,10 @@ export const SimpleScrollMenu = ({ items, handleClick, value }: Props) => {
       {items.map((item, index) => {
         return (
           <SimpleScrollMenuItem
-            key={index}
-            item={item}
             handleClick={handleClick}
             isActive={activeIndex === index}
+            item={item}
+            key={index}
           />
         );
       })}
@@ -42,8 +42,8 @@ export const SimpleScrollMenuItem = ({
   return (
     <Button
       onClick={() => handleClick(item)}
-      type="button"
       size="xs"
+      type="button"
       variant={isActive ? "default" : "secondary"}
     >
       {item.label}

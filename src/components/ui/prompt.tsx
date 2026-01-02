@@ -28,11 +28,11 @@ const Overlay = React.forwardRef<
 >(({ className, ...props }, ref) => {
   return (
     <Primitives.Overlay
-      ref={ref}
       className={cn(
-        "fixed inset-0 z-[110] bg-background/80 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+        "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-[110] bg-background/80 backdrop-blur-sm data-[state=closed]:animate-out data-[state=open]:animate-in",
         className
       )}
+      ref={ref}
       {...props}
     />
   );
@@ -44,7 +44,7 @@ const Title = React.forwardRef<
   Omit<React.ComponentPropsWithoutRef<typeof Primitives.Title>, "asChild">
 >(({ className, children, ...props }, ref) => {
   return (
-    <Primitives.Title ref={ref} className={cn(className)} {...props} asChild>
+    <Primitives.Title className={cn(className)} ref={ref} {...props} asChild>
       <Heading level="h4">{children}</Heading>
     </Primitives.Title>
   );
@@ -59,11 +59,11 @@ const Content = React.forwardRef<
     <Portal>
       <Overlay />
       <Primitives.Content
-        ref={ref}
         className={cn(
-          "fixed left-[50%] top-[50%] z-[110] grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 rounded-2xl border bg-background p-4 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] md:w-full",
+          "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] fixed top-[50%] left-[50%] z-[110] grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 rounded-2xl border bg-background p-4 shadow-lg duration-200 data-[state=closed]:animate-out data-[state=open]:animate-in md:w-full",
           className
         )}
+        ref={ref}
         {...props}
       />
     </Portal>
@@ -76,7 +76,7 @@ const Description = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof Primitives.Description>
 >(({ className, ...props }, ref) => {
   return (
-    <Primitives.Description ref={ref} className={cn(className)} {...props} />
+    <Primitives.Description className={cn(className)} ref={ref} {...props} />
   );
 });
 Description.displayName = "Prompt.Description";
@@ -87,12 +87,12 @@ const Action = React.forwardRef<
 >(({ className, children, type, ...props }, ref) => {
   return (
     <Primitives.Action
-      ref={ref}
       className={cn("w-full", className)}
+      ref={ref}
       {...props}
       asChild
     >
-      <Button type={type} variant="destructive" className="w-full">
+      <Button className="w-full" type={type} variant="destructive">
         {children}
       </Button>
     </Primitives.Action>
@@ -106,12 +106,12 @@ const Cancel = React.forwardRef<
 >(({ className, children, ...props }, ref) => {
   return (
     <Primitives.Cancel
-      ref={ref}
       className={cn("w-full", className)}
+      ref={ref}
       {...props}
       asChild
     >
-      <Button variant="secondary" className="w-full">
+      <Button className="w-full" variant="secondary">
         {children}
       </Button>
     </Primitives.Cancel>

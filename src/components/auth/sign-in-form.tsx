@@ -2,22 +2,22 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import * as z from "zod";
+import { object, string, type infer as zodInfer } from "zod";
 
 import { InputField } from "@/components/fields/input-field";
 import { PasswordField } from "@/components/fields/password-field";
 import { Button } from "@/components/ui/button";
 
-const schema = z.object({
-  email: z.string().email().min(1, { message: "Required" }),
-  password: z.string().min(1, { message: "Required" }),
+const schema = object({
+  email: string().email().min(1, { message: "Required" }),
+  password: string().min(1, { message: "Required" }),
 });
 
-type Schema = z.infer<typeof schema>;
+type Schema = zodInfer<typeof schema>;
 
-type Props = {
+interface Props {
   redirectTo: string;
-};
+}
 
 export const SignInForm = ({ redirectTo }: Props) => {
   const [loading, setLoading] = useState(false);
@@ -31,7 +31,7 @@ export const SignInForm = ({ redirectTo }: Props) => {
     },
   });
 
-  const submitHandler = useCallback(async () => {
+  const submitHandler = useCallback(() => {
     try {
       setLoading(true);
 
@@ -57,20 +57,20 @@ export const SignInForm = ({ redirectTo }: Props) => {
     <form onSubmit={handleSubmit(submitHandler)}>
       <InputField
         control={control}
-        type="email"
-        name="email"
         label={null}
+        name="email"
         placeholder="Email address"
+        type="email"
       />
 
       <PasswordField
         control={control}
-        name="password"
         label={null}
+        name="password"
         placeholder="Password"
       />
 
-      <Button type="submit" loading={loading} className="w-full shadow-sm">
+      <Button className="w-full shadow-sm" loading={loading} type="submit">
         Sign in
       </Button>
     </form>

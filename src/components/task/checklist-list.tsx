@@ -24,9 +24,9 @@ import type { ChecklistItemRow, TaskRow } from "@/schema";
 
 import { ChecklistItem } from "./checklist-item";
 
-type Props = {
+interface Props {
   task: TaskRow & { checklistItems: readonly ChecklistItemRow[] };
-};
+}
 
 export const ChecklistList = ({ task }: Props) => {
   const zero = useZero();
@@ -73,7 +73,9 @@ export const ChecklistList = ({ task }: Props) => {
     (event: DragEndEvent) => {
       const { active, over } = event;
       setActiveId(null);
-      if (!over || active.id === over.id) return;
+      if (!over || active.id === over.id) {
+        return;
+      }
 
       const oldIndex = task.checklistItems.findIndex(
         (item) => item.id === active.id
@@ -132,13 +134,13 @@ export const ChecklistList = ({ task }: Props) => {
   );
 
   return (
-    <div className="pb-3 pl-9 pr-3">
+    <div className="pr-3 pb-3 pl-9">
       <DndContext
-        sensors={sensors}
         collisionDetection={closestCenter}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
         onDragCancel={handleDragCancel}
+        onDragEnd={handleDragEnd}
+        onDragStart={handleDragStart}
+        sensors={sensors}
       >
         <SortableContext
           items={task.checklistItems.map((item) => item.id)}
@@ -146,21 +148,21 @@ export const ChecklistList = ({ task }: Props) => {
         >
           {task.checklistItems.map((item, index) => (
             <ChecklistItem
-              key={item.id}
-              item={item}
-              task={task}
               isDragging={activeId === item.id}
-              onAddItem={handleAddItem}
+              isEndMode={isEndMode}
               isFocused={focusedId === item.id}
+              item={item}
+              key={item.id}
+              onAddItem={handleAddItem}
               onFocusChange={handleFocusChange}
-              showTopLine={index === 0 && activeId !== item.id}
+              setIsEndMode={setIsEndMode}
               showBottomLine={
                 focusedId !== item.id &&
                 focusedIndex - 1 !== index &&
                 activeId !== item.id
               }
-              isEndMode={isEndMode}
-              setIsEndMode={setIsEndMode}
+              showTopLine={index === 0 && activeId !== item.id}
+              task={task}
             />
           ))}
         </SortableContext>

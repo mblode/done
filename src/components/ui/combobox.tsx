@@ -14,11 +14,11 @@ import { cn } from "@/lib/utils";
 
 import { Input, type InputProps } from "./input";
 
-export type ComboboxOption = {
+export interface ComboboxOption {
   id?: string | number;
   label?: string;
   description?: string; // Added description field
-};
+}
 
 export type OnChangeParams =
   | ((changes: UseComboboxStateChange<ComboboxOption>) => void)
@@ -39,12 +39,12 @@ export interface ComboboxProps extends Omit<InputProps, "value" | "onChange"> {
   ref?: any;
 }
 
-export type ComboboxRef = {
+export interface ComboboxRef {
   clearInput: () => void;
   closeMenu: () => void;
   selectItem: (option: ComboboxOption) => void;
   inputValue: string;
-};
+}
 
 export const Combobox: React.FC<ComboboxProps> = forwardRef(
   (
@@ -113,31 +113,30 @@ export const Combobox: React.FC<ComboboxProps> = forwardRef(
               className={cn({
                 "pl-10": !!leftIcon,
               })}
+              clearable={clearable}
               onClear={() => {
                 selectItem({});
                 onClear?.();
               }}
-              clearable={clearable}
               {...getInputProps({}, { suppressRefError: true })}
               {...inputProps}
               ref={comboboxRef}
             />
-            <div className="absolute right-3 top-4">
+            <div className="absolute top-4 right-3">
               {((clearable && inputValue.length === 0) || !clearable) && (
-                <ChevronDownIcon width={20} height={20} />
+                <ChevronDownIcon height={20} width={20} />
               )}
             </div>
 
-            <div className="absolute left-3 top-4">{leftIcon}</div>
+            <div className="absolute top-4 left-3">{leftIcon}</div>
           </div>
         </PopoverPrimitive.Anchor>
 
         <PopoverPrimitive.Portal>
           <PopoverPrimitive.Content
             align="start"
-            className="relative z-[110] max-h-[250px] min-w-32 translate-y-1 overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-lg animate-in fade-in-80"
             asChild
-            onOpenAutoFocus={(event) => event.preventDefault()}
+            className="fade-in-80 relative z-[110] max-h-[250px] min-w-32 translate-y-1 animate-in overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-lg"
             onInteractOutside={(event) => {
               const target = event.target as Element | null;
               const isCombobox = target === comboboxRef.current;
@@ -146,6 +145,7 @@ export const Combobox: React.FC<ComboboxProps> = forwardRef(
                 event.preventDefault();
               }
             }}
+            onOpenAutoFocus={(event) => event.preventDefault()}
           >
             <div
               className="w-full overflow-y-auto p-1"
@@ -164,11 +164,11 @@ export const Combobox: React.FC<ComboboxProps> = forwardRef(
 
                 return (
                   <div
-                    key={`${item.id}${index}`}
                     className={cn("cursor-pointer rounded-lg px-4 py-2", {
                       "bg-accent text-accent-foreground":
                         highlightedIndex === index,
                     })}
+                    key={`${item.id}${index}`}
                     {...getItemProps({
                       item,
                       index,
@@ -184,7 +184,7 @@ export const Combobox: React.FC<ComboboxProps> = forwardRef(
                       )}
                     </div>
                     {item.description && (
-                      <div className="text-sm text-muted-foreground">
+                      <div className="text-muted-foreground text-sm">
                         {item.description}
                       </div>
                     )}

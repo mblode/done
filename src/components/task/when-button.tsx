@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button";
 import { RootStoreContext } from "@/lib/stores/root-store";
 import type { TaskRow } from "@/schema";
 
-type Props = {
+interface Props {
   task: TaskRow;
-};
+}
 
 export const WhenButton = ({ task }: Props) => {
   const {
@@ -21,10 +21,10 @@ export const WhenButton = ({ task }: Props) => {
 
   return (
     <Button
-      variant="ghost"
-      size="sm"
       className="h-auto gap-1.5 rounded-md p-1"
       onClick={handleClick}
+      size="sm"
+      variant="ghost"
     >
       <CalendarIcon className="size-4" />
     </Button>

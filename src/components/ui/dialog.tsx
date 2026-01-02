@@ -19,11 +19,11 @@ const DialogOverlay = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Overlay
-    ref={ref}
     className={cn(
-      "fixed inset-0 z-[100] bg-black/60 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-[100] bg-black/60 data-[state=closed]:animate-out data-[state=open]:animate-in",
       className
     )}
+    ref={ref}
     {...props}
   />
 ));
@@ -45,17 +45,17 @@ const DialogContent = React.forwardRef<
       {!hideOverlay && <DialogOverlay className={overlayClassName} />}
 
       {!hideClose && (
-        <DialogPrimitive.Close className="pointer-events-auto fixed right-4 top-4 z-[101] rounded-full bg-muted p-2 text-muted-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-primary data-[state=open]:text-muted-foreground">
+        <DialogPrimitive.Close className="pointer-events-auto fixed top-4 right-4 z-[101] rounded-full bg-muted p-2 text-muted-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-primary data-[state=open]:text-muted-foreground">
           <XIcon className="size-5" />
           <span className="sr-only">Close</span>
         </DialogPrimitive.Close>
       )}
       <DialogPrimitive.Content
-        ref={ref}
         className={cn(
-          "fixed left-[50%] top-[50%] z-[100] grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 bg-sidebar p-4 shadow-lg !outline-none duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-2xl md:w-full",
+          "!outline-none data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] fixed top-[50%] left-[50%] z-[100] grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 bg-sidebar p-4 shadow-lg duration-200 data-[state=closed]:animate-out data-[state=open]:animate-in sm:rounded-2xl md:w-full",
           className
         )}
+        ref={ref}
         {...props}
       >
         {children}
@@ -98,11 +98,11 @@ const DialogTitle = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Title
-    ref={ref}
     className={cn(
-      "text-lg font-semibold leading-none tracking-tight",
+      "font-semibold text-lg leading-none tracking-tight",
       className
     )}
+    ref={ref}
     {...props}
   />
 ));
@@ -113,8 +113,8 @@ const DialogDescription = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Description
-    ref={ref}
     className={cn("text-base text-muted-foreground", className)}
+    ref={ref}
     {...props}
   />
 ));

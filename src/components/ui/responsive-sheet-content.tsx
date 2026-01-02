@@ -6,14 +6,14 @@ import { cn } from "@/lib/utils";
 import { DialogContent } from "./dialog";
 import { SheetContent } from "./sheet";
 
-type Props = {
+interface Props {
   children: React.ReactNode;
   ref?: MutableRefObject<any>;
   mobileClassName?: string;
   desktopClassName?: string;
   className?: string;
   overlayClassName?: string;
-};
+}
 
 export const ResponsiveSheetContent = ({
   children,
@@ -29,10 +29,10 @@ export const ResponsiveSheetContent = ({
   if (!isDesktop) {
     return (
       <SheetContent
-        side="bottom"
-        ref={ref}
         className={cn(className, "rounded-t-[32px]", mobileClassName)}
         overlayClassName={overlayClassName}
+        ref={ref}
+        side="bottom"
       >
         {children}
       </SheetContent>
@@ -42,8 +42,8 @@ export const ResponsiveSheetContent = ({
   return (
     <DialogContent
       className={cn(className, desktopClassName)}
-      ref={ref}
       overlayClassName={overlayClassName}
+      ref={ref}
     >
       {children}
     </DialogContent>

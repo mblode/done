@@ -117,7 +117,9 @@ export function DataTable<TData, TValue>({
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow
+                    className={cn({ "cursor-pointer": !!baseUrl || !!onClick })}
                     data-state={row.getIsSelected() && "selected"}
+                    key={row.id}
                     onClick={() => {
                       if (onClick) {
                         onClick?.(row.original as any);
@@ -125,8 +127,6 @@ export function DataTable<TData, TValue>({
                         router.push(`${baseUrl}/${(row.original as any).id}`);
                       }
                     }}
-                    key={row.id}
-                    className={cn({ "cursor-pointer": !!baseUrl || !!onClick })}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
@@ -141,8 +141,8 @@ export function DataTable<TData, TValue>({
               ) : (
                 <TableRow>
                   <TableCell
-                    colSpan={columns.length}
                     className="h-24 text-center"
+                    colSpan={columns.length}
                   >
                     No results found
                   </TableCell>
@@ -155,25 +155,25 @@ export function DataTable<TData, TValue>({
 
       {!hideFooter && (
         <div className="flex items-center justify-between space-x-2 py-4">
-          <div className="flex-1 text-sm text-muted-foreground">
+          <div className="flex-1 text-muted-foreground text-sm">
             {table.getFilteredRowModel().rows.length} results
           </div>
 
           <div className="space-x-2">
             <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
+              onClick={() => table.previousPage()}
+              size="sm"
+              variant="secondary"
             >
               Previous
             </Button>
 
             <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
+              onClick={() => table.nextPage()}
+              size="sm"
+              variant="secondary"
             >
               Next
             </Button>

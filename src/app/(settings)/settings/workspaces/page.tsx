@@ -47,7 +47,7 @@ export default function Page() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Workspaces</h1>
+            <h1 className="font-bold text-2xl tracking-tight">Workspaces</h1>
             <p className="text-muted-foreground">
               Manage your workspace settings and collaborations
             </p>
@@ -65,13 +65,13 @@ export default function Page() {
               <CardContent className="py-8">
                 <div className="text-center">
                   <h3 className="font-medium">No workspaces found</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">
+                  <p className="mt-1 text-muted-foreground text-sm">
                     Create a new workspace to get started
                   </p>
                   <Button
-                    variant="outline"
                     className="mt-4"
                     onClick={handleNewWorkspace}
+                    variant="outline"
                   >
                     <Plus className="mr-2 size-4" />
                     Create workspace
@@ -92,9 +92,9 @@ export default function Page() {
 
                     <div className="flex items-center space-x-2">
                       <Button
-                        variant="ghost"
-                        size="sm"
                         onClick={() => handleSettings(workspace.slug)}
+                        size="sm"
+                        variant="ghost"
                       >
                         <Settings2 className="size-4" />
                         <span className="ml-2">Settings</span>
@@ -102,22 +102,22 @@ export default function Page() {
 
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm">
+                          <Button size="sm" variant="ghost">
                             <MoreVertical className="size-4" />
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem
-                            onClick={() => handleSettings(workspace.slug)}
                             className="cursor-pointer"
+                            onClick={() => handleSettings(workspace.slug)}
                           >
                             <Settings2 className="mr-2 size-4" />
                             Settings
                           </DropdownMenuItem>
 
                           <DropdownMenuItem
-                            onClick={() => handleLeave(workspace.id)}
                             className="cursor-pointer text-red-600"
+                            onClick={() => handleLeave(workspace.id)}
                           >
                             <LogOut className="mr-2 size-4" />
                             Leave workspace

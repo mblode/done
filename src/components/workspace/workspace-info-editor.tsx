@@ -45,9 +45,9 @@ const View = observer(
             <div className="space-y-2">
               <Label>Name</Label>
               <Input
-                value={workspace?.name || ``}
                 onChange={(e) => onNameChange(e.target.value)}
                 placeholder="Done"
+                value={workspace?.name || ""}
               />
             </div>
           </CardContent>

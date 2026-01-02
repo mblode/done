@@ -6,9 +6,9 @@ export const metadata: Metadata = {
   title: "Accept Invite",
 };
 
-type Props = {
+interface Props {
   params: Promise<{ invitationId: string }>;
-};
+}
 
 export default async function Page(props: Props) {
   const params = await props.params;

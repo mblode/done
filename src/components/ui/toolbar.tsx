@@ -27,7 +27,9 @@ const ToolbarWrapper = React.forwardRef<HTMLDivElement, ToolbarWrapperProps>(
     },
     ref
   ) => {
-    if (!shouldShowContent) return null;
+    if (!shouldShowContent) {
+      return null;
+    }
 
     return (
       <Surface
@@ -97,14 +99,14 @@ const ToolbarButton = React.forwardRef<HTMLButtonElement, ToolbarButtonProps>(
   ) => {
     const button = (
       <Button
-        ref={ref}
-        variant={variant}
-        size={size}
         className={cn(
           "w-auto min-w-[2rem] gap-1 px-2",
           props.active && activeClassName,
           className
         )}
+        ref={ref}
+        size={size}
+        variant={variant}
         {...props}
       >
         {children}

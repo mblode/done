@@ -34,9 +34,9 @@ import { useZero } from "@/hooks/use-zero";
 import { mutators } from "@/lib/zero/mutators";
 import { queries } from "@/lib/zero/queries";
 
-type Props = {
+interface Props {
   params: { workspaceSlug: string; teamSlug: string };
-};
+}
 
 export default function Page({ params: { teamSlug } }: Props) {
   const zero = useZero();
@@ -76,14 +76,14 @@ export default function Page({ params: { teamSlug } }: Props) {
     <div className="container mx-auto space-y-6 py-6">
       {/* Header */}
       <div className="flex items-center space-x-4">
-        <Link href="/teams" className="hover:opacity-80">
+        <Link className="hover:opacity-80" href="/teams">
           <ChevronLeft className="size-6" />
         </Link>
         <div className="flex items-center space-x-3">
           <div className="flex size-6 items-center justify-center rounded bg-green-500/20">
             <span className="text-green-500">$</span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight">
+          <h1 className="font-bold text-2xl tracking-tight">
             Product team members
           </h1>
         </div>
@@ -93,17 +93,17 @@ export default function Page({ params: { teamSlug } }: Props) {
       <div className="flex items-center justify-between gap-4">
         <div className="flex max-w-xl flex-1 items-center gap-4">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
+              className="pl-9"
+              onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by name or email"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-9"
             />
           </div>
           <Select
-            value={filter}
             onValueChange={(value) => setFilter(value as typeof filter)}
+            value={filter}
           >
             <SelectTrigger className="w-32">
               <SelectValue>{filter}</SelectValue>
@@ -129,7 +129,7 @@ export default function Page({ params: { teamSlug } }: Props) {
             <TableHead>Name</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Role</TableHead>
-            <TableHead className="w-[50px]"></TableHead>
+            <TableHead className="w-[50px]" />
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -155,7 +155,7 @@ export default function Page({ params: { teamSlug } }: Props) {
                     </Avatar>
                     <div>
                       <div className="font-medium">{displayName}</div>
-                      <div className="text-sm text-muted-foreground">
+                      <div className="text-muted-foreground text-sm">
                         {member.user?.username || ""}
                       </div>
                     </div>
@@ -168,14 +168,14 @@ export default function Page({ params: { teamSlug } }: Props) {
                 <TableCell>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="sm">
+                      <Button size="sm" variant="ghost">
                         <MoreHorizontal className="size-4" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem
-                        onClick={() => handleLeave(member.id)}
                         className="text-red-600"
+                        onClick={() => handleLeave(member.id)}
                       >
                         Leave team...
                       </DropdownMenuItem>

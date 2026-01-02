@@ -47,7 +47,9 @@ export default function Page() {
   };
 
   const handleAvatarUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files?.[0]) return;
+    if (!e.target.files?.[0]) {
+      return;
+    }
     setIsUploading(true);
 
     try {
@@ -91,7 +93,7 @@ export default function Page() {
   return (
     <div className="container mx-auto max-w-3xl space-y-8 py-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Profile Settings</h1>
+        <h1 className="font-bold text-2xl tracking-tight">Profile Settings</h1>
         <p className="text-muted-foreground">
           Manage your account settings and preferences
         </p>
@@ -124,11 +126,11 @@ export default function Page() {
                       </AvatarFallback>
                     </Avatar>
                     <input
-                      type="file"
                       accept="image/*"
                       className="absolute inset-0 size-full cursor-pointer opacity-0"
-                      onChange={handleAvatarUpload}
                       disabled={isUploading}
+                      onChange={handleAvatarUpload}
+                      type="file"
                     />
                   </div>
                 </TooltipTrigger>
@@ -136,14 +138,14 @@ export default function Page() {
               </Tooltip>
             </TooltipProvider>
             <div className="flex-1">
-              <label htmlFor="preferred-name" className="text-sm font-medium">
+              <label className="font-medium text-sm" htmlFor="preferred-name">
                 Preferred name
               </label>
               <Input
                 id="preferred-name"
-                placeholder="Enter your name"
-                value={selectedUser?.profile?.name || ``}
                 onChange={handleNameChange}
+                placeholder="Enter your name"
+                value={selectedUser?.profile?.name || ""}
               />
             </div>
           </div>
@@ -166,11 +168,11 @@ export default function Page() {
                 <Mail className="size-4" />
                 <h3 className="font-medium">Email</h3>
               </div>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 {selectedUser?.email}
               </p>
             </div>
-            <Button variant="outline" onClick={handleEmailChange}>
+            <Button onClick={handleEmailChange} variant="outline">
               Change email
             </Button>
           </div>
@@ -182,11 +184,11 @@ export default function Page() {
                 <Lock className="size-4" />
                 <h3 className="font-medium">Password</h3>
               </div>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Change your password to login to your account
               </p>
             </div>
-            <Button variant="outline" onClick={handlePasswordChange}>
+            <Button onClick={handlePasswordChange} variant="outline">
               Change password
             </Button>
           </div>
@@ -198,11 +200,11 @@ export default function Page() {
                 <Shield className="size-4" />
                 <h3 className="font-medium">2-step verification</h3>
               </div>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Add an additional layer of security to your account during login
               </p>
             </div>
-            <Button variant="outline" onClick={handleVerificationAdd}>
+            <Button onClick={handleVerificationAdd} variant="outline">
               Add verification
             </Button>
           </div>

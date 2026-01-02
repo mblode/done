@@ -17,9 +17,9 @@ import {
 } from "@/components/ui/table";
 import { queries } from "@/lib/zero/queries";
 
-type Props = {
+interface Props {
   params: { workspaceSlug: string };
-};
+}
 
 export default function Page(_props: Props) {
   const router = useRouter();
@@ -40,18 +40,18 @@ export default function Page(_props: Props) {
     <div className="container mx-auto space-y-6 py-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Teams</h1>
+        <h1 className="font-bold text-2xl tracking-tight">Teams</h1>
       </div>
 
       {/* Controls */}
       <div className="flex items-center justify-between gap-4">
         <div className="relative max-w-sm flex-1">
-          <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
+            className="pl-9"
+            onChange={(e) => setSearch(e.target.value)}
             placeholder="Filter by name..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-9"
           />
         </div>
         <Button onClick={handleCreateTeam}>

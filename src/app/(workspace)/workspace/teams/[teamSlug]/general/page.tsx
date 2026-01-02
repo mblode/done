@@ -18,16 +18,18 @@ import { useZero } from "@/hooks/use-zero";
 import { mutators } from "@/lib/zero/mutators";
 import { queries } from "@/lib/zero/queries";
 
-type Props = {
+interface Props {
   params: { workspaceSlug: string; teamSlug: string };
-};
+}
 
 export default function Page({ params: { workspaceSlug, teamSlug } }: Props) {
   const zero = useZero();
   const [team] = useQuery(queries.teams.bySlug({ slug: teamSlug }));
 
   const handleDeleteTeam = async () => {
-    if (!team) return;
+    if (!team) {
+      return;
+    }
 
     try {
       await zero.mutate(mutators.team.delete({ id: team.id }));
@@ -51,22 +53,22 @@ export default function Page({ params: { workspaceSlug, teamSlug } }: Props) {
         <CardContent className="space-y-6">
           <div className="flex gap-4">
             <div className="flex-1 space-y-2">
-              <label htmlFor="team-name" className="text-sm font-medium">
+              <label className="font-medium text-sm" htmlFor="team-name">
                 Name
               </label>
               <div className="flex items-center gap-2">
-                <Input id="team-name" defaultValue="Product" />
+                <Input defaultValue="Product" id="team-name" />
               </div>
             </div>
 
             <div className="flex-1 space-y-2">
-              <label htmlFor="team-slug" className="text-sm font-medium">
+              <label className="font-medium text-sm" htmlFor="team-slug">
                 Slug
-                <span className="ml-2 text-sm font-normal text-muted-foreground">
+                <span className="ml-2 font-normal text-muted-foreground text-sm">
                   Used in issue IDs
                 </span>
               </label>
-              <Input id="team-slug" defaultValue="PRO" />
+              <Input defaultValue="PRO" id="team-slug" />
             </div>
           </div>
         </CardContent>
@@ -75,14 +77,14 @@ export default function Page({ params: { workspaceSlug, teamSlug } }: Props) {
       {/* Navigation Links */}
       <div className="space-y-2">
         <Link
-          href={`/${workspaceSlug}/settings/teams/${teamSlug}/members`}
           className="flex items-center justify-between rounded-lg bg-muted/50 p-4 hover:bg-muted"
+          href={`/${workspaceSlug}/settings/teams/${teamSlug}/members`}
         >
           <div className="flex items-center gap-3">
             <Users className="size-5 text-muted-foreground" />
             <div>
               <div className="font-medium">Members</div>
-              <div className="text-sm text-muted-foreground">
+              <div className="text-muted-foreground text-sm">
                 Manage team members
               </div>
             </div>
@@ -108,11 +110,11 @@ export default function Page({ params: { workspaceSlug, teamSlug } }: Props) {
           <div className="flex items-center justify-between border-t py-3">
             <div>
               <h3 className="font-medium">Delete team</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Permanently remove this team and all of its data
               </p>
             </div>
-            <Button variant="destructive" onClick={handleDeleteTeam}>
+            <Button onClick={handleDeleteTeam} variant="destructive">
               Delete team...
             </Button>
           </div>

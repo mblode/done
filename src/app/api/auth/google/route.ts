@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID as string;
 
-export async function GET(request: NextRequest) {
+export function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const redirectUrl = searchParams.get("redirect_url") || "/";
 

@@ -35,10 +35,10 @@ import { cn } from "@/lib/utils";
 import { mutators } from "@/lib/zero/mutators";
 import type { TaskRow } from "@/schema";
 
-type BaseDialogProps = {
+interface BaseDialogProps {
   open: boolean;
   setOpen: (open: boolean) => void;
-};
+}
 
 type SingleTaskProps = BaseDialogProps & {
   type: "single";
@@ -53,50 +53,67 @@ type MultipleTaskProps = BaseDialogProps & {
 
 type Props = SingleTaskProps | MultipleTaskProps;
 
-type TaskUpdate = {
+interface TaskUpdate {
   start?: "not_started" | "started" | "someday";
   start_bucket: "today" | "evening";
   start_date: number | null;
-};
+}
 
 export const getButtonIcon = (task: TaskRow) => {
-  if (task.start === "started" && !task.start_date)
+  if (task.start === "started" && !task.start_date) {
     return <LayersIcon className="size-4" />;
-  if (task.start === "someday" && !task.start_date)
+  }
+  if (task.start === "someday" && !task.start_date) {
     return <Package className="size-4" />;
-  if (task.start === "not_started") return <Inbox className="size-4" />;
-  if (task.start_bucket === "evening") return <Moon className="size-4" />;
+  }
+  if (task.start === "not_started") {
+    return <Inbox className="size-4" />;
+  }
+  if (task.start_bucket === "evening") {
+    return <Moon className="size-4" />;
+  }
   return <Star className="size-4" />;
 };
 
 export const getButtonText = (task: TaskRow) => {
   const tomorrow = addDays(startOfDay(new Date()), 1).getTime();
 
-  if (task.start === "started" && !task.start_date) return "Anytime";
-  if (task.start === "someday" && !task.start_date) return "Someday";
-  if (task.start === "not_started") return "Inbox";
+  if (task.start === "started" && !task.start_date) {
+    return "Anytime";
+  }
+  if (task.start === "someday" && !task.start_date) {
+    return "Someday";
+  }
+  if (task.start === "not_started") {
+    return "Inbox";
+  }
   if (
     task.start === "started" &&
     task.start_bucket === "evening" &&
     !!task.start_date &&
     task.start_date < tomorrow
-  )
+  ) {
     return "This Evening";
+  }
   if (
     task.start === "started" &&
     task.start_bucket === "today" &&
     !!task.start_date &&
     task.start_date < tomorrow
-  )
+  ) {
     return "Today";
-  if (task.start_date) return format(new Date(task.start_date), "MMM d");
+  }
+  if (task.start_date) {
+    return format(new Date(task.start_date), "MMM d");
+  }
   return "Today";
 };
 
 const CustomDaycell = (
   props: DayProps & { selected?: Date; onClick?: (date: Date) => void }
 ) => {
-  const { date, selected, onClick, ...rest } = props;
+  const { selected, onClick, ...rest } = props;
+  const date = props.day.date;
 
   const isSelectedDate = selected && isSameDay(date, selected);
 
@@ -105,8 +122,7 @@ const CustomDaycell = (
 
   return (
     <button
-      {...rest}
-      onClick={() => onClick?.(date)}
+      {...(rest as any)}
       className={cn(
         "flex h-9 w-9 items-center justify-center rounded-[8px] p-0 font-normal text-foreground hover:bg-muted hover:text-foreground focus:bg-muted focus:outline-none",
         {
@@ -115,6 +131,7 @@ const CustomDaycell = (
         }
       )}
       disabled={disabled}
+      onClick={() => onClick?.(date)}
     >
       {isToday(date) ? <StarIcon className="size-4" /> : format(date, "d")}
     </button>
@@ -165,7 +182,9 @@ export const WhenDialog = observer((props: Props) => {
   );
 
   const handleSelect = async (date: Date | undefined) => {
-    if (!date) return;
+    if (!date) {
+      return;
+    }
 
     await updateTasks({
       start: "started",
@@ -216,7 +235,7 @@ export const WhenDialog = observer((props: Props) => {
   const singleTask = props.type === "single" ? props.task : null;
 
   return (
-    <Dialog open={props.open} onOpenChange={props.setOpen}>
+    <Dialog onOpenChange={props.setOpen} open={props.open}>
       <DialogContent className="max-w-[320px]">
         <DialogHeader>
           <DialogTitle>When</DialogTitle>
@@ -224,6 +243,8 @@ export const WhenDialog = observer((props: Props) => {
 
         <div className="space-y-1">
           <Button
+            className="w-full justify-start"
+            onClick={handleToday}
             size="xs"
             variant={
               singleTask?.start_bucket === "today" &&
@@ -233,8 +254,6 @@ export const WhenDialog = observer((props: Props) => {
                 ? "secondary"
                 : "ghost"
             }
-            onClick={handleToday}
-            className="w-full justify-start"
           >
             <Star className="mr-2 size-4" />
             Today
@@ -247,6 +266,8 @@ export const WhenDialog = observer((props: Props) => {
           </Button>
 
           <Button
+            className="w-full justify-start"
+            onClick={handleEvening}
             size="xs"
             variant={
               singleTask?.start_bucket === "evening" &&
@@ -256,8 +277,6 @@ export const WhenDialog = observer((props: Props) => {
                 ? "secondary"
                 : "ghost"
             }
-            onClick={handleEvening}
-            className="w-full justify-start"
           >
             <Moon className="mr-2 size-4" />
             This Evening
@@ -271,12 +290,6 @@ export const WhenDialog = observer((props: Props) => {
         </div>
 
         <DayPicker
-          selected={
-            singleTask?.start_date ? new Date(singleTask.start_date) : undefined
-          }
-          onSelect={handleSelect}
-          fromDate={new Date()}
-          mode="single"
           classNames={{
             months: "flex flex-col",
             month: "space-y-2",
@@ -284,7 +297,7 @@ export const WhenDialog = observer((props: Props) => {
             caption_label: "text-sm font-medium text-foreground flex-1",
             nav: "space-x-1 flex items-center",
             nav_button: cn(
-              "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 text-foreground"
+              "h-7 w-7 bg-transparent p-0 text-foreground opacity-50 hover:opacity-100"
             ),
             table: "w-full border-collapse space-y-1",
             head_row: "flex justify-between",
@@ -305,32 +318,40 @@ export const WhenDialog = observer((props: Props) => {
             day_disabled: "text-muted-foreground/50",
             day_hidden: "invisible",
           }}
-          components={{
-            IconLeft: () => <ChevronLeft className="size-4" />,
-            IconRight: () => <ChevronRight className="size-4" />,
-            Day: (props: DayProps) => (
-              <CustomDaycell
-                {...props}
-                selected={
-                  singleTask?.start_date
-                    ? new Date(singleTask.start_date)
-                    : undefined
-                }
-                onClick={handleSelect}
-              />
-            ),
-          }}
+          components={
+            {
+              IconLeft: () => <ChevronLeft className="size-4" />,
+              IconRight: () => <ChevronRight className="size-4" />,
+              Day: (props: DayProps) => (
+                <CustomDaycell
+                  {...props}
+                  onClick={handleSelect as any}
+                  selected={
+                    singleTask?.start_date
+                      ? new Date(singleTask.start_date)
+                      : undefined
+                  }
+                />
+              ),
+            } as any
+          }
+          fromDate={new Date()}
+          mode="single"
+          onSelect={handleSelect}
+          selected={
+            singleTask?.start_date ? new Date(singleTask.start_date) : undefined
+          }
         />
 
         <Button
+          className="w-full justify-start text-left"
+          onClick={handleSomeday}
+          size="xs"
           variant={
             singleTask?.start === "someday" && !singleTask.start_date
               ? "secondary"
               : "ghost"
           }
-          size="xs"
-          className="w-full justify-start text-left"
-          onClick={handleSomeday}
         >
           <Package className="mr-2 size-4" />
           Someday
@@ -349,10 +370,10 @@ export const WhenDialog = observer((props: Props) => {
 
         <div className="w-full">
           <Button
-            variant="muted"
-            size="xs"
-            onClick={handleClear}
             className="w-full"
+            onClick={handleClear}
+            size="xs"
+            variant="muted"
           >
             Clear
           </Button>

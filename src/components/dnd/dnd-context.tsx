@@ -31,14 +31,14 @@ import type { TaskRow } from "@/schema";
 import { MultipleTasksOverlay } from "../task/multiple-task-overlay";
 import { TaskItem } from "../task/task-item";
 
-export type DndListData = {
+export interface DndListData {
   id: string;
   start_bucket?: string;
   start_date?: number | null;
   start?: string;
   archived_at?: number | null;
   completed_at?: number | null;
-};
+}
 
 interface DragState {
   activeId: UniqueIdentifier | null;
@@ -116,13 +116,13 @@ export const DndProvider = observer(({ children }: { children: ReactNode }) => {
   }) => {
     let start: string;
     let start_date: number | null;
-    let start_bucket: string = "today";
+    let start_bucket = "today";
     let archived_at: number | null;
     let completed_at: number | null;
 
     const paths = bucketId.split("-");
-    const id = paths[0]!;
-    const idDate = paths?.[1] ? parseInt(paths[1], 10) : null;
+    const id = paths[0] ?? "";
+    const idDate = paths?.[1] ? Number.parseInt(paths[1], 10) : null;
 
     switch (id) {
       case "today":
@@ -237,8 +237,12 @@ export const DndProvider = observer(({ children }: { children: ReactNode }) => {
     const selectedTasks = allTasks
       .filter((task) => taskIds.includes(task.id))
       .sort((a, b) => {
-        if (a.id === activeId) return -1;
-        if (b.id === activeId) return 1;
+        if (a.id === activeId) {
+          return -1;
+        }
+        if (b.id === activeId) {
+          return 1;
+        }
         return a.sort_order - b.sort_order;
       });
 
@@ -352,11 +356,11 @@ export const DndProvider = observer(({ children }: { children: ReactNode }) => {
   return (
     <DndContext.Provider value={value}>
       <DndKitContext
-        sensors={sensors}
-        onDragStart={handleDragStart}
+        collisionDetection={pointerWithin}
         onDragEnd={handleDragEnd}
         onDragOver={handleDragOver}
-        collisionDetection={pointerWithin}
+        onDragStart={handleDragStart}
+        sensors={sensors}
       >
         {children}
         <DragOverlay>
@@ -370,11 +374,13 @@ export const DndProvider = observer(({ children }: { children: ReactNode }) => {
             ) : (
               activeTask && (
                 <TaskItem
-                  task={activeTask}
-                  isOverlay
                   checked={!!activeTask.completed_at}
+                  isOverlay
                   listData={{ id: "" }}
-                  onClick={() => {}}
+                  onClick={() => {
+                    // No-op for overlay
+                  }}
+                  task={activeTask}
                 />
               )
             ))}

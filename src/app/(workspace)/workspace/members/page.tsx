@@ -74,8 +74,8 @@ export default observer(() => {
     <div className="container mx-auto max-w-5xl space-y-8 py-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-medium">Members</h2>
-          <p className="text-sm text-muted-foreground">
+          <h2 className="font-medium text-lg">Members</h2>
+          <p className="text-muted-foreground text-sm">
             Invite and manage workspace members.
           </p>
         </div>
@@ -88,16 +88,16 @@ export default observer(() => {
       <div className="flex items-center gap-2">
         <div className="grow">
           <Input
+            className="max-w-[400px]"
+            onChange={(e) => setSearch(e.target.value)}
             placeholder="Search members..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="max-w-[400px]"
           />
         </div>
 
         <Select
-          value={filter}
           onValueChange={(value) => setFilter(value as typeof filter)}
+          value={filter}
         >
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select a role" />
@@ -109,7 +109,7 @@ export default observer(() => {
           </SelectContent>
         </Select>
 
-        <Button variant="outline" size="sm" onClick={exportToCSV}>
+        <Button onClick={exportToCSV} size="sm" variant="outline">
           <ArrowUpDown className="size-4" />
         </Button>
       </div>
@@ -119,15 +119,15 @@ export default observer(() => {
           <div className="space-y-4">
             {filteredMembers.map((member) => (
               <div
-                key={member.id}
                 className="flex items-center justify-between space-x-4"
+                key={member.id}
               >
                 <div className="flex items-center gap-3">
                   <div className="relative">
                     <Avatar>
                       <AvatarImage
-                        src={member.user?.profile?.avatar || undefined}
                         alt={member.user?.profile?.name || ""}
+                        src={member.user?.profile?.avatar || undefined}
                       />
                       <AvatarFallback>
                         {getUserInitials(member.user?.profile?.name || "")}
@@ -138,20 +138,20 @@ export default observer(() => {
                     <div className="font-medium">
                       {member.user?.profile?.name || "Unnamed"}
                     </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-muted-foreground text-sm">
                       {member.user?.email}
                     </div>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <div className="flex h-7 items-center justify-center rounded-full bg-secondary px-3 text-xs font-medium">
+                  <div className="flex h-7 items-center justify-center rounded-full bg-secondary px-3 font-medium text-xs">
                     {member.role}
                   </div>
 
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="sm">
+                      <Button size="sm" variant="ghost">
                         <MoreHorizontal className="size-4" />
                         <span className="sr-only">Open menu</span>
                       </Button>

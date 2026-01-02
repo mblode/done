@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <div className="container mx-auto px-4 pt-6">
-      <Link href="/inbox" className="underline">
+      <Link className="underline" href="/inbox">
         Go to Done inbox
       </Link>
     </div>

@@ -136,10 +136,10 @@ const BlockSidebarItems = () => {
     }
     return (
       <AppSidebarItem
-        item={item}
-        key={item.id}
         count={count}
         isActive={pathname === item.url}
+        item={item}
+        key={item.id}
       />
     );
   });

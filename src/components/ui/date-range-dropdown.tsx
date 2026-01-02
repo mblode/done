@@ -11,7 +11,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
-export type DateRangeOption = { id: string; label: string; value: DateRange };
+export interface DateRangeOption {
+  id: string;
+  label: string;
+  value: DateRange;
+}
 
 type Props = {
   options: DateRangeOption[];
@@ -36,7 +40,7 @@ export const DateRangeDropdown = ({
     <div className={cn("flex items-center space-x-2", className)}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="secondary" className="w-[300px] justify-start">
+          <Button className="w-[300px] justify-start" variant="secondary">
             <Calendar1Icon className="mr-2 size-4" />
             <span>
               {dateRangeOption ? dateRangeOption?.label : "Select a date range"}

@@ -34,8 +34,8 @@ export default Page;
 const SectionTitle = () => {
   return (
     <div>
-      <h2 className="text-lg font-medium">General Settings</h2>
-      <p className="text-sm text-muted-foreground">
+      <h2 className="font-medium text-lg">General Settings</h2>
+      <p className="text-muted-foreground text-sm">
         Manage your workspace settings and preferences.
       </p>
     </div>
@@ -60,15 +60,15 @@ const SectionDangerZone = ({ workspaceId }: { workspaceId?: string }) => {
         <CardContent>
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <p className="text-sm font-medium">Delete Workspace</p>
-              <p className="text-sm text-muted-foreground">
+              <p className="font-medium text-sm">Delete Workspace</p>
+              <p className="text-muted-foreground text-sm">
                 Permanently delete this workspace and all of its contents.
               </p>
             </div>
             <Button
-              variant="destructive"
-              onClick={fromWorkspaceDelete.onOpen}
               disabled={!workspaceId}
+              onClick={fromWorkspaceDelete.onOpen}
+              variant="destructive"
             >
               Delete Workspace
             </Button>

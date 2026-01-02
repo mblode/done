@@ -18,12 +18,12 @@ import {
 } from "@/components/ui/sidebar";
 import { WorkspaceSelect } from "@/components/workspace/workspace-select";
 
-type WorkspaceSidebarItemType = {
+interface WorkspaceSidebarItemType {
   id: string;
   title: string;
   url: string;
   icon: React.ComponentType;
-};
+}
 
 const items: WorkspaceSidebarItemType[] = [
   {
@@ -63,8 +63,8 @@ export const WorkspaceSidebar = observer(() => {
           <SidebarGroupContent>
             <SidebarMenu>
               <Link
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
                 href="/inbox"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
               >
                 <ArrowLeftIcon />
                 Back to Inbox
@@ -82,13 +82,13 @@ export const WorkspaceSidebar = observer(() => {
 
                 return (
                   <Link
-                    key={item.id}
-                    href={item.url}
                     className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
                       isActive
                         ? "bg-accent text-accent-foreground"
                         : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                     }`}
+                    href={item.url}
+                    key={item.id}
                   >
                     <Icon />
                     {item.title}

@@ -34,9 +34,9 @@ export const usePrompt = () => {
       const render = () => {
         mountRoot.render(
           <RenderPrompt
-            open={open}
-            onConfirm={onConfirm}
             onCancel={onCancel}
+            onConfirm={onConfirm}
+            open={open}
             {...props}
           />
         );

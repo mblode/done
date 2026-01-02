@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 import { Validation } from "./validation";
 
-export type FormControlProps = {
+export interface FormControlProps {
   name: string;
   label?: ReactNode;
   labelRight?: ReactNode;
@@ -20,7 +20,7 @@ export type FormControlProps = {
   validationPosition?: "left" | "right";
   captionClassName?: string;
   labelClassName?: string;
-};
+}
 
 export const FormControl = ({
   label,
@@ -45,8 +45,8 @@ export const FormControl = ({
           <div>
             {label && (
               <Label
-                htmlFor={name}
                 className={cn("cursor-pointer", labelClassName)}
+                htmlFor={name}
               >
                 {label}
               </Label>
@@ -61,7 +61,7 @@ export const FormControl = ({
 
       {caption && (
         <span
-          className={cn("mt-1 text-sm text-muted-foreground", captionClassName)}
+          className={cn("mt-1 text-muted-foreground text-sm", captionClassName)}
         >
           {caption}
         </span>

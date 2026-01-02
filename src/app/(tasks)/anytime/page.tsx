@@ -39,10 +39,10 @@ const Page = observer(() => {
         strategy={verticalListSortingStrategy}
       >
         <TaskList
-          tasks={tasks}
-          showWhenIcon
           listData={{ id: "anytime" }}
           onTaskClick={handleClick}
+          showWhenIcon
+          tasks={tasks}
         />
       </SortableContext>
     </PageContainer>

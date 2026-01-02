@@ -34,14 +34,14 @@ export const View = observer(
     selectedWorkspaceId?: string;
     changeWorkspace: (workspaceId: string) => void;
   }) => (
-    <Select value={selectedWorkspaceId} onValueChange={changeWorkspace}>
+    <Select onValueChange={changeWorkspace} value={selectedWorkspaceId}>
       <SelectTrigger className="h-8 w-full text-sm">
         <SelectValue placeholder="Select workspace">
           {selectedWorkspace && (
             <WorkspaceItem
               name={selectedWorkspace.name}
-              slug={selectedWorkspace.slug}
               showSlug={false}
+              slug={selectedWorkspace.slug}
             />
           )}
         </SelectValue>
@@ -51,8 +51,8 @@ export const View = observer(
           <SelectItem key={workspace.id} value={workspace.id}>
             <WorkspaceItem
               name={workspace.name}
-              slug={workspace.slug}
               showSlug={false}
+              slug={workspace.slug}
             />
           </SelectItem>
         ))}
@@ -73,7 +73,7 @@ const WorkspaceItem = ({
   <div className="flex items-center gap-2">
     <span className="max-w-[160px] truncate text-sm">{name}</span>
     {showSlug && (
-      <span className="ml-2 text-xs text-muted-foreground">
+      <span className="ml-2 text-muted-foreground text-xs">
         {`trydone.io/${slug}`}
       </span>
     )}

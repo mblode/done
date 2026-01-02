@@ -47,11 +47,11 @@ const Kbd = React.forwardRef<HTMLElement, KbdProps>(
 
     return (
       <kbd
-        ref={ref}
         className={cn(
-          "pointer-events-none flex size-5 select-none items-center justify-center gap-1 rounded border bg-muted font-mono text-[10px] font-medium",
+          "pointer-events-none flex size-5 select-none items-center justify-center gap-1 rounded border bg-muted font-medium font-mono text-[10px]",
           className
         )}
+        ref={ref}
         {...props}
       >
         {content}

@@ -62,9 +62,9 @@ const SectionTrash = () => {
         strategy={verticalListSortingStrategy}
       >
         <TaskList
-          tasks={tasks}
           listData={{ id: "trash" }}
           onTaskClick={handleClick}
+          tasks={tasks}
         />
       </SortableContext>
     </Section>

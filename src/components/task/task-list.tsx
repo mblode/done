@@ -13,14 +13,14 @@ import { type DndListData, useDndContext } from "../dnd/dnd-context";
 import { TaskItemWrapper } from "./task-item-wrapper";
 import type { Task } from "./types";
 
-type Props = {
+interface Props {
   tasks: readonly Task[];
   className?: string;
   showWhenIcon?: boolean;
   showDashedCheckbox?: boolean;
   listData: DndListData;
   onTaskClick: (id: string, e: MouseEvent<HTMLDivElement>) => void;
-};
+}
 
 const findBorderRadiusGroups = (
   tasks: readonly Task[],
@@ -91,15 +91,15 @@ export const TaskList = observer(
         >
           {tasks.map((task) => (
             <TaskItemWrapper
-              key={task.id}
-              task={task}
               isSelected={selectedTaskIds.has(task.id)}
-              showWhenIcon={showWhenIcon}
-              showDashedCheckbox={showDashedCheckbox}
-              noRadiusTop={noRadiusTop.includes(task.id)}
-              noRadiusBottom={noRadiusBottom.includes(task.id)}
+              key={task.id}
               listData={listData}
+              noRadiusBottom={noRadiusBottom.includes(task.id)}
+              noRadiusTop={noRadiusTop.includes(task.id)}
               onClick={(e) => onTaskClick(task.id, e)}
+              showDashedCheckbox={showDashedCheckbox}
+              showWhenIcon={showWhenIcon}
+              task={task}
             />
           ))}
         </div>

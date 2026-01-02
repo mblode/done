@@ -15,7 +15,7 @@ const BottomSheetOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Overlay
     className={cn(
-      "fixed inset-0 z-[100] bg-black/60 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-[100] bg-black/60 data-[state=closed]:animate-out data-[state=open]:animate-in",
       className
     )}
     {...props}
@@ -38,11 +38,11 @@ const BottomSheetContent = React.forwardRef<
     <BottomSheetPortal>
       {!hideOverlay && <BottomSheetOverlay className={overlayClassName} />}
       <DialogPrimitive.Content
-        ref={ref}
         className={cn(
-          "fixed bottom-0 left-1/2 z-[100] w-full -translate-x-1/2 translate-y-0 duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:!slide-out-to-top-0 data-[state=closed]:slide-out-to-left-1/2 data-[state=open]:!slide-in-from-top-0 data-[state=open]:slide-in-from-left-1/2 sm:rounded-2xl md:w-full",
+          "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:!slide-out-to-top-0 data-[state=closed]:slide-out-to-left-1/2 data-[state=open]:!slide-in-from-top-0 data-[state=open]:slide-in-from-left-1/2 fixed bottom-0 left-1/2 z-[100] w-full -translate-x-1/2 translate-y-0 duration-200 data-[state=closed]:animate-out data-[state=open]:animate-in sm:rounded-2xl md:w-full",
           className
         )}
+        ref={ref}
         style={{ top: "unset" }}
         {...props}
       >
@@ -73,7 +73,7 @@ const BottomSheetInner = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "bottom-sheet-inner z-[100] grid max-h-[430px] min-h-[50px] w-full gap-4 overflow-y-auto !rounded-b-none rounded-t-[32px] border border-border bg-background p-0 shadow-lg",
+      "!rounded-b-none bottom-sheet-inner z-[100] grid max-h-[430px] min-h-[50px] w-full gap-4 overflow-y-auto rounded-t-[32px] border border-border bg-background p-0 shadow-lg",
       className
     )}
     {...props}

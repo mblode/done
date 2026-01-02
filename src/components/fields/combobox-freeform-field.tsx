@@ -1,6 +1,11 @@
 import type { UseComboboxStateChange } from "downshift";
 import { type ReactNode, useCallback, useState } from "react";
-import { type Control, useController } from "react-hook-form";
+import {
+  type Control,
+  type FieldValues,
+  type Path,
+  useController,
+} from "react-hook-form";
 
 import type { OnChangeParams } from "@/components/ui/combobox";
 import { FormControl } from "@/components/ui/form-control";
@@ -8,11 +13,11 @@ import { useErrorState } from "@/hooks/use-error-state";
 
 import { Combobox, type ComboboxOption } from "../ui/combobox";
 
-type Props = {
-  name: string;
+interface Props<T extends FieldValues = FieldValues> {
+  name: Path<T>;
   label?: ReactNode;
   caption?: ReactNode;
-  control: Control<Record<string, unknown>>;
+  control: Control<T>;
   ariaLabel?: string;
   className?: string;
   placeholder?: string;
@@ -31,9 +36,9 @@ type Props = {
   maxDropdownHeight?: number;
   labelClassName?: string;
   setValue?: (value: string) => void;
-};
+}
 
-export const ComboboxFreeformField = ({
+export const ComboboxFreeformField = <T extends FieldValues = FieldValues>({
   name,
   label,
   caption,
@@ -42,7 +47,7 @@ export const ComboboxFreeformField = ({
   onChange,
   setValue,
   ...props
-}: Props) => {
+}: Props<T>) => {
   const [items, setItems] = useState<ComboboxOption[]>(options);
   const { field, fieldState } = useController({ name, control });
   const hasError = useErrorState(fieldState, control);
@@ -81,7 +86,7 @@ export const ComboboxFreeformField = ({
 
       setItems(newOptions);
 
-      setValue(value);
+      setValue?.(value);
     },
     [options, setValue]
   );
@@ -98,7 +103,7 @@ export const ComboboxFreeformField = ({
 
       const value = String(input?.selectedItem?.id || "");
 
-      setValue(value);
+      setValue?.(value);
     },
     [field, onChange, setValue]
   );
@@ -108,7 +113,9 @@ export const ComboboxFreeformField = ({
       fieldValue: string | number,
       options: ComboboxOption[]
     ): ComboboxOption | undefined => {
-      if (!fieldValue) return undefined;
+      if (!fieldValue) {
+        return undefined;
+      }
 
       // value exists in options, render the option itself
       const existingOption = options.find(
@@ -127,24 +134,24 @@ export const ComboboxFreeformField = ({
     []
   );
 
-  const value = getSelectValue(field.value, options);
+  const value = getSelectValue(field.value as string | number, options);
 
   return (
     <FormControl
-      label={label}
       caption={caption}
       error={hasError ? fieldState.error?.message : null}
+      label={label}
       name={name}
     >
       <Combobox
         {...field}
         {...props}
         id={name}
-        options={items}
-        value={value}
+        onChange={handleChange}
         onClear={handleClear}
         onInputChange={handleInputChange}
-        onChange={handleChange}
+        options={items}
+        value={value}
       />
     </FormControl>
   );

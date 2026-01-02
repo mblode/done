@@ -1,6 +1,11 @@
 import type { UseComboboxStateChange } from "downshift";
 import { type ReactNode, useCallback, useEffect, useState } from "react";
-import { type Control, useController } from "react-hook-form";
+import {
+  type Control,
+  type FieldValues,
+  type Path,
+  useController,
+} from "react-hook-form";
 
 import type { OnChangeParams } from "@/components/ui/combobox";
 import { FormControl } from "@/components/ui/form-control";
@@ -8,11 +13,11 @@ import { useErrorState } from "@/hooks/use-error-state";
 
 import { Combobox, type ComboboxOption } from "../ui/combobox";
 
-type Props = {
-  name: string;
+interface Props<T extends FieldValues = FieldValues> {
+  name: Path<T>;
   label?: ReactNode;
   caption?: ReactNode;
-  control: Control<Record<string, unknown>>;
+  control: Control<T>;
   ariaLabel?: string;
   className?: string;
   placeholder?: string;
@@ -30,9 +35,9 @@ type Props = {
   autoFocus?: boolean;
   maxDropdownHeight?: number;
   labelClassName?: string;
-};
+}
 
-export const ComboboxField = ({
+export const ComboboxField = <T extends FieldValues = FieldValues>({
   name,
   label,
   caption,
@@ -41,7 +46,7 @@ export const ComboboxField = ({
   onInputChange,
   onChange,
   ...props
-}: Props) => {
+}: Props<T>) => {
   const [items, setItems] = useState<ComboboxOption[]>(options);
   const { field, fieldState } = useController({ name, control });
   const hasError = useErrorState(fieldState, control);
@@ -74,7 +79,9 @@ export const ComboboxField = ({
       fieldValue: string | number,
       options: ComboboxOption[]
     ): ComboboxOption | undefined => {
-      if (!fieldValue) return undefined;
+      if (!fieldValue) {
+        return undefined;
+      }
 
       // value exists in options, render the option itself
       const existingOption = options.find(
@@ -93,28 +100,28 @@ export const ComboboxField = ({
     []
   );
 
-  const value = getSelectValue(field.value, options);
+  const value = getSelectValue(field.value as string | number, options);
 
   return (
     <FormControl
-      label={label}
       caption={caption}
       error={hasError ? fieldState.error?.message : null}
+      label={label}
       name={name}
     >
       <Combobox
         {...field}
         {...props}
         id={name}
-        options={items}
-        value={value}
-        onClear={handleClear}
-        onInputChange={onInputChange ? onInputChange : handleInputChange}
         onChange={(input) => {
           field.onBlur();
           field.onChange(input?.selectedItem ? input.selectedItem.id : null);
           onChange?.(input);
         }}
+        onClear={handleClear}
+        onInputChange={onInputChange ? onInputChange : handleInputChange}
+        options={items}
+        value={value}
       />
     </FormControl>
   );

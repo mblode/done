@@ -4,17 +4,17 @@ import { CheckIcon } from "lucide-react";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import * as z from "zod";
+import { object, string, type infer as zodInfer } from "zod";
 
 import { InputField } from "@/components/fields/input-field";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 
-const schema = z.object({
-  email: z.string().email().min(1, { message: "Required" }),
+const schema = object({
+  email: string().email().min(1, { message: "Required" }),
 });
 
-type Schema = z.infer<typeof schema>;
+type Schema = zodInfer<typeof schema>;
 
 export const ForgotPasswordForm = () => {
   const [loading, setLoading] = useState(false);
@@ -28,7 +28,7 @@ export const ForgotPasswordForm = () => {
     },
   });
 
-  const submitHandler = useCallback(async () => {
+  const submitHandler = useCallback(() => {
     try {
       setLoading(true);
       // setCookie(RETURN_TO_KEY, "/update-password");
@@ -63,13 +63,13 @@ export const ForgotPasswordForm = () => {
 
       <InputField
         control={control}
-        type="email"
-        name="email"
         label="Email address"
+        name="email"
         placeholder="E.g. you@email.com"
+        type="email"
       />
 
-      <Button type="submit" loading={loading} className="w-full shadow-sm">
+      <Button className="w-full shadow-sm" loading={loading} type="submit">
         Send reset email
       </Button>
     </form>

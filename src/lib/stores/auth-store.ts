@@ -7,7 +7,7 @@ import type { RootStore } from "./root-store";
 export class AuthStore {
   rootStore: RootStore;
   loginState: undefined | { decoded: any }; // Update type based on your needs
-  isLoading: boolean = true;
+  isLoading = true;
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -32,7 +32,7 @@ export class AuthStore {
 
       const decoded = decodeJwt(jwt as string);
 
-      if (!decoded || !decoded.sub) {
+      if (!decoded?.sub) {
         this.logout();
         return;
       }

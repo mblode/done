@@ -28,7 +28,7 @@ export type MultiComboBoxOption = ComboboxOption & {
 export type OnMultiChangeParams =
   | ((changes: UseMultipleSelectionStateChange<MultiComboBoxOption>) => void)
   | undefined;
-export type MultiComboboxProps = {
+export interface MultiComboboxProps {
   options: MultiComboBoxOption[];
   values?: MultiComboBoxOption[];
   onChange?: OnMultiChangeParams;
@@ -40,7 +40,7 @@ export type MultiComboboxProps = {
   ref?: any;
   placeholder?: string;
   inputClassName?: string;
-};
+}
 
 const getFilteredOptions = (
   options: MultiComboBoxOption[],
@@ -187,7 +187,7 @@ export const MultiComboBox: React.FC<MultiComboboxProps> = forwardRef(
         <PopoverPrimitive.Anchor asChild>
           <div
             className={cn(
-              "hover:border-input-hover flex min-h-[52px] grow appearance-none rounded-2xl border-[1.5px] border-input bg-card bg-clip-border text-base focus-within:border-ring focus-within:outline-none",
+              "flex min-h-[52px] grow appearance-none rounded-2xl border-[1.5px] border-input bg-card bg-clip-border text-base focus-within:border-ring focus-within:outline-none hover:border-input-hover",
               inputClassName
             )}
           >
@@ -217,15 +217,15 @@ export const MultiComboBox: React.FC<MultiComboboxProps> = forwardRef(
                             removeSelectedItem(selectedItemForRender);
                           }}
                         >
-                          <XIcon width={14} height={14} />
+                          <XIcon height={14} width={14} />
                         </span>
                       </Badge>
                     );
                   }
                 )}
                 <input
-                  data-testid="the-input"
                   className="grow bg-transparent outline-none placeholder:text-muted-foreground"
+                  data-testid="the-input"
                   placeholder={selectedItems.length === 0 ? placeholder : ""}
                   {...getInputProps(
                     getDropdownProps({ preventKeyAction: isOpen, id })
@@ -235,7 +235,7 @@ export const MultiComboBox: React.FC<MultiComboboxProps> = forwardRef(
               </span>
 
               <div className="flex h-full items-center">
-                <ChevronDownIcon width={20} height={20} color="currentColor" />
+                <ChevronDownIcon color="currentColor" height={20} width={20} />
               </div>
             </button>
           </div>
@@ -244,9 +244,8 @@ export const MultiComboBox: React.FC<MultiComboboxProps> = forwardRef(
         <PopoverPrimitive.Portal>
           <PopoverPrimitive.Content
             align="start"
-            className="relative z-[110] max-h-[250px] min-w-32 translate-y-1 overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-lg animate-in fade-in-80"
             asChild
-            onOpenAutoFocus={(event) => event.preventDefault()}
+            className="fade-in-80 relative z-[110] max-h-[250px] min-w-32 translate-y-1 animate-in overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-lg"
             onInteractOutside={(event) => {
               const target = event.target as Element | null;
               const isCombobox = target === comboboxRef.current;
@@ -255,6 +254,7 @@ export const MultiComboBox: React.FC<MultiComboboxProps> = forwardRef(
                 event.preventDefault();
               }
             }}
+            onOpenAutoFocus={(event) => event.preventDefault()}
           >
             <div
               className="w-full overflow-y-auto p-1"
@@ -262,8 +262,8 @@ export const MultiComboBox: React.FC<MultiComboboxProps> = forwardRef(
             >
               {shouldCreate && (
                 <div
-                  onClick={handleCreate}
                   className="cursor-pointer px-4 py-2"
+                  onClick={handleCreate}
                 >
                   Create {inputValue}
                 </div>
@@ -272,11 +272,11 @@ export const MultiComboBox: React.FC<MultiComboboxProps> = forwardRef(
               {isOpen &&
                 items.map((item, index) => (
                   <div
-                    key={`${item.id}${index}`}
                     className={cn("cursor-pointer rounded-lg px-4 py-2", {
                       "bg-accent text-accent-foreground":
                         highlightedIndex === index,
                     })}
+                    key={`${item.id}${index}`}
                     {...getItemProps({ item, index })}
                   >
                     {item.label}

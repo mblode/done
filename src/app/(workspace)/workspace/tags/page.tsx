@@ -23,9 +23,9 @@ import {
 } from "@/components/ui/table";
 import { queries } from "@/lib/zero/queries";
 
-type Props = {
+interface Props {
   params: { workspaceSlug: string };
-};
+}
 
 export default function Page(_props: Props) {
   const [tags] = useQuery(queries.tags.all());
@@ -46,7 +46,7 @@ export default function Page(_props: Props) {
     <div className="container mx-auto max-w-6xl space-y-6 py-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Issue tags</h1>
+        <h1 className="font-bold text-2xl tracking-tight">Issue tags</h1>
         <p className="text-muted-foreground">
           Manage and organize your issue tags
         </p>
@@ -55,12 +55,12 @@ export default function Page(_props: Props) {
       {/* Controls */}
       <div className="flex items-center justify-between gap-4">
         <div className="relative max-w-sm flex-1">
-          <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
+            className="pl-9"
+            onChange={(e) => setSearch(e.target.value)}
             placeholder="Filter by name..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-9"
           />
         </div>
         <div className="flex items-center gap-2">
@@ -78,7 +78,7 @@ export default function Page(_props: Props) {
             <TableHead>Name</TableHead>
             <TableHead>Created</TableHead>
             <TableHead>Updated</TableHead>
-            <TableHead></TableHead>
+            <TableHead />
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -86,7 +86,7 @@ export default function Page(_props: Props) {
             <TableRow key={tag.id}>
               <TableCell>
                 <div className="flex items-center gap-2">
-                  <div className={`size-3 rounded-full`} />
+                  <div className={"size-3 rounded-full"} />
                   <span>{tag.title}</span>
                 </div>
               </TableCell>
@@ -105,7 +105,7 @@ export default function Page(_props: Props) {
               <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm">
+                    <Button size="sm" variant="ghost">
                       <MoreHorizontal className="size-4" />
                     </Button>
                   </DropdownMenuTrigger>

@@ -36,10 +36,10 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ) => {
     return (
       <label
-        htmlFor={props.id}
         className={cn("relative w-full", {
           "input-group": !!leftAddon || !!rightAddon,
         })}
+        htmlFor={props.id}
       >
         {leftAddon && <span>{leftAddon}</span>}
 
@@ -51,7 +51,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 
         <TextareaAutosize
           className={cn(
-            "hover:border-input-hover placeholder:text-placeholder-foreground flex h-[52px] w-full rounded-2xl border-[1.5px] border-input bg-card px-4 py-[14px] font-sans text-base font-normal leading-snug text-foreground ring-offset-background transition-colors focus:border-ring focus:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+            "flex h-[52px] w-full rounded-2xl border-[1.5px] border-input bg-card px-4 py-[14px] font-normal font-sans text-base text-foreground leading-snug ring-offset-background transition-colors placeholder:text-placeholder-foreground hover:border-input-hover focus:border-ring focus:outline-none disabled:cursor-not-allowed disabled:opacity-50",
             {
               "border-destructive-foreground": hasError,
               "pr-9": clearable && !!props.value,
@@ -59,27 +59,27 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             },
             className
           )}
-          ref={ref}
           minRows={minRows}
+          ref={ref}
           {...props}
         />
 
         {clearable && !!props.value && (
-          <div className="absolute right-0 top-0">
+          <div className="absolute top-0 right-0">
             <button
-              tabIndex={-1}
+              aria-label="clear input"
               className={cn(
-                "flex h-[52px] w-10 items-center justify-center !p-0 text-muted-foreground",
+                "!p-0 flex h-[52px] w-10 items-center justify-center text-muted-foreground",
                 clearClassName
               )}
-              type="button"
               onClick={() => onClear?.()}
-              aria-label="clear input"
+              tabIndex={-1}
+              type="button"
             >
               <CircleXIcon
-                width={16}
-                height={16}
                 className="text-muted-foreground/50"
+                height={16}
+                width={16}
               />
             </button>
           </div>
@@ -87,7 +87,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 
         {rightControl && (
           <div
-            className={cn("absolute right-3 top-4", {
+            className={cn("absolute top-4 right-3", {
               "right-9": clearable && !!props.value,
             })}
           >

@@ -38,7 +38,9 @@ export const View = ({
   const [confirmName, setConfirmName] = useState("");
 
   const handleDelete = async () => {
-    if (!workspace) return;
+    if (!workspace) {
+      return;
+    }
 
     if (confirmName !== workspace.name) {
       toast.error("Workspace name does not match");
@@ -55,7 +57,7 @@ export const View = ({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog onOpenChange={onClose} open={isOpen}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Delete Workspace</DialogTitle>
@@ -66,7 +68,7 @@ export const View = ({
         </DialogHeader>
 
         <div className="space-y-4 py-4">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             Please type{" "}
             <span className="font-medium text-foreground">
               {workspace?.name}
@@ -74,20 +76,20 @@ export const View = ({
             to confirm.
           </p>
           <Input
-            value={confirmName}
             onChange={(e) => setConfirmName(e.target.value)}
             placeholder="Enter workspace name"
+            value={confirmName}
           />
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={onClose}>
+          <Button onClick={onClose} variant="outline">
             Cancel
           </Button>
           <Button
-            variant="destructive"
-            onClick={handleDelete}
             disabled={!workspace || confirmName !== workspace.name}
+            onClick={handleDelete}
+            variant="destructive"
           >
             Delete Workspace
           </Button>
@@ -104,7 +106,9 @@ const useBlock = (workspaceId?: string) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const onDelete = async () => {
-    if (!workspaceId) return;
+    if (!workspaceId) {
+      return;
+    }
 
     await zero.mutate(mutators.workspace.delete({ id: workspaceId }));
   };

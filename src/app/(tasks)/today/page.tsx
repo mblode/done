@@ -76,30 +76,30 @@ const Page = observer(() => {
           )}
 
           <TaskList
-            tasks={todayTasks}
             listData={{ id: "today", start: "started", start_bucket: "today" }}
             onTaskClick={handleClick}
+            tasks={todayTasks}
           />
 
           {initialEveningTasks.length > 0 && (
             <>
               <div className="task-outside-click mx-4 pb-2">
-                <div className="task-outside-click flex items-center gap-2 border-b border-border py-1 pt-6">
+                <div className="task-outside-click flex items-center gap-2 border-border border-b py-1 pt-6">
                   <MoonIcon className="task-outside-click size-4" />
-                  <h1 className="task-outside-click text-base font-bold tracking-tight">
+                  <h1 className="task-outside-click font-bold text-base tracking-tight">
                     This Evening
                   </h1>
                 </div>
               </div>
 
               <TaskList
-                tasks={eveningTasks}
                 listData={{
                   id: "evening",
                   start: "started",
                   start_bucket: "evening",
                 }}
                 onTaskClick={handleClick}
+                tasks={eveningTasks}
               />
             </>
           )}

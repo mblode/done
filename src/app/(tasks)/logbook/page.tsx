@@ -36,9 +36,9 @@ const Page = observer(() => {
         strategy={verticalListSortingStrategy}
       >
         <TaskList
-          tasks={tasks}
           listData={{ id: "logbook" }}
           onTaskClick={handleClick}
+          tasks={tasks}
         />
       </SortableContext>
     </PageContainer>

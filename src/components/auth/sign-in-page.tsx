@@ -13,7 +13,7 @@ type Provider = "google" | "apple" | "facebook";
 
 const getReturnTo = (returnTo?: string | null): string => {
   if (!returnTo) {
-    return `/sites`;
+    return "/sites";
   }
 
   return returnTo;
@@ -113,19 +113,19 @@ export const SignInPage = () => {
         <div className="space-y-4">
           <p className="mb-4 flex flex-wrap items-center justify-center text-center text-sm">
             <Link href="/forgot-password">
-              <ButtonDiv variant="link" size="sm">
+              <ButtonDiv size="sm" variant="link">
                 Forgot your password?
               </ButtonDiv>
             </Link>
 
             <Link href={`/sign-up?${queryParams}`}>
-              <ButtonDiv variant="link" size="sm">
+              <ButtonDiv size="sm" variant="link">
                 Sign up
               </ButtonDiv>
             </Link>
 
-            <Link href={`/customer-sign-in`}>
-              <ButtonDiv variant="link" size="sm">
+            <Link href={"/customer-sign-in"}>
+              <ButtonDiv size="sm" variant="link">
                 Customer dashboard
               </ButtonDiv>
             </Link>

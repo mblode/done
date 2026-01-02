@@ -3,7 +3,7 @@ import type * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-const headingVariants = cva("font-sans font-medium", {
+const headingVariants = cva("font-medium font-sans", {
   variants: {
     level: {
       h1: "h1",

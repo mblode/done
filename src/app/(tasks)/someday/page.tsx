@@ -36,10 +36,10 @@ const Page = observer(() => {
         strategy={verticalListSortingStrategy}
       >
         <TaskList
-          tasks={tasks}
-          showDashedCheckbox
           listData={{ id: "someday" }}
           onTaskClick={handleClick}
+          showDashedCheckbox
+          tasks={tasks}
         />
       </SortableContext>
     </PageContainer>

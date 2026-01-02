@@ -98,7 +98,7 @@ export class LocalStore {
   // Selection Actions
   setSelectedTaskIds(taskIds: string[]) {
     this.selectedTaskIds = new Set(taskIds);
-    this.lastSelectedTaskId = taskIds[taskIds.length - 1] ?? null;
+    this.lastSelectedTaskId = taskIds.at(-1) ?? null;
     const hasSelection = taskIds.length > 0;
 
     this.updateButtonStates({
@@ -232,8 +232,7 @@ export class LocalStore {
 
     // If nothing is selected, select the first/last item based on direction
     if (this.selectedTaskIds.size === 0) {
-      const newId =
-        direction === "up" ? allTaskIds[allTaskIds.length - 1] : allTaskIds[0];
+      const newId = direction === "up" ? allTaskIds.at(-1) : allTaskIds[0];
 
       if (newId) {
         this.selectedTaskIds.clear();

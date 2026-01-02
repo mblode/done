@@ -4,7 +4,7 @@ import type * as React from "react";
 import { cn } from "@/lib/utils";
 
 const stickerVariants = cva(
-  "inline-flex items-center rounded-[12px] px-[35px] py-2.5 text-[24px] font-bold leading-none tracking-tight text-white shadow-[0px_10px_20px_0px_rgba(0,0,0,0.15)] ring-4 ring-[rgba(255,255,255,0.5)]",
+  "inline-flex items-center rounded-[12px] px-[35px] py-2.5 font-bold text-[24px] text-white leading-none tracking-tight shadow-[0px_10px_20px_0px_rgba(0,0,0,0.15)] ring-4 ring-[rgba(255,255,255,0.5)]",
   {
     variants: {
       variant: {

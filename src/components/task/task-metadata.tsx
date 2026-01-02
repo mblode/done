@@ -10,10 +10,10 @@ import { Badge } from "../ui/badge";
 // import {AssigneeSwitcher} from './assignee-switcher'
 import type { Task } from "./types";
 
-type Props = {
+interface Props {
   task: Task;
   className?: string;
-};
+}
 
 export const TaskMetadata = ({ task, className }: Props) => {
   // const zero = useZero()
@@ -43,7 +43,7 @@ export const TaskMetadata = ({ task, className }: Props) => {
     task.reminder_at ||
     task.description;
 
-  if (!hasLeftMetadata && !task.deadline_at) {
+  if (!(hasLeftMetadata || task.deadline_at)) {
     return null;
   }
 
@@ -54,7 +54,7 @@ export const TaskMetadata = ({ task, className }: Props) => {
         {task.reminder_at && (
           <div className="flex items-center gap-1">
             <ClockIcon className="size-3 text-muted-foreground" />
-            <span className="text-xs text-muted-foreground">
+            <span className="text-muted-foreground text-xs">
               {format(task.reminder_at, "h:mm a")}
             </span>
           </div>
@@ -76,9 +76,9 @@ export const TaskMetadata = ({ task, className }: Props) => {
           <div className="flex items-center gap-1">
             {(task?.tags || []).map((tag, index) => (
               <Badge
-                variant="default"
                 className="rounded-full border border-border bg-transparent text-xs"
                 key={index}
+                variant="default"
               >
                 {tag.title}
               </Badge>
@@ -90,7 +90,7 @@ export const TaskMetadata = ({ task, className }: Props) => {
       {/* Right side with deadline */}
       {task.deadline_at && (
         <div className="flex items-center">
-          <span className="text-xs font-medium text-muted-foreground">
+          <span className="font-medium text-muted-foreground text-xs">
             {getDaysLeft(new Date(task.deadline_at))}
           </span>
         </div>

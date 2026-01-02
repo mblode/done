@@ -1,0 +1,42 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "extends": ["ultracite/biome/core", "ultracite/biome/next"],
+  "linter": {
+    "rules": {
+      "performance": {
+        "noNamespaceImport": "off"
+      },
+      "a11y": {
+        "useKeyWithClickEvents": "off",
+        "noStaticElementInteractions": "off",
+        "noNoninteractiveElementInteractions": "off",
+        "useSemanticElements": "off",
+        "noSvgWithoutTitle": "off"
+      },
+      "suspicious": {
+        "noExplicitAny": "off",
+        "noArrayIndexKey": "off",
+        "noDocumentCookie": "off",
+        "noEmptyBlockStatements": "off",
+        "useAwait": "off"
+      },
+      "complexity": {
+        "noForEach": "off",
+        "noExcessiveCognitiveComplexity": "off"
+      },
+      "style": {
+        "noNonNullAssertion": "off",
+        "noNestedTernary": "off",
+        "useConsistentMemberAccessibility": "off"
+      }
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["src/app/globals.css", "schema-loader.mjs"],
+      "linter": {
+        "enabled": false
+      }
+    }
+  ]
+}

@@ -39,14 +39,14 @@ export const View = ({
   selectedUserId?: string;
   changeUser: (profileId: string) => void;
 }) => (
-  <Select value={selectedUserId} onValueChange={changeProfile}>
+  <Select onValueChange={changeProfile} value={selectedUserId}>
     <SelectTrigger className="w-[280px]">
       <SelectValue placeholder="Select profile">
         {selectedUser && (
           <ProfileItem
-            name={selectedUser.profile.name}
             avatar={selectedUser.profile.avatar}
             email={selectedUser.email}
+            name={selectedUser.profile.name}
             showEmail={false}
           />
         )}
@@ -56,9 +56,9 @@ export const View = ({
       {users.map((user) => (
         <SelectItem key={user.profile.id} value={user.profile.id}>
           <ProfileItem
-            name={user.profile.name}
             avatar={user.profile.avatar}
             email={user.email}
+            name={user.profile.name}
             showEmail
           />
         </SelectItem>
@@ -80,12 +80,12 @@ const ProfileItem = ({
 }) => (
   <div className="flex items-center gap-2">
     <Avatar className="size-6">
-      <AvatarImage src={avatar || undefined} alt={name || "Profile"} />
-      <AvatarFallback>{getUserInitials(name || ``)}</AvatarFallback>
+      <AvatarImage alt={name || "Profile"} src={avatar || undefined} />
+      <AvatarFallback>{getUserInitials(name || "")}</AvatarFallback>
     </Avatar>
     <span className="max-w-[160px] truncate">{name}</span>
     {showEmail && (
-      <span className="ml-2 text-xs text-muted-foreground">{email}</span>
+      <span className="ml-2 text-muted-foreground text-xs">{email}</span>
     )}
   </div>
 );

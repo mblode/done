@@ -1,21 +1,27 @@
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { type ReactNode, useState } from "react";
-import { type Control, useController } from "react-hook-form";
+import {
+  type Control,
+  type FieldValues,
+  type Path,
+  useController,
+} from "react-hook-form";
 
 import { FormControl } from "@/components/ui/form-control";
 import { Input, type InputProps } from "@/components/ui/input";
 import { useErrorState } from "@/hooks/use-error-state";
 
-interface Props extends Exclude<InputProps, "type"> {
-  name: string;
+interface Props<T extends FieldValues = FieldValues>
+  extends Exclude<InputProps, "type"> {
+  name: Path<T>;
   label?: ReactNode;
   labelRight?: ReactNode;
   caption?: ReactNode;
   controlLeft?: ReactNode;
-  control: Control<Record<string, unknown>>;
+  control: Control<T>;
 }
 
-export const PasswordField = ({
+export const PasswordField = <T extends FieldValues = FieldValues>({
   label,
   labelRight,
   name,
@@ -23,7 +29,7 @@ export const PasswordField = ({
   controlLeft,
   control,
   ...rest
-}: Props) => {
+}: Props<T>) => {
   const { field, fieldState } = useController({ name, control });
   const hasError = useErrorState(fieldState, control);
 
@@ -37,31 +43,31 @@ export const PasswordField = ({
 
   return (
     <FormControl
-      label={label}
-      labelRight={labelRight}
       caption={caption}
       controlLeft={controlLeft}
       error={hasError ? fieldState.error?.message : null}
+      label={label}
+      labelRight={labelRight}
       name={name}
     >
       <div className="relative">
         <Input
           {...field}
           {...rest}
-          id={name}
           hasError={hasError}
-          type={passwordType}
+          id={name}
           style={{
             width: "calc(100% - 49px)",
             borderTopRightRadius: 0,
             borderBottomRightRadius: 0,
           }}
+          type={passwordType}
         />
 
         <button
-          type="button"
+          className="absolute inset-y-0 right-0 flex h-[52px] items-center rounded-r-2xl border border-input bg-muted px-3 text-foreground text-sm"
           onClick={togglePassword}
-          className="absolute inset-y-0 right-0 flex h-[52px] items-center rounded-r-2xl border border-input bg-muted px-3 text-sm text-foreground"
+          type="button"
         >
           {passwordType === "password" ? (
             <EyeIcon className="size-6" />

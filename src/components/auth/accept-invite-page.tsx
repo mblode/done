@@ -4,9 +4,9 @@ import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 
-type Props = {
+interface Props {
   invitationId: string;
-};
+}
 
 export const AcceptInvitePage = (_props: Props) => {
   const router = useRouter();
@@ -28,14 +28,14 @@ export const AcceptInvitePage = (_props: Props) => {
 
           <div className="mb-4 flex space-x-2">
             <Button
-              variant="success"
-              onClick={handleAccept}
               className="w-full flex-1"
+              onClick={handleAccept}
+              variant="success"
             >
               Accept
             </Button>
 
-            <Button variant="destructiveSecondary" onClick={handleDecline}>
+            <Button onClick={handleDecline} variant="destructiveSecondary">
               Decline
             </Button>
           </div>

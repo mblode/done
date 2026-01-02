@@ -17,7 +17,6 @@ function Calendar({
 }: CalendarProps) {
   return (
     <DayPicker
-      showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
       classNames={{
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
@@ -51,10 +50,13 @@ function Calendar({
         day_hidden: "invisible",
         ...classNames,
       }}
-      components={{
-        IconLeft: () => <ChevronLeftIcon className="size-4" />,
-        IconRight: () => <ChevronRightIcon className="size-4" />,
-      }}
+      components={
+        {
+          IconLeft: () => <ChevronLeftIcon className="size-4" />,
+          IconRight: () => <ChevronRightIcon className="size-4" />,
+        } as any
+      }
+      showOutsideDays={showOutsideDays}
       {...props}
     />
   );

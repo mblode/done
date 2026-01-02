@@ -13,12 +13,12 @@ import type { TagRow } from "@/schema";
 import { DialogTitle } from "../ui/dialog";
 import type { Task } from "./types";
 
-type Props = {
+interface Props {
   task: Task;
   tag?: TagRow;
   onSuccess: () => void;
   onCancel: () => void;
-};
+}
 
 export const TagDialogForm = ({ task, tag, onSuccess, onCancel }: Props) => {
   const [title, setTitle] = useState(tag?.title || "");
@@ -66,23 +66,23 @@ export const TagDialogForm = ({ task, tag, onSuccess, onCancel }: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form className="space-y-4" onSubmit={handleSubmit}>
       <div className="flex items-center justify-between">
-        <Button variant="ghost" onClick={onCancel}>
+        <Button onClick={onCancel} variant="ghost">
           Cancel
         </Button>
         <DialogTitle>{isEditing ? "Edit Tag" : "New Tag"}</DialogTitle>
-        <Button variant="ghost" type="submit" disabled={!title.trim()}>
+        <Button disabled={!title.trim()} type="submit" variant="ghost">
           Save
         </Button>
       </div>
 
       <div className="space-y-4">
         <Input
+          autoFocus
+          onChange={(e) => setTitle(e.target.value)}
           placeholder="Tag"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          autoFocus
         />
       </div>
     </form>

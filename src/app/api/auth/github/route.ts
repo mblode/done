@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID as string;
 
-export async function GET(request: NextRequest) {
+export function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const redirect = searchParams.get("redirect");
 

@@ -21,7 +21,7 @@ interface Compound
 }
 
 export const WorkspaceSignout: Compound = ({ onSignout }) => (
-  <Button className="-my-2" variant="ghost" size="xs" onClick={onSignout}>
+  <Button className="-my-2" onClick={onSignout} size="xs" variant="ghost">
     <X size={12} />
   </Button>
 );

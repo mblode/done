@@ -33,16 +33,16 @@ export const FooterButton = ({
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
-            variant="ghost"
-            size="sm"
-            disabled={state === "disabled"}
             className={cn(
               "h-8 w-full max-w-[200px] p-0",
-              "border border-transparent !bg-transparent hover:border-border focus:border-border",
+              "!bg-transparent border border-transparent hover:border-border focus:border-border",
               "disabled:cursor-not-allowed disabled:opacity-50",
               "rounded-md transition-colors",
               className
             )}
+            disabled={state === "disabled"}
+            size="sm"
+            variant="ghost"
             {...props}
           >
             <Icon
@@ -52,7 +52,7 @@ export const FooterButton = ({
             />
           </Button>
         </TooltipTrigger>
-        <TooltipContent side="top" className="px-2 py-1 text-xs">
+        <TooltipContent className="px-2 py-1 text-xs" side="top">
           {title}
         </TooltipContent>
       </Tooltip>

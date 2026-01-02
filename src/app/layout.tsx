@@ -24,17 +24,17 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
       className={`${inter.variable} h-full font-sans antialiased`}
+      lang="en"
       suppressHydrationWarning
     >
-      <meta name="apple-mobile-web-app-title" content="Done" />
+      <meta content="Done" name="apple-mobile-web-app-title" />
       <body className="h-full bg-background">
         <ZeroProvider zero={zero}>
           <RootStoreProvider>{children}</RootStoreProvider>
         </ZeroProvider>
 
-        <Toaster position="bottom-right" duration={2000} closeButton />
+        <Toaster closeButton duration={2000} position="bottom-right" />
       </body>
     </html>
   );

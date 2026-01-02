@@ -5,11 +5,11 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import type { UserRow } from "@/schema";
 
-type Props = {
+interface Props {
   members: readonly UserRow[];
   selectedAssigneeId?: string | null;
   onAssigneeChange: (member: string | null) => void;
-};
+}
 
 export const AssigneeSwitcher = ({
   members,
@@ -20,7 +20,9 @@ export const AssigneeSwitcher = ({
   const membersList = React.useMemo(() => [...members], [members]);
   const filteredMembers = React.useMemo(() => {
     const normalizedInput = inputValue.trim().toLowerCase();
-    if (!normalizedInput) return membersList;
+    if (!normalizedInput) {
+      return membersList;
+    }
 
     return membersList.filter((member) =>
       member.username.toLowerCase().includes(normalizedInput)
@@ -80,7 +82,7 @@ export const AssigneeSwitcher = ({
             <button
               {...getToggleButtonProps()}
               aria-label="toggle menu"
-              className="flex h-full items-center border-l border-input px-2"
+              className="flex h-full items-center border-input border-l px-2"
             >
               <ChevronDown className="size-4" />
             </button>
@@ -92,7 +94,7 @@ export const AssigneeSwitcher = ({
         {...getMenuProps()}
         className={cn(
           "absolute z-50 mt-1 max-h-[300px] w-full overflow-auto rounded-lg border border-input bg-popover shadow-md",
-          "animate-in fade-in-0 zoom-in-95",
+          "fade-in-0 zoom-in-95 animate-in",
           !isOpen && "hidden"
         )}
       >
@@ -154,7 +156,7 @@ export const AssigneeSwitcher = ({
           })}
 
           {inputValue.length > 0 && filteredMembers.length === 0 && (
-            <div className="px-2 py-1.5 text-sm text-muted-foreground">
+            <div className="px-2 py-1.5 text-muted-foreground text-sm">
               No results found
             </div>
           )}

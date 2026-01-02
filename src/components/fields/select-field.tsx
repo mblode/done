@@ -1,5 +1,10 @@
 import { type ReactNode, useRef } from "react";
-import { type Control, useController } from "react-hook-form";
+import {
+  type Control,
+  type FieldValues,
+  type Path,
+  useController,
+} from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { FormControl } from "@/components/ui/form-control";
@@ -13,18 +18,18 @@ import {
 import { useDimensions } from "@/hooks/use-dimensions";
 import { useErrorState } from "@/hooks/use-error-state";
 
-type SelectOption = {
+interface SelectOption {
   id: string | number;
   label: string | ReactNode;
   description?: string;
   caption?: string;
-};
+}
 
-type Props = {
-  name: string;
+interface Props<T extends FieldValues = FieldValues> {
+  name: Path<T>;
   label?: ReactNode;
   caption?: ReactNode;
-  control: Control<Record<string, unknown>>;
+  control: Control<T>;
   placeholder?: ReactNode;
   className?: string;
   options: SelectOption[];
@@ -33,9 +38,9 @@ type Props = {
   clearable?: boolean;
   isInt?: boolean;
   disabled?: boolean;
-};
+}
 
-export const SelectField = ({
+export const SelectField = <T extends FieldValues = FieldValues>({
   name,
   label,
   caption,
@@ -48,7 +53,7 @@ export const SelectField = ({
   clearable,
   isInt,
   ...props
-}: Props) => {
+}: Props<T>) => {
   const { field, fieldState } = useController({ name, control });
   const hasError = useErrorState(fieldState, control);
   const ref = useRef<HTMLDivElement>(null);
@@ -57,23 +62,27 @@ export const SelectField = ({
   return (
     <div ref={ref}>
       <FormControl
-        label={label}
         caption={caption}
-        error={hasError ? fieldState.error?.message : null}
-        name={name}
         className={className}
+        error={hasError ? fieldState.error?.message : null}
+        label={label}
+        name={name}
       >
         <Select
           {...field}
           {...props}
-          value={isInt ? String(field.value) : field.value}
-          defaultValue={isInt ? String(field.value) : field.value}
-          // error={hasError}
+          defaultValue={
+            isInt ? String(field.value) : (field.value as string | undefined)
+          }
           onValueChange={(value) => {
             field.onBlur();
-            field.onChange(isInt ? parseInt(value, 10) : value);
-            onValueChange?.(isInt ? parseInt(value, 10) : value);
+            field.onChange(isInt ? Number.parseInt(value, 10) : value);
+            onValueChange?.(isInt ? Number.parseInt(value, 10) : value);
           }}
+          // error={hasError}
+          value={
+            isInt ? String(field.value) : (field.value as string | undefined)
+          }
         >
           <SelectTrigger>
             {options.find((option) => option.id === field.value)?.label ||
@@ -87,8 +96,8 @@ export const SelectField = ({
                   <SelectItem
                     id={String(option.id)}
                     key={String(option.id)}
-                    value={String(option.id)}
                     style={{ maxWidth: width }}
+                    value={String(option.id)}
                   >
                     {option.label && (
                       <div className="mb-1 text-wrap">{option.label}</div>
@@ -112,15 +121,15 @@ export const SelectField = ({
               <div>
                 <Button
                   className="px-2"
-                  variant="secondary"
-                  size="sm"
                   onClick={(e) => {
                     e.stopPropagation();
                     field.onBlur();
                     field.onChange("");
                     onValueChange?.("");
                   }}
+                  size="sm"
                   type="button"
+                  variant="secondary"
                 >
                   Clear
                 </Button>

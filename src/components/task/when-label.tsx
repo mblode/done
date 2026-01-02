@@ -6,9 +6,9 @@ import type { TaskRow } from "@/schema";
 import { Button } from "../ui/button";
 import { getButtonIcon, getButtonText } from "./when-dialog";
 
-type Props = {
+interface Props {
   task: TaskRow;
-};
+}
 
 export const WhenLabel = ({ task }: Props) => {
   const {
@@ -22,10 +22,10 @@ export const WhenLabel = ({ task }: Props) => {
 
   return (
     <Button
-      variant="ghost"
-      size="sm"
       className="h-auto gap-1.5 rounded-md p-1"
       onClick={handleClick}
+      size="sm"
+      variant="ghost"
     >
       {getButtonIcon(task)} {getButtonText(task)}
     </Button>

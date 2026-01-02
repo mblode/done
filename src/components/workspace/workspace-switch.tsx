@@ -57,35 +57,35 @@ export const WorkspaceSwitch: Compound = ({
       onClick={onAllWorkspacesClick}
     />
     {users?.map((user) => (
-      <div key={user.id} className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2" key={user.id}>
         {renderUserTitle ? renderUserTitle(user) : <H2>{user.username}</H2>}
 
         <RadioGroup
-          value={selectedUserId === user.id ? selectedWorkspaceId : ``}
           onValueChange={(value) =>
             onWorkspaceChange({
               userId: user.id,
               workspaceId: value,
             })
           }
+          value={selectedUserId === user.id ? selectedWorkspaceId : ""}
         >
           {user.workspaceMembers.map((workspaceMember) => (
             <div
-              key={workspaceMember.workspace_id}
               className="group/wmember flex items-center space-x-2 pl-2"
+              key={workspaceMember.workspace_id}
             >
               <RadioGroupItem
-                value={workspaceMember.workspace_id}
                 id={workspaceMember.workspace_id}
+                value={workspaceMember.workspace_id}
               />
               <Label className="flex-1" htmlFor={workspaceMember.workspace_id}>
                 {workspaceMember.workspace?.name}
               </Label>
-              <Link href={`/workspace/general`}>
+              <Link href={"/workspace/general"}>
                 <Button
                   className="invisible -my-2 group-hover/wmember:visible"
-                  variant="ghost"
                   size="xs"
+                  variant="ghost"
                 >
                   <Pencil size={12} />
                 </Button>
@@ -99,9 +99,9 @@ export const WorkspaceSwitch: Compound = ({
 );
 
 const AllWorkspaces: Compound["AllWorkspaces"] = ({ active, onClick }) => (
-  <RadioGroup value={active ? `all` : ``} onValueChange={onClick}>
+  <RadioGroup onValueChange={onClick} value={active ? "all" : ""}>
     <div className="flex items-center space-x-2">
-      <RadioGroupItem value="all" id="all" />
+      <RadioGroupItem id="all" value="all" />
       <Label htmlFor="all">All Workspaces</Label>
     </div>
   </RadioGroup>
@@ -123,11 +123,8 @@ const Block: Compound["Block"] = observer(() => {
 
   return (
     <WorkspaceSwitch
-      selectedWorkspaceId={selectedWorkspaceId}
-      selectedUserId={selectedUserId}
-      users={users}
-      onWorkspaceChange={changeWorkspace}
       onAllWorkspacesClick={clearWorkspace}
+      onWorkspaceChange={changeWorkspace}
       renderUserTitle={(user) => (
         <div className="group/workspace flex flex-row gap-2">
           <div className="flex flex-1 items-center gap-2 font-semibold">
@@ -139,6 +136,9 @@ const Block: Compound["Block"] = observer(() => {
           </div>
         </div>
       )}
+      selectedUserId={selectedUserId}
+      selectedWorkspaceId={selectedWorkspaceId}
+      users={users}
     />
   );
 });

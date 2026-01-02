@@ -14,11 +14,11 @@ import type { TagRow } from "@/schema";
 import { DialogTitle } from "../ui/dialog";
 import type { Task } from "./types";
 
-type Props = {
+interface Props {
   task: Task;
   onEditTag: (tag: TagRow) => void;
   onCancel: () => void;
-};
+}
 
 export const TagDialogManage = ({ onEditTag, onCancel }: Props) => {
   const [search, setSearch] = useState("");
@@ -49,38 +49,38 @@ export const TagDialogManage = ({ onEditTag, onCancel }: Props) => {
       <div className="flex items-center justify-between">
         <div className="w-[52px]" />
         <DialogTitle>Manage Tags</DialogTitle>
-        <Button variant="ghost" onClick={onCancel}>
+        <Button onClick={onCancel} variant="ghost">
           Done
         </Button>
       </div>
 
       <Input
+        onChange={(e) => setSearch(e.target.value)}
         placeholder="Search tags..."
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
       />
 
       <ScrollArea className="h-[300px]">
         <div className="space-y-2">
           {filteredTags?.map((tag) => (
             <div
-              key={tag.id}
               className="flex items-center justify-between rounded-md p-2 hover:bg-accent"
+              key={tag.id}
             >
               <span>{tag.title}</span>
               <div className="space-x-2">
                 <Button
-                  variant="ghost"
-                  size="sm"
                   onClick={() => onEditTag(tag)}
+                  size="sm"
+                  variant="ghost"
                 >
                   <Pencil className="size-4" />
                 </Button>
 
                 <Button
-                  variant="ghost"
-                  size="sm"
                   onClick={() => handleDelete(tag)}
+                  size="sm"
+                  variant="ghost"
                 >
                   <Trash className="size-4" />
                 </Button>
